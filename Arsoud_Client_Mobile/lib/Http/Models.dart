@@ -20,3 +20,17 @@ class HelloWorld {
   /// helper method `_$UserToJson`.
   Map<String, dynamic> toJson() => _$HelloWorldToJson(this);
 }
+
+@JsonSerializable()
+class LoginDTO{
+
+  LoginDTO();
+
+  String username = "";
+  String password = "";
+
+
+  factory LoginDTO.fromJson(Map<String, dynamic> json) => _$LoginDTOFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LoginDTOToJson(this);
+}

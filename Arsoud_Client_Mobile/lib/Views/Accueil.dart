@@ -3,6 +3,8 @@ import 'package:untitled/Http/Models.dart';
 
 import '../Http/HttpService.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -16,19 +18,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  HelloWorld helloWorld = new HelloWorld();
   final password = TextEditingController();
   final email = TextEditingController();
   bool showPassword = false;
 
+  LoginDTO loginInfo = new LoginDTO();
 
-  Future loadHelloWorld() async{
-      helloWorld = await getHttp();
-  }
+
+
 
   @override
   void initState(){
-    loadHelloWorld();
     setState(() {
     });
   }
@@ -167,26 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               //Login button
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 26, 0, 0),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: 327,
-                    height: 56,
-                    child: MaterialButton(
-                      onPressed: (){},
-                      child: Text("Login", style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(fontSize: 18, color:  Colors.white, fontWeight: FontWeight.bold)
-                      ),),
-                      color: Color(0xFF09635F),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              LoginButton(),
               //Sign up section
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
@@ -209,5 +190,38 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           )
     );
+  }
+
+  Padding LoginButton() {
+    return Padding(
+              padding: const EdgeInsets.fromLTRB(0, 26, 0, 0),
+              child: Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: 327,
+                  height: 56,
+                  child: MaterialButton(
+                    onPressed: () async{
+                      try{
+                        loginInfo.password = password.value.text;
+                        loginInfo.username = email.value.text;
+                        var request = await login(loginInfo);
+                        print("Ca marche");
+                      }
+                      catch (e){
+                        throw (e);
+                      }
+                    },
+                    child: Text("Login", style: GoogleFonts.plusJakartaSans(
+                      textStyle: TextStyle(fontSize: 18, color:  Colors.white, fontWeight: FontWeight.bold)
+                    ),),
+                    color: Color(0xFF09635F),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                  ),
+                ),
+              ),
+            );
   }
 }

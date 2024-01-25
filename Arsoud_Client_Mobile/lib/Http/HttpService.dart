@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
 
 import 'Models.dart';
 
 final dio = Dio();
+final storage = new Storage.FlutterSecureStorage();
+
+
 
 Future<HelloWorld> getHttp() async {
   try{
@@ -21,6 +24,25 @@ Future<HelloWorld> getHttp() async {
   }
 
 }
+
+Future<bool> login(LoginDTO data) async{
+  try{
+    var response = await dio.post("http://10.0.2.2:5050/api/User/Login", data: data, options: Options(
+        contentType: "application/json"
+    ));
+    print(response);
+    var token = response.data["token"];
+    await storage.write(key: 'jwt', value: token);
+
+    return true;
+  }
+  catch (e){
+    print(e);
+    throw (e);
+  }
+}
+
+
 
 
 
