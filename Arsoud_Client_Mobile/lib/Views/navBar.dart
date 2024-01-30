@@ -11,9 +11,9 @@ import 'package:untitled/Views/Accueil.dart';
 import 'Login.dart';
 
 class navBar extends StatefulWidget {
-  const navBar({super.key, required this.page});
+  const navBar({super.key, /*required this.page*/});
 
-  final int page;
+  //final int page;
 
   @override
   State<navBar> createState() => _navBarState();
@@ -22,6 +22,8 @@ class navBar extends StatefulWidget {
 class _navBarState extends State<navBar> with TickerProviderStateMixin {
 
   MotionTabBarController? _motionTabBarController;
+  static const _kFontFam = 'MyFlutterApp';
+  static const String? _kFontPkg = null;
 
 
   void initState() {
@@ -36,8 +38,9 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
 
     //// use "MotionTabBarController" to replace with "TabController", if you need to programmatically change the tab
     _motionTabBarController = MotionTabBarController(
-      initialIndex: widget.page,
-      length: 1,
+      //initialIndex: widget.page,
+      initialIndex: 0,
+      length: 5,
       vsync: this,
     );
   }
@@ -67,24 +70,22 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
       bottomNavigationBar: MotionTabBar(
         controller: _motionTabBarController, // ADD THIS if you need to change your tab programmatically
         initialSelectedTab: "Home",
-        labels: const ["Dashboard", "Home", "Profile", "Settings"],
-        icons: const [Icons.dashboard, Icons.home, Icons.people_alt, Icons.settings],
+        labels: const ["Search", "Home", "Navigate", "Favorite", "Profile"],
+        icons: const [Icons.search, Icons.home, IconData(0xe41e, fontFamily: 'MaterialIcons'),Icons.bookmark, Icons.people_alt],
 
         // optional badges, length must be same with labels
         badges: [
-          // Default Motion Badge Widget
           null,
           null,
-          // allow null
           null,
-          // Default Motion Badge Widget with indicator only
+          null,
           null,
         ],
         tabSize: 50,
         tabBarHeight: 55,
         textStyle: const TextStyle(
           fontSize: 12,
-          color: Colors.black,
+          color: Colors.white,
           fontWeight: FontWeight.w500,
         ),
         tabIconColor: Colors.white,

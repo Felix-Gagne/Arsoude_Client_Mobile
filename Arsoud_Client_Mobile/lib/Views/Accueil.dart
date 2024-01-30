@@ -47,10 +47,31 @@ class _HomePageState extends State<HomePage> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
                       } else if (snapshot.hasError) {
-                        return Text(
-                          "Vous n'avez crée acune randonnée pour l'instant.",
+                        return SizedBox(
+                          width: 400,
+                          child: Text(
+                            "Nous rencontrons un probleme avec le serveur actuellement veuillez revenir plus tard.",
+                              style: GoogleFonts.plusJakartaSans(
+                                  textStyle: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16
+                                  )
+                              )
+                          ),
                         );
-                      } else {
+                      } else if(listTrails.length == 0){
+                        return SizedBox(
+                          width: 400,
+                          child: Text("Vous n'avez crée aucune randonnée jusqu\'à aujourd\'hui. Afin de continuer \ndans cette section veuillez \ncrée une randonnée.",
+                            style: GoogleFonts.plusJakartaSans(
+                              textStyle: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16
+                              )
+                          ),),
+                        );
+                      }
+                      else {
                         return Expanded(
                           child: ListView.builder(
                             shrinkWrap: true,
@@ -58,6 +79,16 @@ class _HomePageState extends State<HomePage> {
                             itemCount: listTrails.length,
                             itemBuilder: (BuildContext context, int index) {
                               Randonne randonne = listTrails[index];
+                              var typeTrail;
+                              var icon;
+                              if(randonne.type ==1){
+                                typeTrail = "Vélo";
+                                 icon = IconData(0xe1e1, fontFamily: 'MaterialIcons');
+                              }
+                              else{
+                                typeTrail = "Pieds";
+                                icon = IconData(0xe1d2, fontFamily: 'MaterialIcons');
+                              }
                               return Container(
                                 padding: const EdgeInsets.fromLTRB(5, 0, 5, 25),
                                 child: Row(
@@ -124,16 +155,22 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                           SizedBox(height: 8),
                                           Container(
-                                            width: 150,
-                                            child: Text(
-                                              randonne.type.toString() +
-                                                  " - Distance : 16" +
-                                                  "km",
-                                              style:
-                                              GoogleFonts.plusJakartaSans(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                              ),
+                                            width: 180,
+                                            child: Row(
+                                              children: [
+                                                Text(typeTrail, style:
+                                                GoogleFonts.plusJakartaSans(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),),
+                                                SizedBox(width: 5,),
+                                                Icon(icon),
+                                                Text(" -  Distance : 16km", style:
+                                                GoogleFonts.plusJakartaSans(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),)
+                                              ],
                                             ),
                                           )
                                         ],

@@ -97,6 +97,7 @@ class _LoginState extends State<Login> {
                         width: 320,
                         //height: 48,
                         child: TextFormField(
+                          enabled: !loading,
                           validator: (email){
                             if(email == ""){
                               return "Please enter a email";
@@ -126,6 +127,10 @@ class _LoginState extends State<Login> {
                               borderSide: BorderSide(width: 1.5, color: Colors.red), // Same as error border for consistency
                               borderRadius: BorderRadius.all(Radius.circular(36)),
                             ),
+                            disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
+                                borderRadius: BorderRadius.all(Radius.circular(36))
+                            ),
           
                             contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           ),
@@ -142,6 +147,7 @@ class _LoginState extends State<Login> {
                         width: 320,
                         //height: 48,
                         child: TextFormField(
+                          enabled: !loading,
                           validator: (password){
                             if(password == ""){
                               return "Please enter a password";
@@ -181,6 +187,10 @@ class _LoginState extends State<Login> {
                               focusedErrorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(width: 1.5, color: Colors.red), // Same as error border for consistency
                                 borderRadius: BorderRadius.all(Radius.circular(36)),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
+                                  borderRadius: BorderRadius.all(Radius.circular(36))
                               ),
                               contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                               errorText: wrongInformationError.isNotEmpty ? wrongInformationError : null
@@ -244,7 +254,7 @@ class _LoginState extends State<Login> {
           width: 327,
           height: 56,
           child: MaterialButton(
-            onPressed: () async{
+            onPressed: (loading) ? null : () async{
               if(_formKey.currentState!.validate()){
                 try{
                   setState(() {
@@ -258,7 +268,7 @@ class _LoginState extends State<Login> {
                     wrongInformationError = "";
                     loading = false;
                   });
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 0)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(/*page: 0*/)));
                 }
                 on DioException catch (e){
                   setState(() {
@@ -288,11 +298,15 @@ class _LoginState extends State<Login> {
                 }
               }
             },
-            child: (loading) ? CircularProgressIndicator() :
+            child: (loading) ? CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+            ) :
             Text("Login", style: GoogleFonts.plusJakartaSans(
                 textStyle: TextStyle(fontSize: 18, color:  Colors.white, fontWeight: FontWeight.bold)
             ),),
             color: Color(0xFF09635F),
+            disabledColor: Color(0xFF09635F),
+            disabledTextColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(32),
             ),
