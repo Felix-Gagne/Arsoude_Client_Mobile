@@ -34,3 +34,39 @@ class LoginDTO{
 
   Map<String, dynamic> toJson() => _$LoginDTOToJson(this);
 }
+
+@JsonSerializable()
+class Randonne{
+
+  Randonne();
+
+  String name ="";
+  String description = "";
+  String location ="";
+  int type = 0;
+  String imageUrl="";
+  Coordinates startingCoordinates = new Coordinates();
+  Coordinates endingCoordinates = new Coordinates();
+
+  factory Randonne.fromJson(Map<String, dynamic> json) => _$RandonneFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RandonneToJson(this);
+}
+
+
+
+
+
+@JsonSerializable()
+class Coordinates{
+
+  Coordinates();
+
+  double x = 0;
+  double y = 0;
+
+  factory Coordinates.fromJson(Map<String, dynamic> json) => _$CoordinatesFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CoordinatesToJson(this);
+
+}

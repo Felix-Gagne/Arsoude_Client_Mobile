@@ -2,28 +2,29 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/Http/Models.dart';
 import 'package:untitled/Views/Accueil.dart';
+import 'package:untitled/Views/navBar.dart';
 
 import '../Http/HttpService.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class Login extends StatefulWidget {
+  const Login({super.key});
 
 
-  final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<Login> createState() => _LoginState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LoginState extends State<Login> {
 
   final password = TextEditingController();
   final email = TextEditingController();
   String wrongInformationError = "";
   bool showPassword = false;
+  bool loading = false;
 
   LoginDTO loginInfo = new LoginDTO();
 
@@ -246,16 +247,23 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () async{
               if(_formKey.currentState!.validate()){
                 try{
+                  setState(() {
+                    loading = true;
+                  });
                   loginInfo.password = password.value.text;
                   loginInfo.username = email.value.text;
                   var request = await login(loginInfo);
                   print("Ca marche");
                   setState(() {
-                    wrongInformationError = ""; // Clear error text on successful login
+                    wrongInformationError = "";
+                    loading = false;
                   });
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 0)));
                 }
                 on DioException catch (e){
+                  setState(() {
+                    loading = false;
+                  });
                   var errorMessage;
                   if(e.response != null){
                     if(e.response!.data["message"] == "Le mot de passe ou le nom d'utilisateur ne correspond pas."){
@@ -280,7 +288,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 }
               }
             },
-            child: Text("Login", style: GoogleFonts.plusJakartaSans(
+            child: (loading) ? CircularProgressIndicator() :
+            Text("Login", style: GoogleFonts.plusJakartaSans(
                 textStyle: TextStyle(fontSize: 18, color:  Colors.white, fontWeight: FontWeight.bold)
             ),),
             color: Color(0xFF09635F),
