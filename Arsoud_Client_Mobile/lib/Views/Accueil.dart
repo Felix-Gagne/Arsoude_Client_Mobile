@@ -1,227 +1,264 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/Http/Models.dart';
 
 import '../Http/HttpService.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-
-  final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
+  final searchController = SearchController();
+  List<Randonne> listTrails = [];
 
-  final password = TextEditingController();
-  final email = TextEditingController();
-  bool showPassword = false;
-
-  LoginDTO loginInfo = new LoginDTO();
-
-
-
-
-  @override
-  void initState(){
-    setState(() {
-    });
+  Future<List<Randonne>> refresh() async {
+    listTrails = await getTrailListUser();
+    return listTrails;
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body:
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //Login title and button
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 30, 0, 0),
-                child: Row(
-                  children: [
-                    IconButton(onPressed: (){
-
-                    }, icon: Icon(Icons.arrow_back_ios, color: Colors.black.withOpacity(0.5),), style: ButtonStyle(),),
-                    SizedBox(width: 12,),
-                    Text("Login", style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-                    ), )
-                  ],
-                ),
-              ),
-              //Login Welcom title
-              Container(
-                padding: EdgeInsets.fromLTRB(24, 35, 168, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Welcome Back", style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SearchBar(),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 25, 0, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Vos randonnées',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500,
                     ),
-                    SizedBox(height: 20,),
-                    Text("Sign in to your account", style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(
-                            0xFFC1C1C2))),)
-                  ],
-                ),
-              ),
-              SizedBox(height: 36,),
-              //connexion information
-              Padding(
-                  padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Email Address", style:  GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(fontSize: 14, color:  Color(0xFF868687), fontWeight: FontWeight.w500)
-                      ),),
-                      SizedBox(height: 16,),
-                      //Email
-                      SizedBox(
-                        width: 320,
-                        height: 48,
-                        child: TextField(
-                          controller: email,
-                          textAlignVertical: TextAlignVertical.center,
-                          textAlign: TextAlign.start,
-                          decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
-                                borderRadius: BorderRadius.all(Radius.circular(36))
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1.5, color: Color(0xFF797575)),
-                                borderRadius: BorderRadius.all(Radius.circular(36))
-                            ),
-                              contentPadding: EdgeInsets.all(10)
-
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 24,),
-                      Text("Password", style:  GoogleFonts.plusJakartaSans(
-                          textStyle: TextStyle(fontSize: 14, color:  Color(0xFF868687), fontWeight: FontWeight.w500)
-                      )),
-                      SizedBox(height: 16,),
-                      //Password
-                      SizedBox(
-                        width: 320,
-                        height: 48,
-                        child: TextField(
-                          obscureText: showPassword,
-                          controller: password,
-                          textAlignVertical: TextAlignVertical.top,
-                          textAlign: TextAlign.start,
-                          decoration: InputDecoration(
-
-                            suffixIcon: IconButton(
-                                icon: Icon(
-                                    (showPassword ) ? Icons.visibility : Icons.visibility_off
-                                ),
-                                onPressed: (){
-                                  showPassword = !showPassword;
-                                  setState(() {
-
-                                  });
-                                },
-                            ),
-
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
-                                borderRadius: BorderRadius.all(Radius.circular(36))
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1.5, color: Color(0xFF797575)),
-                                borderRadius: BorderRadius.all(Radius.circular(36))
-                            ),
-                              contentPadding: EdgeInsets.all(10)
-                          ),
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done,
-
-                        ),
-                      ),
-                    ],
                   ),
-              ),
-              //Forgot button
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 35, 0),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                      onPressed: (){},
-                      child: Text("Forgot password?", style: GoogleFonts.plusJakartaSans(
-                          textStyle: TextStyle(fontSize: 14, color:  Color(
-                              0xFF09635F), fontWeight: FontWeight.bold)
-                      ),)
-                  ),
-                ),
-              ),
-              //Login button
-              LoginButton(),
-              //Sign up section
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Don't have an account?", style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(
-                            fontSize: 14, color:  Color(0xFF878788), fontWeight: FontWeight.w500
-                        ))),
-                    TextButton(
-                        onPressed: (){},
-                        child: Text("Sign up",style: GoogleFonts.plusJakartaSans(
-                            textStyle: TextStyle(
-                                fontSize: 14, color:  Color(0xFF09635F), fontWeight: FontWeight.bold
-                            ))))
-                  ],
-                ),
-              )
-            ],
-          )
-    );
-  }
-
-  Padding LoginButton() {
-    return Padding(
-              padding: const EdgeInsets.fromLTRB(0, 26, 0, 0),
-              child: Align(
-                alignment: Alignment.center,
-                child: SizedBox(
-                  width: 327,
-                  height: 56,
-                  child: MaterialButton(
-                    onPressed: () async{
-                      try{
-                        loginInfo.password = password.value.text;
-                        loginInfo.username = email.value.text;
-                        var request = await login(loginInfo);
-                        print("Ca marche");
+                  SizedBox(height: 25,),
+                  FutureBuilder<List<Randonne>>(
+                    future: refresh(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return SizedBox(
+                          width: 400,
+                          child: Text(
+                            "Nous rencontrons un probleme avec le serveur actuellement veuillez revenir plus tard.",
+                              style: GoogleFonts.plusJakartaSans(
+                                  textStyle: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16
+                                  )
+                              )
+                          ),
+                        );
+                      } else if(listTrails.length == 0){
+                        return SizedBox(
+                          width: 400,
+                          child: Text("Vous n'avez crée aucune randonnée jusqu\'à aujourd\'hui. Afin de continuer \ndans cette section veuillez \ncrée une randonnée.",
+                            style: GoogleFonts.plusJakartaSans(
+                              textStyle: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16
+                              )
+                          ),),
+                        );
                       }
-                      catch (e){
-                        throw (e);
+                      else {
+                        return Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            itemCount: listTrails.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Randonne randonne = listTrails[index];
+                              var typeTrail;
+                              var icon;
+                              if(randonne.type ==1){
+                                typeTrail = "Vélo";
+                                 icon = IconData(0xe1e1, fontFamily: 'MaterialIcons');
+                              }
+                              else{
+                                typeTrail = "Pieds";
+                                icon = IconData(0xe1d2, fontFamily: 'MaterialIcons');
+                              }
+                              return Container(
+                                padding: const EdgeInsets.fromLTRB(5, 0, 5, 25),
+                                child: Row(
+                                  children: [
+
+                                    Container(
+                                      height: 100,
+                                      width: 160,
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.7),
+                                            spreadRadius: 0.5,
+                                            blurRadius: 10,
+                                            offset: Offset(7, 10), // changes the position of the shadow
+                                          ),
+                                        ],
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(7),
+                                        child: (randonne.imageUrl != "")
+                                            ? Image.network(
+                                          randonne.imageUrl,
+                                          fit: BoxFit.cover,
+                                          width: 160, // Ensure consistent width
+                                          height: 100, // Ensure consistent height
+                                        )
+                                            : Image.asset(
+                                          "assets/Images/imagePlaceholder.jpg",
+                                          fit: BoxFit.cover,
+                                          width: 160, // Ensure consistent width
+                                          height: 100, // Ensure consistent height
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0,),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            width: 140,
+                                            child: Text(
+                                              randonne.name,
+                                              style:
+                                              GoogleFonts.plusJakartaSans(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Container(
+                                            width: 160,
+                                            child: Text(
+                                              randonne.description,
+                                              style:
+                                              GoogleFonts.plusJakartaSans(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 8),
+                                          Container(
+                                            width: 180,
+                                            child: Row(
+                                              children: [
+                                                Text(typeTrail, style:
+                                                GoogleFonts.plusJakartaSans(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),),
+                                                SizedBox(width: 5,),
+                                                Icon(icon),
+                                                Text(" -  Distance : 16km", style:
+                                                GoogleFonts.plusJakartaSans(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),)
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        );
                       }
                     },
-                    child: Text("Login", style: GoogleFonts.plusJakartaSans(
-                      textStyle: TextStyle(fontSize: 18, color:  Colors.white, fontWeight: FontWeight.bold)
-                    ),),
-                    color: Color(0xFF09635F),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
                   ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Search bar
+        Container(
+          height: 50,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 3,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              )
+            ],
+            borderRadius: BorderRadius.circular(36),
+          ),
+          margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
+          child: TextField(
+            textAlign: TextAlign.left,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              hintText: 'Chercher une randonnée',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(36),
+                borderSide: BorderSide(color: Colors.black, width: 0.5),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(36),
+                borderSide: BorderSide(color: Colors.black, width: 0.5),
+              ),
+              //Icon
+              prefixIcon: Container(
+                margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                child: Image.asset(
+                  'assets/Images/logoSearch.png',
+                  height: 20,
+                  width: 20,
+                  scale: 0.9,
                 ),
               ),
-            );
+              suffixIcon: Container(
+                width: 55,
+                margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(Icons.filter_alt_outlined),
+                    SizedBox(width: 5),
+                    CircleAvatar(
+                      radius: 12,
+                      child: Text('-', textAlign: TextAlign.center),
+                    ),
+                  ],
+                ),
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

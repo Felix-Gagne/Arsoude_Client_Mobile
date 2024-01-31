@@ -1,18 +1,24 @@
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
 
 import 'Models.dart';
 
-final dio = Dio();
+final dio = Dio(); // With default `Options`.
+
+void configureDio() {
+  // Set default configs
+  dio.options.baseUrl = 'http://10.0.2.2:5050/api';
+  dio.options.connectTimeout = Duration(seconds: 10);
+  dio.options.receiveTimeout = Duration(seconds: 10);
+}
+
 final storage = new Storage.FlutterSecureStorage();
 
 
 
 Future<HelloWorld> getHttp() async {
   try{
-
     //Il faudra changer l'adresse lors du deploiment du serveur
     final response = await dio.get('http://10.0.2.2:5050/api/User/GetWord');
     print(response);
@@ -27,7 +33,8 @@ Future<HelloWorld> getHttp() async {
 
 Future<bool> login(LoginDTO data) async{
   try{
-    var response = await dio.post("http://10.0.2.2:5050/api/User/Login", data: data, options: Options(
+    configureDio();
+    var response = await dio.post("/User/Login", data: data, options: Options(
         contentType: "application/json"
     ));
     print(response);
@@ -39,6 +46,29 @@ Future<bool> login(LoginDTO data) async{
   catch (e){
     print(e);
     throw (e);
+  }
+}
+
+Future<List<Randonne>> getTrailListUser() async{
+  try{
+    String? token = await storage.read(key: 'jwt');
+
+    var response = await dio.get('/Trail/GetUserTrails', options: Options(
+      contentType: "application/json",
+      headers: {
+        "Authorization": "Bearer $token",
+      }
+    ));
+    print(response);
+    var listJson = response.data as List;
+    var listTrail = listJson.map((elementJson){
+      return Randonne.fromJson((elementJson));
+    }).toList();
+    return listTrail;
+  }
+  catch (e){
+      print(e);
+      throw e;
   }
 }
 
