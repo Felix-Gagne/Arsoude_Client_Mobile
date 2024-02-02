@@ -8,9 +8,10 @@ final dio = Dio(); // With default `Options`.
 
 void configureDio() {
   // Set default configs
+  //dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
   dio.options.baseUrl = 'http://10.0.2.2:5050/api';
-  dio.options.connectTimeout = Duration(seconds: 10);
-  dio.options.receiveTimeout = Duration(seconds: 10);
+  dio.options.connectTimeout = Duration(seconds: 30);
+  dio.options.receiveTimeout = Duration(seconds: 30);
 }
 
 final storage = new Storage.FlutterSecureStorage();

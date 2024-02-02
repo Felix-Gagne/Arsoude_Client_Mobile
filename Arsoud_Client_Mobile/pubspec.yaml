@@ -44,6 +44,7 @@ dependencies:
   cloud_firestore: ^4.15.0
   firebase_auth: ^4.17.0
   firebase_storage: ^11.6.1
+  location_distance_calculator: ^0.0.5
 
 dev_dependencies:
   flutter_test:

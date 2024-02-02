@@ -47,6 +47,7 @@ class _LoginState extends State<Login> {
         SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               //Login title and button
               Container(
@@ -54,7 +55,7 @@ class _LoginState extends State<Login> {
                 child: Row(
                   children: [
                     IconButton(onPressed: (){
-          
+
                     }, icon: Icon(Icons.arrow_back_ios, color: Colors.black.withOpacity(0.5),), style: ButtonStyle(),),
                     SizedBox(width: 12,),
                     Text("Login", style: GoogleFonts.plusJakartaSans(
@@ -84,7 +85,7 @@ class _LoginState extends State<Login> {
               Form(
                 key: _formKey,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(24, 0, 0, 0),
+                  padding: EdgeInsets.fromLTRB(24, 0, 40, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -107,7 +108,7 @@ class _LoginState extends State<Login> {
                             }
                           },
                           controller: email,
-          
+
                           textAlignVertical: TextAlignVertical.center,
                           textAlign: TextAlign.start,
                           decoration: const InputDecoration(
@@ -131,10 +132,10 @@ class _LoginState extends State<Login> {
                                 borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
                                 borderRadius: BorderRadius.all(Radius.circular(36))
                             ),
-          
+
                             contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           ),
-          
+
                         ),
                       ),
                       SizedBox(height: 24,),
@@ -159,19 +160,19 @@ class _LoginState extends State<Login> {
                           textAlignVertical: TextAlignVertical.center,
                           textAlign: TextAlign.start,
                           decoration: InputDecoration(
-          
+
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                    (showPassword ) ? Icons.visibility : Icons.visibility_off
+                                    (showPassword) ? Icons.visibility : Icons.visibility_off
                                 ),
                                 onPressed: (){
                                   showPassword = !showPassword;
                                   setState(() {
-          
+
                                   });
                                 },
                               ),
-          
+
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
                                   borderRadius: BorderRadius.all(Radius.circular(36))
@@ -200,24 +201,25 @@ class _LoginState extends State<Login> {
                           onChanged: (text) => setState(() => {}),
                         ),
                       ),
+                       Column(
+                         crossAxisAlignment: CrossAxisAlignment.end,
+                         children: [
+                           TextButton(
+                                  onPressed: (){},
+                                  child: Text("Forgot password?", style: GoogleFonts.plusJakartaSans(
+                                      textStyle: TextStyle(fontSize: 14, color:  Color(
+                                          0xFF09635F), fontWeight: FontWeight.bold)
+                                  ),)
+                              ),
+                         ],
+                       ),
+
                     ],
                   ),
                 ),
               ),
               //Forgot button
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 35, 0),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                      onPressed: (){},
-                      child: Text("Forgot password?", style: GoogleFonts.plusJakartaSans(
-                          textStyle: TextStyle(fontSize: 14, color:  Color(
-                              0xFF09635F), fontWeight: FontWeight.bold)
-                      ),)
-                  ),
-                ),
-              ),
+
               //Login button
               LoginButton(),
               //Sign up section
