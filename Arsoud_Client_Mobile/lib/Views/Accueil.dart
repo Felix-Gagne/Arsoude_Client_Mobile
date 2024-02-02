@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/Http/Models.dart';
+import 'package:location_distance_calculator/location_distance_calculator.dart';
 
 import '../Http/HttpService.dart';
 
@@ -14,11 +15,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final searchController = SearchController();
   List<Randonne> listTrails = [];
+  var distance;
 
   Future<List<Randonne>> refresh() async {
     listTrails = await getTrailListUser();
     return listTrails;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +84,14 @@ class _HomePageState extends State<HomePage> {
                               Randonne randonne = listTrails[index];
                               var typeTrail;
                               var icon;
-                              if(randonne.type ==1){
+                              if(randonne.type == 1){
                                 typeTrail = "Vélo";
-                                 icon = IconData(0xe1e1, fontFamily: 'MaterialIcons');
+                                icon = IconData(0xe1d2, fontFamily: 'MaterialIcons');
+
                               }
                               else{
                                 typeTrail = "Pieds";
-                                icon = IconData(0xe1d2, fontFamily: 'MaterialIcons');
+                                icon = IconData(0xe1e1, fontFamily: 'MaterialIcons');
                               }
                               return Container(
                                 padding: const EdgeInsets.fromLTRB(5, 0, 5, 25),
@@ -145,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                                           Container(
                                             width: 160,
                                             child: Text(
-                                              randonne.description,
+                                              randonne.location,
                                               style:
                                               GoogleFonts.plusJakartaSans(
                                                 fontSize: 12,
@@ -198,67 +202,70 @@ class _HomePageState extends State<HomePage> {
 class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Search bar
-        Container(
-          height: 50,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
-              )
-            ],
-            borderRadius: BorderRadius.circular(36),
-          ),
-          margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
-          child: TextField(
-            textAlign: TextAlign.left,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              hintText: 'Chercher une randonnée',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(36),
-                borderSide: BorderSide(color: Colors.black, width: 0.5),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(36),
-                borderSide: BorderSide(color: Colors.black, width: 0.5),
-              ),
-              //Icon
-              prefixIcon: Container(
-                margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                child: Image.asset(
-                  'assets/Images/logoSearch.png',
-                  height: 20,
-                  width: 20,
-                  scale: 0.9,
+    return Padding(
+      padding: EdgeInsets.fromLTRB(15, 25, 15, 10),
+      child: Column(
+        children: [
+          // Search bar
+          Container(
+            height: 50,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                )
+              ],
+              borderRadius: BorderRadius.circular(36),
+            ),
+            margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
+            child: TextField(
+              textAlign: TextAlign.left,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Chercher une randonnée',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(36),
+                  borderSide: BorderSide(color: Colors.black, width: 0.5),
                 ),
-              ),
-              suffixIcon: Container(
-                width: 55,
-                margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Icon(Icons.filter_alt_outlined),
-                    SizedBox(width: 5),
-                    CircleAvatar(
-                      radius: 12,
-                      child: Text('-', textAlign: TextAlign.center),
-                    ),
-                  ],
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(36),
+                  borderSide: BorderSide(color: Colors.black, width: 0.5),
                 ),
+                //Icon
+                prefixIcon: Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                  child: Image.asset(
+                    'assets/Images/logoSearch.png',
+                    height: 20,
+                    width: 20,
+                    scale: 0.9,
+                  ),
+                ),
+                suffixIcon: Container(
+                  width: 55,
+                  margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(Icons.filter_alt_outlined),
+                      SizedBox(width: 5),
+                      CircleAvatar(
+                        radius: 12,
+                        child: Text('-', textAlign: TextAlign.center),
+                      ),
+                    ],
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               ),
-              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

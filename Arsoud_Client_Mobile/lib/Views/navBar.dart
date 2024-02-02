@@ -39,7 +39,7 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
     //// use "MotionTabBarController" to replace with "TabController", if you need to programmatically change the tab
     _motionTabBarController = MotionTabBarController(
       //initialIndex: widget.page,
-      initialIndex: 0,
+      initialIndex: 1,
       length: 5,
       vsync: this,
     );
@@ -65,6 +65,10 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
         controller: _motionTabBarController,
         children: <Widget>[
           HomePage(),
+          HomePage(),
+          HomePage(),
+          HomePage(),
+          Login(),
         ],
       ),
       bottomNavigationBar: MotionTabBar(

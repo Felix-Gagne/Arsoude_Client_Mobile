@@ -40,6 +40,11 @@ dependencies:
   google_fonts:
   flutter_secure_storage: ^4.2.1
   font_awesome_flutter: ^10.7.0
+  firebase_core: ^2.25.0
+  cloud_firestore: ^4.15.0
+  firebase_auth: ^4.17.0
+  firebase_storage: ^11.6.1
+  location_distance_calculator: ^0.0.5
 
 dev_dependencies:
   flutter_test:
