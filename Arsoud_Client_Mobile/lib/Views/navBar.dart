@@ -7,6 +7,7 @@ import 'package:motion_tab_bar_v2/motion-badge.widget.dart';
 // optional, only if using "MotionTabBarController" to programmatically change the tab
 import 'package:motion_tab_bar_v2/motion-tab-controller.dart';
 import 'package:untitled/Views/Accueil.dart';
+import 'package:untitled/Views/Suivi.dart';
 
 import 'Login.dart';
 
@@ -67,7 +68,7 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
           HomePage(),
           HomePage(),
           HomePage(),
-          HomePage(),
+          SuiviPage(),
           Login(),
         ],
       ),

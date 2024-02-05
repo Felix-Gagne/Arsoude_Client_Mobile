@@ -6,6 +6,9 @@
       <excludeFolder url="file://$MODULE_DIR$/Arsoude/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/Arsoude/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/Arsoude/build" />
+      <excludeFolder url="file://$MODULE_DIR$/Arsoud_Client_Mobile/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/Arsoud_Client_Mobile/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/Arsoud_Client_Mobile/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

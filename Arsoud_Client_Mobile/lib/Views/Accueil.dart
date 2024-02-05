@@ -22,7 +22,6 @@ class _HomePageState extends State<HomePage> {
     return listTrails;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
