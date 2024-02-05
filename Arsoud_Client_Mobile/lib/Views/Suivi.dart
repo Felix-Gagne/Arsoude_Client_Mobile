@@ -7,7 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/GeoService.dart';
 import 'package:untitled/Http/HttpService.dart';
 import 'package:untitled/Http/Models.dart';
-import 'package:untitled/Views/MapSuivi.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import '../Http/LocationService.dart';
 import '../Models/Position.dart';
