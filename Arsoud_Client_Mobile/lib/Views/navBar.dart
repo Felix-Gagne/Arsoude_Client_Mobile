@@ -12,9 +12,9 @@ import 'package:untitled/Views/Suivi.dart';
 import 'Login.dart';
 
 class navBar extends StatefulWidget {
-  const navBar({super.key, /*required this.page*/});
+  const navBar({super.key, required this.page});
 
-  //final int page;
+  final int page;
 
   @override
   State<navBar> createState() => _navBarState();

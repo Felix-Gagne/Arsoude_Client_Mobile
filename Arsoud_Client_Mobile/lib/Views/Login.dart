@@ -270,7 +270,7 @@ class _LoginState extends State<Login> {
                     wrongInformationError = "";
                     loading = false;
                   });
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(/*page: 0*/)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 0)));
                 }
                 on DioException catch (e){
                   setState(() {
