@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/GeoService.dart';
+import 'package:untitled/Http/HttpService.dart';
+import 'package:untitled/Http/Models.dart';
 import 'package:untitled/Views/MapSuivi.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import '../Http/LocationService.dart';
@@ -13,10 +15,13 @@ import '../Models/Position.dart';
 class SuiviPage extends StatefulWidget{
   final FloatingActionButtonLocation fabLocation;
   final NotchedShape? shape;
+  final Randonne randonne;
+
 
   const SuiviPage({
     this.fabLocation = FloatingActionButtonLocation.endDocked,
     this.shape = const CircularNotchedRectangle(),
+    required this.randonne
   });
 
   @override
@@ -100,8 +105,17 @@ class _SuiviPageState extends State<SuiviPage>{
 
   stoplListening() {
     subscription!.cancel();
+    List<Coordinates> coordinatesList = [];
 
 
+    for(var marker in markers){
+      Coordinates coor = new Coordinates();
+      coor.x = marker.position.longitude;
+      coor.y = marker.position.latitude;
+      coordinatesList.add(coor);
+    }
+
+    addCoordinates(coordinatesList, widget.randonne.id);
 
   }
 

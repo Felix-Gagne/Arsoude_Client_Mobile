@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/Http/Models.dart';
+import 'package:untitled/Views/Suivi.dart';
 
 import 'navBar.dart';
 
@@ -249,8 +250,12 @@ class _DetailRanonneState extends State<DetailRanonne> {
                                 
                               ],
                             ),
-                            child: MaterialButton(onPressed: (){}, child: Text("Start", style: GoogleFonts.plusJakartaSans(
-                              textStyle: TextStyle(
+                            child: MaterialButton(
+                              onPressed: (){
+                                SuiviPage(randonne: widget.randonne);
+                              },
+                              child: Text("Start", style: GoogleFonts.plusJakartaSans(
+                                textStyle: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16

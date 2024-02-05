@@ -68,7 +68,7 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
           HomePage(),
           HomePage(),
           HomePage(),
-          SuiviPage(),
+          HomePage(),
           Login(),
         ],
       ),
