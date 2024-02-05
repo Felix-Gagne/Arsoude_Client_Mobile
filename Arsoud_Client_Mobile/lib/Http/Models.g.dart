@@ -24,6 +24,7 @@ Map<String, dynamic> _$LoginDTOToJson(LoginDTO instance) => <String, dynamic>{
     };
 
 Randonne _$RandonneFromJson(Map<String, dynamic> json) => Randonne()
+  ..id = json['id'] as int
   ..name = json['name'] as String
   ..description = json['description'] as String
   ..location = json['location'] as String
@@ -35,6 +36,7 @@ Randonne _$RandonneFromJson(Map<String, dynamic> json) => Randonne()
       Coordinates.fromJson(json['endingCoordinates'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$RandonneToJson(Randonne instance) => <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'description': instance.description,
       'location': instance.location,

@@ -7,13 +7,14 @@ import 'package:motion_tab_bar_v2/motion-badge.widget.dart';
 // optional, only if using "MotionTabBarController" to programmatically change the tab
 import 'package:motion_tab_bar_v2/motion-tab-controller.dart';
 import 'package:untitled/Views/Accueil.dart';
+import 'package:untitled/Views/Suivi.dart';
 
 import 'Login.dart';
 
 class navBar extends StatefulWidget {
-  const navBar({super.key, /*required this.page*/});
+  const navBar({super.key, required this.page});
 
-  //final int page;
+  final int page;
 
   @override
   State<navBar> createState() => _navBarState();

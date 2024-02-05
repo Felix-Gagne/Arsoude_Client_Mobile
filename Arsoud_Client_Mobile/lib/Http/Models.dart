@@ -39,7 +39,7 @@ class LoginDTO{
 class Randonne{
 
   Randonne();
-
+  int id = 0;
   String name ="";
   String description = "";
   String location ="";

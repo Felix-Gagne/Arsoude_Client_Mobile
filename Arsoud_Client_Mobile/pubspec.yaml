@@ -45,7 +45,9 @@ dependencies:
   firebase_auth: ^4.17.0
   firebase_storage: ^11.6.1
   location_distance_calculator: ^0.0.5
-
+  geolocator: ^10.1.0
+  google_maps_flutter: ^2.5.3
+  flutter_polyline_points: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
