@@ -85,8 +85,9 @@ class _DetailRanonneState extends State<DetailRanonne> {
         if (markers.length > 1) {
           for (var mark in markers) {
             polylineCoordinates.add(mark.position);
-            markers.remove(mark);
+
           }
+          markers.clear();
           addPolyLine();
         }
 
