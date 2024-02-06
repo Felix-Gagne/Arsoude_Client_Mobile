@@ -58,7 +58,8 @@ class _DetailRanonneState extends State<DetailRanonne> {
     Future<void> _showMapOverlay() async {
       Marker start = Marker(
         markerId: MarkerId("Start"),
-        position: LatLng(45.536447, -73.495223),
+        position: LatLng(widget.randonne.startingCoordinates.x,
+            widget.randonne.startingCoordinates.y),
       );
       Marker end = Marker(
         markerId: MarkerId("End"),
@@ -76,12 +77,15 @@ class _DetailRanonneState extends State<DetailRanonne> {
           markers.add(Marker(
             markerId: MarkerId("Waypoint"),
             position: LatLng(c.x, c.y),
+            visible: false,
+
           ));
         }
         markers.add(end);
         if (markers.length > 1) {
           for (var mark in markers) {
             polylineCoordinates.add(mark.position);
+            markers.remove(mark);
           }
           addPolyLine();
         }
