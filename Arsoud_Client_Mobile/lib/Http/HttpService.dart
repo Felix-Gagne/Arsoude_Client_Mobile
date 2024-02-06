@@ -29,6 +29,31 @@ import 'Models.dart';
     }
   }
 
+Future<List<Coordinates>> getCoordinates(int trailId) async {
+  try{
+    String? token = await storage.read(key: 'jwt');
+     List<Coordinates> result = [];
+    final response = await dio.get(dio.options.baseUrl + "/trail/GetTrailCoordinates/$trailId",options: Options(
+        contentType: "application/json",
+        headers: {
+          "Authorization": "Bearer $token",
+        }
+    ));
+    print(response);
+    for(var e in response.data)
+      {
+        result.add(Coordinates.fromJson(e));
+
+      }
+
+    return result ;
+  }
+  catch (e){
+    print(e);
+    throw(e);
+  }
+}
+
   Future<HelloWorld> getHttp() async {
     try{
       //Il faudra changer l'adresse lors du deploiment du serveur

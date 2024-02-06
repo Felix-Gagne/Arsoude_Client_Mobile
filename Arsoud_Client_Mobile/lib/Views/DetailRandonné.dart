@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/Models.dart';
 import 'package:untitled/Views/Suivi.dart';
 
+import '../Http/HttpService.dart';
 import 'navBar.dart';
 
 class DetailRanonne extends StatefulWidget {
@@ -16,25 +20,90 @@ class DetailRanonne extends StatefulWidget {
 }
 
 class _DetailRanonneState extends State<DetailRanonne> {
+  late GoogleMapController _mapController;
+  final Completer<GoogleMapController> completer = Completer();
+  List<Coordinates> coordonnees = [];
+  PolylinePoints polylinePoints = PolylinePoints();
+  List<LatLng> polylineCoordinates = [];
+  Map<PolylineId, Polyline> polylines = {};
   CameraPosition cem = CameraPosition(
     target: LatLng(45.536447 , -73.495223),
-    zoom: 16,
+    zoom: 13,
   );
+
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController = controller;
+    if (!completer.isCompleted) {
+      completer.complete(controller);
+    }
+  }
+
+
+  addPolyLine() {
+    PolylineId id = PolylineId("poly");
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: Colors.blue,
+      points: polylineCoordinates ,
+      width: 4,
+    );
+
+    polylines[id] = polyline;
+
+    setState(() {});
+  }
+
+
+    Future<void> _showMapOverlay() async {
+    Marker start = Marker(
+      markerId: MarkerId("Start"),
+      position: LatLng(45.536447 , -73.495223),
+    );
+    Marker end = Marker(
+      markerId: MarkerId("End"),
+      position: LatLng(widget.randonne.endingCoordinates.x, widget.randonne.endingCoordinates.y),
+    );
+   coordonnees = await getCoordinates(widget.randonne.id);
+    cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
+        zoom: 10
+    );
   void _showMapOverlay() {
+    markers.add(start);
+    for(var c in coordonnees)
+      {
+        markers.add(Marker(
+          markerId: MarkerId("Waypoint"),
+          position: LatLng(c.x, c.y),
+        ));
+      }
+    markers.add(end);
+    if(markers.length > 1){
+      for(var mark in markers){
+        polylineCoordinates.add(mark.position);
+      }
+      addPolyLine();
+    }
+
+
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
+
         // Replace this with your map overlay widget
         return Container(
           height: 10000, // Set the height of the overlay as needed
           color: Colors.white, // Background color of the overlay
           child: Center(
             child: GoogleMap(
-              mapType: MapType.satellite,
-              initialCameraPosition:cem ,
-
-
+              onMapCreated: _onMapCreated,
               myLocationEnabled: true,
+              mapType: MapType.terrain,
+              initialCameraPosition:cem,
+              markers: markers,
+              polylines: Set<Polyline>.of(polylines.values),
+
+
+
 
 
             ),
@@ -285,8 +354,8 @@ class _DetailRanonneState extends State<DetailRanonne> {
                             ),
                             child: MaterialButton(
                               onPressed: (){
-                                SuiviPage(randonne: widget.randonne);
-                              },
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => SuiviPage(randonne: widget.randonne,))
+                               ); },
                               child: Text("Start", style: GoogleFonts.plusJakartaSans(
                                 textStyle: TextStyle(
                                 color: Colors.white,
