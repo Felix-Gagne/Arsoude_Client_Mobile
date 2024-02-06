@@ -22,6 +22,7 @@ class DetailRanonne extends StatefulWidget {
 class _DetailRanonneState extends State<DetailRanonne> {
   late GoogleMapController _mapController;
   final Completer<GoogleMapController> completer = Completer();
+  Set<Marker> markers = Set();
   List<Coordinates> coordonnees = [];
   PolylinePoints polylinePoints = PolylinePoints();
   List<LatLng> polylineCoordinates = [];
@@ -55,63 +56,61 @@ class _DetailRanonneState extends State<DetailRanonne> {
 
 
     Future<void> _showMapOverlay() async {
-    Marker start = Marker(
-      markerId: MarkerId("Start"),
-      position: LatLng(45.536447 , -73.495223),
-    );
-    Marker end = Marker(
-      markerId: MarkerId("End"),
-      position: LatLng(widget.randonne.endingCoordinates.x, widget.randonne.endingCoordinates.y),
-    );
-   coordonnees = await getCoordinates(widget.randonne.id);
-    cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
-        zoom: 10
-    );
-  void _showMapOverlay() {
-    markers.add(start);
-    for(var c in coordonnees)
-      {
-        markers.add(Marker(
-          markerId: MarkerId("Waypoint"),
-          position: LatLng(c.x, c.y),
-        ));
-      }
-    markers.add(end);
-    if(markers.length > 1){
-      for(var mark in markers){
-        polylineCoordinates.add(mark.position);
-      }
-      addPolyLine();
-    }
+      Marker start = Marker(
+        markerId: MarkerId("Start"),
+        position: LatLng(45.536447, -73.495223),
+      );
+      Marker end = Marker(
+        markerId: MarkerId("End"),
+        position: LatLng(widget.randonne.endingCoordinates.x,
+            widget.randonne.endingCoordinates.y),
+      );
+      coordonnees = await getCoordinates(widget.randonne.id);
+      cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.x,
+          widget.randonne.startingCoordinates.y),
+          zoom: 10
+      );
+
+        markers.add(start);
+        for (var c in coordonnees) {
+          markers.add(Marker(
+            markerId: MarkerId("Waypoint"),
+            position: LatLng(c.x, c.y),
+          ));
+        }
+        markers.add(end);
+        if (markers.length > 1) {
+          for (var mark in markers) {
+            polylineCoordinates.add(mark.position);
+          }
+          addPolyLine();
+        }
 
 
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-
-        // Replace this with your map overlay widget
-        return Container(
-          height: 10000, // Set the height of the overlay as needed
-          color: Colors.white, // Background color of the overlay
-          child: Center(
-            child: GoogleMap(
-              onMapCreated: _onMapCreated,
-              myLocationEnabled: true,
-              mapType: MapType.terrain,
-              initialCameraPosition:cem,
-              markers: markers,
-              polylines: Set<Polyline>.of(polylines.values),
-
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            // Replace this with your map overlay widget
+            return Container(
+              height: 10000, // Set the height of the overlay as needed
+              color: Colors.white, // Background color of the overlay
+              child: Center(
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  myLocationEnabled: true,
+                  mapType: MapType.terrain,
+                  initialCameraPosition: cem,
+                  markers: markers,
+                  polylines: Set<Polyline>.of(polylines.values),
 
 
-
-
-            ),
-          ),
+                ),
+              ),
+            );
+          },
         );
-      },
-    );
-  }
+      }
+
 
   @override
   Widget build(BuildContext context) {
