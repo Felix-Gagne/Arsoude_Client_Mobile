@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/Models.dart';
 import 'package:untitled/Views/Suivi.dart';
 
+import '../Http/HttpService.dart';
 import 'navBar.dart';
 
 class DetailRanonne extends StatefulWidget {
@@ -15,7 +20,101 @@ class DetailRanonne extends StatefulWidget {
 }
 
 class _DetailRanonneState extends State<DetailRanonne> {
+  late GoogleMapController _mapController;
+  final Completer<GoogleMapController> completer = Completer();
+  Set<Marker> markers = Set();
+  List<Coordinates> coordonnees = [];
+  PolylinePoints polylinePoints = PolylinePoints();
+  List<LatLng> polylineCoordinates = [];
+  Map<PolylineId, Polyline> polylines = {};
+  CameraPosition cem = CameraPosition(
+    target: LatLng(45.536447 , -73.495223),
+    zoom: 13,
+  );
 
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController = controller;
+    if (!completer.isCompleted) {
+      completer.complete(controller);
+    }
+  }
+
+
+  addPolyLine() {
+    PolylineId id = PolylineId("poly");
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: Colors.blue,
+      points: polylineCoordinates ,
+      width: 4,
+    );
+
+    polylines[id] = polyline;
+
+    setState(() {});
+  }
+
+
+    Future<void> _showMapOverlay() async {
+      Marker start = Marker(
+        markerId: MarkerId("Start"),
+        position: LatLng(widget.randonne.startingCoordinates.x,
+            widget.randonne.startingCoordinates.y),
+      );
+      Marker end = Marker(
+        markerId: MarkerId("End"),
+        position: LatLng(widget.randonne.endingCoordinates.x,
+            widget.randonne.endingCoordinates.y),
+      );
+      coordonnees = await getCoordinates(widget.randonne.id);
+      cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.x,
+          widget.randonne.startingCoordinates.y),
+          zoom: 10
+      );
+
+        markers.add(start);
+        for (var c in coordonnees) {
+          markers.add(Marker(
+            markerId: MarkerId("Waypoint"),
+            position: LatLng(c.x, c.y),
+            visible: false,
+
+          ));
+        }
+        markers.add(end);
+        if (markers.length > 1) {
+          for (var mark in markers) {
+            polylineCoordinates.add(mark.position);
+
+          }
+          markers.clear();
+          addPolyLine();
+        }
+
+
+        showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            // Replace this with your map overlay widget
+            return Container(
+              height: 10000, // Set the height of the overlay as needed
+              color: Colors.white, // Background color of the overlay
+              child: Center(
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  myLocationEnabled: true,
+                  mapType: MapType.terrain,
+                  initialCameraPosition: cem,
+                  markers: markers,
+                  polylines: Set<Polyline>.of(polylines.values),
+
+
+                ),
+              ),
+            );
+          },
+        );
+      }
 
 
   @override
@@ -27,6 +126,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
       body: Column(
         children: [
           Expanded(
+
             child: Stack(
               children: [
                 Stack(
@@ -52,25 +152,32 @@ class _DetailRanonneState extends State<DetailRanonne> {
                       ),
                     ),
                     //Map icon
+
                     Positioned(
                       bottom: 0,
                       right: 0,
-                      child: Container(
-                        margin: EdgeInsets.all(14),
-                        width: width * 0.15,
-                        height: height * 0.07,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
+                      child: GestureDetector(
+                        onTap: () {
+                          _showMapOverlay();
+                        },
+                        child: Container(
+                            margin: EdgeInsets.all(14),
+                            width: width * 0.15,
+                            height: height * 0.07,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                          ),
                       ),
-                    ),
+                      ),
+
                     Positioned(top:10, left: 10, child: IconButton(onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 0)));
                     }, icon: Icon(Icons.arrow_back, color: Colors.white, size: 30,),)),
                   ],
                 ),
-                //name randonné
+
                 Positioned(
                   top: 227,
                   child: Container(
@@ -99,8 +206,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
-                    child: Positioned(
-                      child: Column(
+                    child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -206,7 +312,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                       ),
                     ),
                   ),
-                ),
+
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
@@ -252,8 +358,8 @@ class _DetailRanonneState extends State<DetailRanonne> {
                             ),
                             child: MaterialButton(
                               onPressed: (){
-                                SuiviPage(randonne: widget.randonne);
-                              },
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => SuiviPage(randonne: widget.randonne,))
+                               ); },
                               child: Text("Start", style: GoogleFonts.plusJakartaSans(
                                 textStyle: TextStyle(
                                 color: Colors.white,

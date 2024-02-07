@@ -48,6 +48,7 @@ class Randonne{
   Coordinates startingCoordinates = new Coordinates();
   Coordinates endingCoordinates = new Coordinates();
 
+
   factory Randonne.fromJson(Map<String, dynamic> json) => _$RandonneFromJson(json);
 
   Map<String, dynamic> toJson() => _$RandonneToJson(this);

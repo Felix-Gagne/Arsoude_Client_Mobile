@@ -7,7 +7,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/GeoService.dart';
 import 'package:untitled/Http/HttpService.dart';
 import 'package:untitled/Http/Models.dart';
-import 'package:untitled/Views/MapSuivi.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import '../Http/LocationService.dart';
 import '../Models/Position.dart';
@@ -44,14 +43,17 @@ class _SuiviPageState extends State<SuiviPage>{
 
   @override
   void initState(){
+
+    LocationService.requestPermission();
+
     setState(() {
       Marker start = Marker(
         markerId: MarkerId("Start"),
-        position: LatLng(45.536447 , -73.495223),
+        position: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
       );
       Marker end = Marker(
         markerId: MarkerId("End"),
-        position: LatLng(45.543589 , -73.491606),
+        position: LatLng(widget.randonne.endingCoordinates.x , widget.randonne.endingCoordinates.y),
       );
       markers.add(start);
       markers.add(end);
@@ -110,8 +112,8 @@ class _SuiviPageState extends State<SuiviPage>{
 
     for(var marker in markers){
       Coordinates coor = new Coordinates();
-      coor.x = marker.position.longitude;
-      coor.y = marker.position.latitude;
+      coor.x = marker.position.latitude;
+      coor.y = marker.position.longitude;
       coordinatesList.add(coor);
     }
 
@@ -187,7 +189,6 @@ class _SuiviPageState extends State<SuiviPage>{
         mapType: MapType.satellite,
         initialCameraPosition: cem,
         polylines: Set<Polyline>.of(polyliness.values),
-
         myLocationEnabled: true,
         markers: markers,
         onMapCreated: _onMapCreated,

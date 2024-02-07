@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
 
@@ -18,8 +20,14 @@ import 'Models.dart';
 
   Future<String> addCoordinates(List<Coordinates> coords, int trailId) async {
     try{
+      String? token = await storage.read(key: 'jwt');
       //Il faudra changer l'adresse lors du deploiment du serveur
-      final response = await dio.post(dio.options.baseUrl + "trail/addcoordinates/$trailId", data: coords);
+      List<Map<String, dynamic>> coordsJsonList = coords.map((coord) => coord.toJson()).toList();
+      final response = await dio.post(dio.options.baseUrl + "/trail/addCoordinates/$trailId", data: jsonEncode(coordsJsonList),options: Options(
+          contentType: "application/json",
+          headers: {
+            "Authorization": "Bearer $token",
+          }));
       print(response);
       return "Coordinates changed";
     }
@@ -28,6 +36,31 @@ import 'Models.dart';
       throw(e);
     }
   }
+
+Future<List<Coordinates>> getCoordinates(int trailId) async {
+  try{
+    String? token = await storage.read(key: 'jwt');
+     List<Coordinates> result = [];
+    final response = await dio.get(dio.options.baseUrl + "/trail/GetTrailCoordinates/$trailId",options: Options(
+        contentType: "application/json",
+        headers: {
+          "Authorization": "Bearer $token",
+        }
+    ));
+    print(response);
+    for(var e in response.data)
+      {
+        result.add(Coordinates.fromJson(e));
+
+      }
+
+    return result ;
+  }
+  catch (e){
+    print(e);
+    throw(e);
+  }
+}
 
   Future<HelloWorld> getHttp() async {
     try{
