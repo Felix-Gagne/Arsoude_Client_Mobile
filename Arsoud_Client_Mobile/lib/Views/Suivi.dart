@@ -8,6 +8,8 @@ import 'package:untitled/Http/GeoService.dart';
 import 'package:untitled/Http/HttpService.dart';
 import 'package:untitled/Http/Models.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:untitled/Views/Accueil.dart';
+import 'package:untitled/Views/navBar.dart';
 import '../Http/LocationService.dart';
 import '../Models/Position.dart';
 
@@ -34,19 +36,25 @@ class _SuiviPageState extends State<SuiviPage>{
   Set<Polyline> polylines = {};
   bool isVisible = false;
   late GoogleMapController _mapController;
-  LatLng startPosition = LatLng(45.536447 , -73.495223);
+
   LatLng endPosition = LatLng(45.543589 , -73.491606);
   Set<Marker> markers = Set();
   PolylinePoints polylinePoints = PolylinePoints();
   Map<PolylineId, Polyline> polyliness = {};
   List<LatLng> polylineCoordinates = [];
+   CameraPosition cem = new CameraPosition( target: LatLng(45.543589 , -73.491606) );
+  int seconds = 0;
+  late Timer _timer;
 
   @override
   void initState(){
 
     LocationService.requestPermission();
 
+
+
     setState(() {
+      cem = new CameraPosition(target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y), zoom: 14);
       Marker start = Marker(
         markerId: MarkerId("Start"),
         position: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
@@ -60,12 +68,14 @@ class _SuiviPageState extends State<SuiviPage>{
     });
   }
 
-  CameraPosition cem = CameraPosition(
-    target: LatLng(45.536447 , -73.495223),
-    zoom: 16,
-  );
+
 
   startListening() async {
+    cem = CameraPosition(
+      target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
+      zoom: 16,
+    );
+
     Position currentPosition = await LocationService.getCurrentPosition();
     bool serviceEnabled;
     LocationPermission permission;
@@ -103,6 +113,8 @@ class _SuiviPageState extends State<SuiviPage>{
       lastPosition = LatLng(position!.latitude, position!.longitude);
       createPolyline(lastPosition!);
     });
+    startTimer();
+
   }
 
   stoplListening() {
@@ -118,6 +130,7 @@ class _SuiviPageState extends State<SuiviPage>{
     }
 
     addCoordinates(coordinatesList, widget.randonne.id);
+    stopTimer();
 
   }
 
@@ -146,14 +159,14 @@ class _SuiviPageState extends State<SuiviPage>{
 
   void moveToStartMarker() {
     _mapController.animateCamera(
-      CameraUpdate.newLatLngZoom(startPosition, 20.0),
+      CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.x, widget.randonne.startingCoordinates.y), 20.0),
     );
   }
   void makeLines() async {
     await polylinePoints
         .getRouteBetweenCoordinates(
       'AIzaSyDT0ddm46ekfRxxfYCWiyjrePEP5lWUXCk',
-      PointLatLng(startPosition.latitude, startPosition.longitude), //Starting LATLANG
+      PointLatLng(widget.randonne.startingCoordinates.x, widget.randonne.startingCoordinates.y), //Starting LATLANG
       PointLatLng(endPosition.latitude, endPosition.longitude), //End LATLANG
       travelMode: TravelMode.driving,
     ).then((value) {
@@ -176,6 +189,24 @@ class _SuiviPageState extends State<SuiviPage>{
     setState((){});
   }
 
+  void startTimer() {
+    _timer = Timer.periodic(Duration(microseconds: 1), (timer) {
+      setState(() {
+        seconds++;
+      });
+    });
+  }
+
+  void stopTimer() {
+    if (_timer.isActive) {
+      _timer.cancel();
+      setState(() {
+
+      });
+    }
+
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -184,62 +215,93 @@ class _SuiviPageState extends State<SuiviPage>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.satellite,
-        initialCameraPosition: cem,
-        polylines: Set<Polyline>.of(polyliness.values),
-        myLocationEnabled: true,
-        markers: markers,
-        onMapCreated: _onMapCreated,
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: CircleBorder(),
-        onPressed: () {
-          print('Floating button clicked!');
-        },
-        child: Icon(Icons.arrow_back, color: Colors.white,),
-        backgroundColor: Color(0xff09635f), // Customize the background color
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      bottomNavigationBar: BottomAppBar(
-        color:  Color(0xff09635f),
-        child: IconTheme(
-          data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                tooltip: 'Open navigation menu',
-                icon: const Icon(Icons.camera_alt, size: 40,),
-                onPressed: () {},
-              ),
-              IconButton(
-                tooltip: 'Start',
-                icon: Icon(Icons.play_arrow_sharp, size: 45,),
-                onPressed: () {
-                  setState(() {
+    return Center(
+      child: Scaffold(
+        body:  Column(
+            children: [
+              Expanded(
+                child: GoogleMap(
+                mapType: MapType.satellite,
+                initialCameraPosition: cem,
+                polylines: Set<Polyline>.of(polyliness.values),
+                myLocationEnabled: true,
+                markers: markers,
+                onMapCreated: _onMapCreated,
+              ),),
+              Container(
+                height: 50,
+                alignment: Alignment.center,
+                color:  Color(0xff09635f),
+                child: Text(
+                  ' ${Duration(milliseconds: 1 *seconds).toString()}',
+                  style: TextStyle(fontSize: 30, color: Colors.white),
+                ),
+              )
+            ],
+          ),
+
+        floatingActionButton: FloatingActionButton(
+          shape: CircleBorder(),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back, color: Colors.white,),
+          backgroundColor: Color(0xff09635f), // Customize the background color
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+
+        bottomNavigationBar: BottomAppBar(
+          color:  Color(0xff09635f),
+          elevation: 0,
+          child: IconTheme(
+            data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  tooltip: 'Open navigation menu',
+                  icon: const Icon(Icons.camera_alt, size: 40,),
+                  onPressed: () {},
+                ),
+                Container(
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.amber,),
+                  child:  !isVisible ? IconButton(
+                    tooltip: 'Start',
+                    icon: const FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Icon(Icons.play_arrow_sharp, size: 45,)
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        startTimer();
+                        isVisible = !isVisible;
+                        moveToStartMarker();
+                        startListening();
+                      });
+                    },
+                  )
+                      : IconButton(onPressed: () {
+                        stopTimer();
                     isVisible = !isVisible;
                     moveToStartMarker();
                     startListening();
-                  });
-                },
-
-              ),
-              Opacity(
-                opacity: isVisible ? 1.0 : 0.0,
-                child:  IconButton(
-                  tooltip: 'Favorite',
-                  icon: const Icon(Icons.stop_circle_rounded, size: 40,),
-                  onPressed: () {
-                    stoplListening();
-                    _mapController.animateCamera(
-                      CameraUpdate.newLatLngZoom(startPosition, 15.0),
-                    );
-                  },
+                  }, icon: Icon(Icons.pause, size: 45)),
                 ),
-              ),
-            ],
+                Opacity(
+                  opacity: isVisible ? 1.0 : 0.0,
+                  child:  IconButton(
+                    tooltip: 'Favorite',
+                    icon: const Icon(Icons.stop_circle_rounded, size: 40,),
+                    onPressed: () {
+                      stoplListening();
+                      _mapController.animateCamera(
+                        CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.x, widget.randonne.startingCoordinates.y), 15.0),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
