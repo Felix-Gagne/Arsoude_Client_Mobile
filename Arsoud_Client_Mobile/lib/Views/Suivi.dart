@@ -44,7 +44,7 @@ class _SuiviPageState extends State<SuiviPage>{
     LocationService.requestPermission();
 
     setState(() {
-      cem = new CameraPosition(target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y), zoom: 14);
+      cem = new CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude), zoom: 14);
       Marker start = Marker(
         markerId: MarkerId("Start"),
         position: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude),
@@ -91,7 +91,6 @@ class _SuiviPageState extends State<SuiviPage>{
     //Reçoit la position actuelle et l'ajoute dans la liste de coordonnées
     subscription = LocationService.getPositionStream().listen((Position? position) {
      _mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng( position!.latitude, position.longitude ), 20.0));
-     polylineCoordinates.add(LatLng( position.latitude, position.longitude ));
       positions.add(position);
       print(positions);
 
@@ -225,7 +224,6 @@ class _SuiviPageState extends State<SuiviPage>{
                     onPressed: () {
                       setState(() {
                         trailStarted = true;
-                        timerGo = true;
                         startTimer();
                         isVisible = !isVisible;
                         moveToStartMarker();

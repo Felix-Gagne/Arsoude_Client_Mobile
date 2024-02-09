@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       title: 'Flutter Demo',
-      home: new HomePage(),
+      home: new Login(),
 
 
     );

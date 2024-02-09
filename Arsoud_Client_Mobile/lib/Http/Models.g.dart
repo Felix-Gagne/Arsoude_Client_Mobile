@@ -47,11 +47,11 @@ Map<String, dynamic> _$RandonneToJson(Randonne instance) => <String, dynamic>{
     };
 
 Coordinates _$CoordinatesFromJson(Map<String, dynamic> json) => Coordinates()
-  ..x = (json['x'] as num).toDouble()
-  ..y = (json['y'] as num).toDouble();
+  ..latitude = (json['latitude'] as num).toDouble()
+  ..longitude = (json['longitude'] as num).toDouble();
 
 Map<String, dynamic> _$CoordinatesToJson(Coordinates instance) =>
     <String, dynamic>{
-      'x': instance.x,
-      'y': instance.y,
+      'latitude': instance.latitude,
+      'longitude': instance.longitude,
     };
