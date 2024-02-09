@@ -36,6 +36,7 @@ class _SuiviPageState extends State<SuiviPage>{
   Set<Marker> markers = Set();
   CameraPosition cem = new CameraPosition( target: LatLng(45.543589 , -73.491606) );
   int seconds = 0;
+  bool trailStarted = false;
   late Timer _timer;
 
   @override
@@ -43,17 +44,14 @@ class _SuiviPageState extends State<SuiviPage>{
     LocationService.requestPermission();
 
     setState(() {
-      //Initialise la position de la caméra lorsqu'on rentre sur la page
       cem = new CameraPosition(target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y), zoom: 14);
-
-      //Création des markers de début et de fin
       Marker start = Marker(
         markerId: MarkerId("Start"),
-        position: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
+        position: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude),
       );
       Marker end = Marker(
         markerId: MarkerId("End"),
-        position: LatLng(widget.randonne.endingCoordinates.x , widget.randonne.endingCoordinates.y),
+        position: LatLng(widget.randonne.endingCoordinates.latitude , widget.randonne.endingCoordinates.longitude),
       );
       markers.add(start);
       markers.add(end);
@@ -63,9 +61,8 @@ class _SuiviPageState extends State<SuiviPage>{
 
   //Commence la randonnée et le timer
   startListening() async {
-    //Set la position de la caméra au point de départ
     cem = CameraPosition(
-      target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
+      target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude),
       zoom: 16,
     );
 
@@ -93,10 +90,10 @@ class _SuiviPageState extends State<SuiviPage>{
 
     //Reçoit la position actuelle et l'ajoute dans la liste de coordonnées
     subscription = LocationService.getPositionStream().listen((Position? position) {
+     _mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng( position!.latitude, position.longitude ), 20.0));
+     polylineCoordinates.add(LatLng( position.latitude, position.longitude ));
       positions.add(position);
       print(positions);
-      setState(() {
-      });
 
       //Ajoute un marker dans la position courante de l'utilisateur
       Marker marker = Marker(
@@ -120,8 +117,8 @@ class _SuiviPageState extends State<SuiviPage>{
 
     for(var marker in markers){
       Coordinates coor = new Coordinates();
-      coor.x = marker.position.latitude;
-      coor.y = marker.position.longitude;
+      coor.latitude = marker.position.latitude;
+      coor.longitude = marker.position.longitude;
       coordinatesList.add(coor);
     }
 
@@ -133,13 +130,14 @@ class _SuiviPageState extends State<SuiviPage>{
   //Initialise le google map controller
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
+    _mapController.animateCamera(CameraUpdate.newLatLngZoom( lastPosition!, 14));
   }
-
-
+  
   //À chaque update de la position de l'utilisateur, la caméra se déplace
-  void moveToStartMarker() {
+  Future<void> moveToStartMarker() async {
+    Position position = await LocationService.getCurrentPosition();
     _mapController.animateCamera(
-      CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.x, widget.randonne.startingCoordinates.y), 20.0),
+      CameraUpdate.newLatLngZoom(LatLng( position.latitude, position.longitude ), 20.0),
     );
   }
 
@@ -160,6 +158,8 @@ class _SuiviPageState extends State<SuiviPage>{
       });
     }
   }
+
+
 
   @override
   void dispose() {
@@ -224,6 +224,8 @@ class _SuiviPageState extends State<SuiviPage>{
                     ),
                     onPressed: () {
                       setState(() {
+                        trailStarted = true;
+                        timerGo = true;
                         startTimer();
                         isVisible = !isVisible;
                         moveToStartMarker();
@@ -234,18 +236,22 @@ class _SuiviPageState extends State<SuiviPage>{
                     stopTimer();
                     isVisible = !isVisible;
                     moveToStartMarker();
-                    startListening();
+                    stoplListening();
+                    setState(() {
+
+                    });
                   }, icon: Icon(Icons.pause, size: 45)),
                 ),
                 Opacity(
-                  opacity: isVisible ? 1.0 : 0.0,
+                  opacity: trailStarted ? 1.0 : 0.0,
                   child:  IconButton(
                     tooltip: 'Favorite',
                     icon: const Icon(Icons.stop_circle_rounded, size: 40,),
                     onPressed: () {
                       stoplListening();
+                      trailStarted = false;
                       _mapController.animateCamera(
-                        CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.x, widget.randonne.startingCoordinates.y), 15.0),
+                        CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.latitude, widget.randonne.startingCoordinates.longitude), 15.0),
                       );
                     },
                   ),

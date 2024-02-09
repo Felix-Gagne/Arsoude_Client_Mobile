@@ -8,6 +8,7 @@ import 'package:untitled/Http/Models.dart';
 import 'package:untitled/Views/Suivi.dart';
 
 import '../Http/HttpService.dart';
+import '../generated/l10n.dart';
 import 'navBar.dart';
 
 class DetailRanonne extends StatefulWidget {
@@ -23,16 +24,21 @@ class _DetailRanonneState extends State<DetailRanonne> {
   late GoogleMapController _mapController;
   final Completer<GoogleMapController> completer = Completer();
   Set<Marker> markers = Set();
+  Set<Marker> SEMark = Set();
   List<Coordinates> coordonnees = [];
   PolylinePoints polylinePoints = PolylinePoints();
   List<LatLng> polylineCoordinates = [];
   Map<PolylineId, Polyline> polylines = {};
   CameraPosition cem = CameraPosition(
     target: LatLng(45.536447 , -73.495223),
-    zoom: 13,
+    zoom: 10,
   );
 
   void _onMapCreated(GoogleMapController controller) {
+    cem =  CameraPosition(
+      target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude),
+      zoom: 5,
+    );
     _mapController = controller;
     if (!completer.isCompleted) {
       completer.complete(controller);
@@ -40,12 +46,12 @@ class _DetailRanonneState extends State<DetailRanonne> {
   }
 
 
-  addPolyLine() {
-    PolylineId id = PolylineId("poly");
+  addPolyLine(List<LatLng> coords) {
+    PolylineId id = PolylineId(coords.first.longitude.toString());
     Polyline polyline = Polyline(
       polylineId: id,
       color: Colors.blue,
-      points: polylineCoordinates ,
+      points: coords ,
       width: 4,
     );
 
@@ -56,39 +62,54 @@ class _DetailRanonneState extends State<DetailRanonne> {
 
 
     Future<void> _showMapOverlay() async {
+
+    markers.clear();
+    polylineCoordinates.clear();
       Marker start = Marker(
         markerId: MarkerId("Start"),
-        position: LatLng(widget.randonne.startingCoordinates.x,
-            widget.randonne.startingCoordinates.y),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        position: LatLng(widget.randonne.startingCoordinates.latitude,
+            widget.randonne.startingCoordinates.longitude),
       );
       Marker end = Marker(
         markerId: MarkerId("End"),
-        position: LatLng(widget.randonne.endingCoordinates.x,
-            widget.randonne.endingCoordinates.y),
+        position: LatLng(widget.randonne.endingCoordinates.latitude,
+            widget.randonne.endingCoordinates.longitude),
       );
       coordonnees = await getCoordinates(widget.randonne.id);
-      cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.x,
-          widget.randonne.startingCoordinates.y),
+
+      cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude,
+          widget.randonne.startingCoordinates.longitude),
           zoom: 10
       );
 
-        markers.add(start);
+        SEMark.add(start);
+        SEMark.add(end);
+
         for (var c in coordonnees) {
           markers.add(Marker(
             markerId: MarkerId("Waypoint"),
-            position: LatLng(c.x, c.y),
+            position: LatLng(c.latitude, c.longitude),
             visible: false,
 
           ));
         }
-        markers.add(end);
+
         if (markers.length > 1) {
           for (var mark in markers) {
-            polylineCoordinates.add(mark.position);
+
+                polylineCoordinates.add(mark.position);
+
+
+
+
 
           }
+
+         await addPolyLine(polylineCoordinates);
           markers.clear();
-          addPolyLine();
+
+
         }
 
 
@@ -105,7 +126,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                   myLocationEnabled: true,
                   mapType: MapType.terrain,
                   initialCameraPosition: cem,
-                  markers: markers,
+                  markers: SEMark,
                   polylines: Set<Polyline>.of(polylines.values),
 
 
@@ -168,6 +189,27 @@ class _DetailRanonneState extends State<DetailRanonne> {
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
                             ),
+                          child: ClipRRect(
+                            borderRadius:BorderRadius.circular(10) ,
+                            child: GoogleMap(
+                              onMapCreated: _onMapCreated,
+                              mapType: MapType.terrain,
+                              initialCameraPosition: cem,
+                              markers: SEMark,
+                              polylines: Set<Polyline>.of(polylines.values),
+                              onTap: (LatLng lat) {
+                                print(lat);
+                                _showMapOverlay();
+                              },
+                              zoomControlsEnabled: false,
+                              zoomGesturesEnabled: false,
+                              mapToolbarEnabled: false,
+
+
+
+
+                            ),
+                          ),
                           ),
                       ),
                       ),
@@ -252,7 +294,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Location :",
+                                      S.of(context).location,
                                       style: GoogleFonts.plusJakartaSans(
                                         textStyle: TextStyle(
                                           fontSize: 16,
@@ -272,7 +314,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                                     Row(
                                       children: [
                                         Text(
-                                          "Type : ",
+                                          S.of(context).type,
                                           style: GoogleFonts.plusJakartaSans(
                                             textStyle: TextStyle(
                                               fontSize: 16,
@@ -334,7 +376,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
 
                               ],
                             ),
-                            child : MaterialButton(onPressed: (){}, child: Text("Get Directions", style: GoogleFonts.plusJakartaSans(
+                            child : MaterialButton(onPressed: (){}, child: Text(S.of(context).getDirections, style: GoogleFonts.plusJakartaSans(
                                 textStyle: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w600,
@@ -360,7 +402,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                               onPressed: (){
                                Navigator.push(context, MaterialPageRoute(builder: (context) => SuiviPage(randonne: widget.randonne,))
                                ); },
-                              child: Text("Start", style: GoogleFonts.plusJakartaSans(
+                              child: Text(S.of(context).start, style: GoogleFonts.plusJakartaSans(
                                 textStyle: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
