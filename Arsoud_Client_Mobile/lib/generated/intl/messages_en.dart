@@ -22,17 +22,40 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "PleaseCheck": MessageLookupByLibrary.simpleMessage(
+            "Please verify your password and your email address"),
+        "ReconectezInternetPourContinuer": MessageLookupByLibrary.simpleMessage(
+            "Please reconnect to the internet to continue."),
+        "VeuillezRessayerPlusTard": MessageLookupByLibrary.simpleMessage(
+            "Our servers are currently experiencing a problem. Please try again later."),
         "chercherUneRandonne":
-            MessageLookupByLibrary.simpleMessage("Chercher une randonnée"),
+            MessageLookupByLibrary.simpleMessage("Search for a hike"),
+        "distance": MessageLookupByLibrary.simpleMessage("- Distance:"),
+        "dontHaveAnAccount":
+            MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
+        "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
+        "forgotPassword":
+            MessageLookupByLibrary.simpleMessage("Forgot password?"),
         "getDirections": MessageLookupByLibrary.simpleMessage("Get Directions"),
-        "location": MessageLookupByLibrary.simpleMessage("Location :"),
+        "location": MessageLookupByLibrary.simpleMessage("Location:"),
+        "login": MessageLookupByLibrary.simpleMessage("Login"),
         "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir":
             MessageLookupByLibrary.simpleMessage(
-                "Nous rencontrons un probleme avec le serveur actuellement veuillez revenir plus tard."),
+                "We are currently experiencing an issue with the server. Please try again later."),
+        "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "pleaseEnterAEmail": MessageLookupByLibrary.simpleMessage(
+            "Please enter an email address"),
+        "pleaseEnterAPassword":
+            MessageLookupByLibrary.simpleMessage("Please enter a password"),
+        "signInToYourAccount":
+            MessageLookupByLibrary.simpleMessage("Sign in to your account"),
+        "signUp": MessageLookupByLibrary.simpleMessage("Sign up"),
         "start": MessageLookupByLibrary.simpleMessage("Start"),
-        "type": MessageLookupByLibrary.simpleMessage("Type :"),
-        "vosRandonnes": MessageLookupByLibrary.simpleMessage("Vos randonnées"),
+        "stop": MessageLookupByLibrary.simpleMessage("Stop"),
+        "type": MessageLookupByLibrary.simpleMessage("Type:"),
+        "vosRandonnes": MessageLookupByLibrary.simpleMessage("Your hikes"),
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
-            "Vous n\'avez crée aucune randonnée jusqu\'à aujourd\'hui. Afin de continuer dans cette section veuillez crée une randonnée.")
+            "You haven\'t created any hikes until today. To continue in this section, please create a hike."),
+        "welcomeBack": MessageLookupByLibrary.simpleMessage("Welcome Back")
       };
 }
