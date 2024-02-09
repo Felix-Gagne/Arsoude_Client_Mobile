@@ -18,13 +18,11 @@ class SuiviPage extends StatefulWidget{
   final NotchedShape? shape;
   final Randonne randonne;
 
-
   const SuiviPage({
     this.fabLocation = FloatingActionButtonLocation.endDocked,
     this.shape = const CircularNotchedRectangle(),
     required this.randonne
   });
-
   @override
   State<SuiviPage> createState() => _SuiviPageState();
 }
@@ -33,28 +31,22 @@ class _SuiviPageState extends State<SuiviPage>{
   StreamSubscription<Position>? subscription;
   List<Position?> positions = [];
   LatLng? lastPosition;
-  Set<Polyline> polylines = {};
   bool isVisible = false;
   late GoogleMapController _mapController;
-
-  LatLng endPosition = LatLng(45.543589 , -73.491606);
   Set<Marker> markers = Set();
-  PolylinePoints polylinePoints = PolylinePoints();
-  Map<PolylineId, Polyline> polyliness = {};
-  List<LatLng> polylineCoordinates = [];
-   CameraPosition cem = new CameraPosition( target: LatLng(45.543589 , -73.491606) );
+  CameraPosition cem = new CameraPosition( target: LatLng(45.543589 , -73.491606) );
   int seconds = 0;
   late Timer _timer;
 
   @override
   void initState(){
-
     LocationService.requestPermission();
 
-
-
     setState(() {
+      //Initialise la position de la caméra lorsqu'on rentre sur la page
       cem = new CameraPosition(target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y), zoom: 14);
+
+      //Création des markers de début et de fin
       Marker start = Marker(
         markerId: MarkerId("Start"),
         position: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
@@ -69,14 +61,15 @@ class _SuiviPageState extends State<SuiviPage>{
   }
 
 
-
+  //Commence la randonnée et le timer
   startListening() async {
+    //Set la position de la caméra au point de départ
     cem = CameraPosition(
       target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
       zoom: 16,
     );
 
-    Position currentPosition = await LocationService.getCurrentPosition();
+    //Ajoute les permissions pour avoir la localisation
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -98,12 +91,14 @@ class _SuiviPageState extends State<SuiviPage>{
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
+    //Reçoit la position actuelle et l'ajoute dans la liste de coordonnées
     subscription = LocationService.getPositionStream().listen((Position? position) {
       positions.add(position);
       print(positions);
       setState(() {
       });
 
+      //Ajoute un marker dans la position courante de l'utilisateur
       Marker marker = Marker(
         markerId: MarkerId("Marker: " + position.hashCode.toString()),
         position: LatLng(position!.latitude , position!.longitude),
@@ -111,16 +106,17 @@ class _SuiviPageState extends State<SuiviPage>{
       );
       markers.add(marker);
       lastPosition = LatLng(position!.latitude, position!.longitude);
-      createPolyline(lastPosition!);
     });
-    startTimer();
 
+    //Commence le timer lorsqu'on commence la randonnée
+    startTimer();
   }
 
+
+  //Arrête la randonné et le timer
   stoplListening() {
     subscription!.cancel();
     List<Coordinates> coordinatesList = [];
-
 
     for(var marker in markers){
       Coordinates coor = new Coordinates();
@@ -131,64 +127,23 @@ class _SuiviPageState extends State<SuiviPage>{
 
     addCoordinates(coordinatesList, widget.randonne.id);
     stopTimer();
-
   }
 
 
-  createPolyline(LatLng position) {
-    List<LatLng> points = [];
-    points.add(position);
-    points.add(markers.last.position);
-    polylines.add(Polyline(
-      polylineId: PolylineId(polylines.length.toString()),
-      points: points,
-      color: Colors.blue,
-
-
-    ));
-    setState(() {
-
-    });
-
-    print( "BAAAAA : " + polylines.last.points.toString());
-  }
-
+  //Initialise le google map controller
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
   }
 
+
+  //À chaque update de la position de l'utilisateur, la caméra se déplace
   void moveToStartMarker() {
     _mapController.animateCamera(
       CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.x, widget.randonne.startingCoordinates.y), 20.0),
     );
   }
-  void makeLines() async {
-    await polylinePoints
-        .getRouteBetweenCoordinates(
-      'AIzaSyDT0ddm46ekfRxxfYCWiyjrePEP5lWUXCk',
-      PointLatLng(widget.randonne.startingCoordinates.x, widget.randonne.startingCoordinates.y), //Starting LATLANG
-      PointLatLng(endPosition.latitude, endPosition.longitude), //End LATLANG
-      travelMode: TravelMode.driving,
-    ).then((value) {
-      value.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }).then((value) {
-      addPolyLine();
-    });
-  }
 
-  addPolyLine() {
-    PolylineId id = PolylineId("poly");
-    Polyline polyline = Polyline(
-        polylineId: id,
-        color: Colors.red,
-        points: polylineCoordinates
-    );
-    polyliness[id] = polyline;
-    setState((){});
-  }
-
+  //Commence le timer
   void startTimer() {
     _timer = Timer.periodic(Duration(microseconds: 1), (timer) {
       setState(() {
@@ -197,14 +152,13 @@ class _SuiviPageState extends State<SuiviPage>{
     });
   }
 
+  //Arrête le timer
   void stopTimer() {
     if (_timer.isActive) {
       _timer.cancel();
       setState(() {
-
       });
     }
-
   }
 
   @override
@@ -223,7 +177,6 @@ class _SuiviPageState extends State<SuiviPage>{
                 child: GoogleMap(
                 mapType: MapType.satellite,
                 initialCameraPosition: cem,
-                polylines: Set<Polyline>.of(polyliness.values),
                 myLocationEnabled: true,
                 markers: markers,
                 onMapCreated: _onMapCreated,
@@ -239,17 +192,15 @@ class _SuiviPageState extends State<SuiviPage>{
               )
             ],
           ),
-
         floatingActionButton: FloatingActionButton(
           shape: CircleBorder(),
           onPressed: () {
             Navigator.pop(context);
           },
           child: Icon(Icons.arrow_back, color: Colors.white,),
-          backgroundColor: Color(0xff09635f), // Customize the background color
+          backgroundColor: Color(0xff09635f),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-
         bottomNavigationBar: BottomAppBar(
           color:  Color(0xff09635f),
           elevation: 0,
@@ -279,9 +230,8 @@ class _SuiviPageState extends State<SuiviPage>{
                         startListening();
                       });
                     },
-                  )
-                      : IconButton(onPressed: () {
-                        stopTimer();
+                  ) : IconButton(onPressed: () {
+                    stopTimer();
                     isVisible = !isVisible;
                     moveToStartMarker();
                     startListening();
