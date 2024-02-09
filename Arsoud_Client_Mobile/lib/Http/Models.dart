@@ -63,8 +63,8 @@ class Coordinates{
 
   Coordinates();
 
-  double x = 0;
-  double y = 0;
+  double latitude = 0;
+  double longitude = 0;
 
   factory Coordinates.fromJson(Map<String, dynamic> json) => _$CoordinatesFromJson(json);
 

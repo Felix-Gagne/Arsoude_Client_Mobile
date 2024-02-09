@@ -4,6 +4,7 @@ import 'package:untitled/Http/Models.dart';
 import 'package:location_distance_calculator/location_distance_calculator.dart';
 
 import '../Http/HttpService.dart';
+import '../generated/l10n.dart';
 import 'DetailRandonné.dart';
 
 class HomePage extends StatefulWidget {
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Vos randonnées',
+                    S.of(context).vosRandonnes,
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                         return SizedBox(
                           width: 400,
                           child: Text(
-                            "Nous rencontrons un probleme avec le serveur actuellement veuillez revenir plus tard.",
+                            S.of(context).nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir,
                               style: GoogleFonts.plusJakartaSans(
                                   textStyle: TextStyle(
                                       fontWeight: FontWeight.w400,
@@ -65,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                       } else if(listTrails.length == 0){
                         return SizedBox(
                           width: 400,
-                          child: Text("Vous n'avez crée aucune randonnée jusqu\'à aujourd\'hui. Afin de continuer \ndans cette section veuillez \ncrée une randonnée.",
+                          child: Text(S.of(context).vousNavezCreAucuneRandonne,
                             style: GoogleFonts.plusJakartaSans(
                               textStyle: TextStyle(
                                 fontWeight: FontWeight.w400,
@@ -230,7 +231,7 @@ class SearchBar extends StatelessWidget {
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
-                hintText: 'Chercher une randonnée',
+                hintText: S.of(context).chercherUneRandonne,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(36),
                   borderSide: BorderSide(color: Colors.black, width: 0.5),

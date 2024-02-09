@@ -37,6 +37,8 @@ class _SuiviPageState extends State<SuiviPage>{
   bool isVisible = false;
   late GoogleMapController _mapController;
 
+  bool timerGo = false;
+
   LatLng endPosition = LatLng(45.543589 , -73.491606);
   Set<Marker> markers = Set();
   PolylinePoints polylinePoints = PolylinePoints();
@@ -44,6 +46,7 @@ class _SuiviPageState extends State<SuiviPage>{
   List<LatLng> polylineCoordinates = [];
    CameraPosition cem = new CameraPosition( target: LatLng(45.543589 , -73.491606) );
   int seconds = 0;
+  bool trailStarted = false;
   late Timer _timer;
 
   @override
@@ -54,14 +57,14 @@ class _SuiviPageState extends State<SuiviPage>{
 
 
     setState(() {
-      cem = new CameraPosition(target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y), zoom: 14);
+      cem = new CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude), zoom: 14);
       Marker start = Marker(
         markerId: MarkerId("Start"),
-        position: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
+        position: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude),
       );
       Marker end = Marker(
         markerId: MarkerId("End"),
-        position: LatLng(widget.randonne.endingCoordinates.x , widget.randonne.endingCoordinates.y),
+        position: LatLng(widget.randonne.endingCoordinates.latitude , widget.randonne.endingCoordinates.longitude),
       );
       markers.add(start);
       markers.add(end);
@@ -71,8 +74,9 @@ class _SuiviPageState extends State<SuiviPage>{
 
 
   startListening() async {
+    polylineCoordinates.clear();
     cem = CameraPosition(
-      target: LatLng(widget.randonne.startingCoordinates.x , widget.randonne.startingCoordinates.y),
+      target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude),
       zoom: 16,
     );
 
@@ -99,10 +103,11 @@ class _SuiviPageState extends State<SuiviPage>{
     }
 
     subscription = LocationService.getPositionStream().listen((Position? position) {
+     _mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng( position!.latitude, position.longitude ), 20.0));
+     polylineCoordinates.add(LatLng( position.latitude, position.longitude ));
       positions.add(position);
       print(positions);
-      setState(() {
-      });
+
 
       Marker marker = Marker(
         markerId: MarkerId("Marker: " + position.hashCode.toString()),
@@ -111,7 +116,10 @@ class _SuiviPageState extends State<SuiviPage>{
       );
       markers.add(marker);
       lastPosition = LatLng(position!.latitude, position!.longitude);
-      createPolyline(lastPosition!);
+
+      addPolyLine();
+     setState(() {
+     });
     });
     startTimer();
 
@@ -124,8 +132,8 @@ class _SuiviPageState extends State<SuiviPage>{
 
     for(var marker in markers){
       Coordinates coor = new Coordinates();
-      coor.x = marker.position.latitude;
-      coor.y = marker.position.longitude;
+      coor.latitude = marker.position.latitude;
+      coor.longitude = marker.position.longitude;
       coordinatesList.add(coor);
     }
 
@@ -135,48 +143,20 @@ class _SuiviPageState extends State<SuiviPage>{
   }
 
 
-  createPolyline(LatLng position) {
-    List<LatLng> points = [];
-    points.add(position);
-    points.add(markers.last.position);
-    polylines.add(Polyline(
-      polylineId: PolylineId(polylines.length.toString()),
-      points: points,
-      color: Colors.blue,
 
-
-    ));
-    setState(() {
-
-    });
-
-    print( "BAAAAA : " + polylines.last.points.toString());
-  }
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
+    _mapController.animateCamera(CameraUpdate.newLatLngZoom( lastPosition!, 14));
   }
 
-  void moveToStartMarker() {
+  Future<void> moveToStartMarker() async {
+    Position position = await LocationService.getCurrentPosition();
     _mapController.animateCamera(
-      CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.x, widget.randonne.startingCoordinates.y), 20.0),
+      CameraUpdate.newLatLngZoom(LatLng( position.latitude, position.longitude ), 20.0),
     );
   }
-  void makeLines() async {
-    await polylinePoints
-        .getRouteBetweenCoordinates(
-      'AIzaSyDT0ddm46ekfRxxfYCWiyjrePEP5lWUXCk',
-      PointLatLng(widget.randonne.startingCoordinates.x, widget.randonne.startingCoordinates.y), //Starting LATLANG
-      PointLatLng(endPosition.latitude, endPosition.longitude), //End LATLANG
-      travelMode: TravelMode.driving,
-    ).then((value) {
-      value.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    }).then((value) {
-      addPolyLine();
-    });
-  }
+
 
   addPolyLine() {
     PolylineId id = PolylineId("poly");
@@ -190,22 +170,16 @@ class _SuiviPageState extends State<SuiviPage>{
   }
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(microseconds: 1), (timer) {
-      setState(() {
-        seconds++;
-      });
-    });
+
+
+
   }
 
   void stopTimer() {
-    if (_timer.isActive) {
-      _timer.cancel();
-      setState(() {
-
-      });
-    }
 
   }
+
+
 
   @override
   void dispose() {
@@ -223,7 +197,7 @@ class _SuiviPageState extends State<SuiviPage>{
                 child: GoogleMap(
                 mapType: MapType.satellite,
                 initialCameraPosition: cem,
-                polylines: Set<Polyline>.of(polyliness.values),
+                polylines: polylines,
                 myLocationEnabled: true,
                 markers: markers,
                 onMapCreated: _onMapCreated,
@@ -273,6 +247,8 @@ class _SuiviPageState extends State<SuiviPage>{
                     ),
                     onPressed: () {
                       setState(() {
+                        trailStarted = true;
+                        timerGo = true;
                         startTimer();
                         isVisible = !isVisible;
                         moveToStartMarker();
@@ -281,21 +257,26 @@ class _SuiviPageState extends State<SuiviPage>{
                     },
                   )
                       : IconButton(onPressed: () {
+                        timerGo = false;
                         stopTimer();
                     isVisible = !isVisible;
                     moveToStartMarker();
-                    startListening();
+                    stoplListening();
+                    setState(() {
+
+                    });
                   }, icon: Icon(Icons.pause, size: 45)),
                 ),
                 Opacity(
-                  opacity: isVisible ? 1.0 : 0.0,
+                  opacity: trailStarted ? 1.0 : 0.0,
                   child:  IconButton(
                     tooltip: 'Favorite',
                     icon: const Icon(Icons.stop_circle_rounded, size: 40,),
                     onPressed: () {
                       stoplListening();
+                      trailStarted = false;
                       _mapController.animateCamera(
-                        CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.x, widget.randonne.startingCoordinates.y), 15.0),
+                        CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.latitude, widget.randonne.startingCoordinates.longitude), 15.0),
                       );
                     },
                   ),
