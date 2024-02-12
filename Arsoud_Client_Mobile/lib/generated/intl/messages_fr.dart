@@ -22,17 +22,43 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "PleaseCheck": MessageLookupByLibrary.simpleMessage(
+            "Veuillez vérifier votre mot de passe et votre adresse e-mail"),
+        "ReconectezInternetPourContinuer": MessageLookupByLibrary.simpleMessage(
+            "Veuillez vous reconnecter à Internet pour continuer."),
+        "VeuillezRessayerPlusTard": MessageLookupByLibrary.simpleMessage(
+            "Nos serveurs rencontrent actuellement un problème. Veuillez réessayer plus tard."),
         "chercherUneRandonne":
             MessageLookupByLibrary.simpleMessage("Chercher une randonnée"),
-        "getDirections": MessageLookupByLibrary.simpleMessage("Get Directions"),
-        "location": MessageLookupByLibrary.simpleMessage("Location :"),
+        "distance": MessageLookupByLibrary.simpleMessage("- Distance :"),
+        "dontHaveAnAccount": MessageLookupByLibrary.simpleMessage(
+            "Vous n\'avez pas de compte ?"),
+        "emailAddress": MessageLookupByLibrary.simpleMessage("Adresse e-mail"),
+        "forgotPassword":
+            MessageLookupByLibrary.simpleMessage("Mot de passe oublié ?"),
+        "getDirections":
+            MessageLookupByLibrary.simpleMessage("Obtenir des directions"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "location": MessageLookupByLibrary.simpleMessage("Endroit :"),
+        "login": MessageLookupByLibrary.simpleMessage("Connexion"),
         "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir":
             MessageLookupByLibrary.simpleMessage(
-                "Nous rencontrons un probleme avec le serveur actuellement veuillez revenir plus tard."),
-        "start": MessageLookupByLibrary.simpleMessage("Start"),
+                "Nous rencontrons un problème avec le serveur actuellement. Veuillez revenir plus tard."),
+        "password": MessageLookupByLibrary.simpleMessage("Mot de passe"),
+        "pleaseEnterAEmail": MessageLookupByLibrary.simpleMessage(
+            "Veuillez entrer une adresse e-mail"),
+        "pleaseEnterAPassword": MessageLookupByLibrary.simpleMessage(
+            "Veuillez entrer un mot de passe"),
+        "signInToYourAccount": MessageLookupByLibrary.simpleMessage(
+            "Connectez-vous à votre compte"),
+        "signUp": MessageLookupByLibrary.simpleMessage("S\'inscrire"),
+        "start": MessageLookupByLibrary.simpleMessage("Démarrer"),
+        "stop": MessageLookupByLibrary.simpleMessage("Arrêter"),
         "type": MessageLookupByLibrary.simpleMessage("Type :"),
         "vosRandonnes": MessageLookupByLibrary.simpleMessage("Vos randonnées"),
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
-            "Vous n\'avez crée aucune randonnée jusqu à aujourd\'hui. Afin de continuer dans cette section veuillez crée une randonnée.")
+            "Vous n\'avez créé aucune randonnée jusqu\'à aujourd\'hui. Afin de continuer dans cette section veuillez créer une randonnée."),
+        "welcomeBack":
+            MessageLookupByLibrary.simpleMessage("Bienvenue de retour")
       };
 }

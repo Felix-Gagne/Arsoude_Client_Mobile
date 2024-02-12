@@ -8,6 +8,8 @@ import '../Http/HttpService.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../generated/l10n.dart';
+
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -58,23 +60,23 @@ class _LoginState extends State<Login> {
 
                     }, icon: Icon(Icons.arrow_back_ios, color: Colors.black.withOpacity(0.5),), style: ButtonStyle(),),
                     SizedBox(width: 12,),
-                    Text("Login", style: GoogleFonts.plusJakartaSans(
+                    Text(S.of(context).login, style: GoogleFonts.plusJakartaSans(
                         textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
                     ), )
                   ],
                 ),
               ),
-              //Login Welcom title
+              //Login Welcome title
               Container(
                 padding: EdgeInsets.fromLTRB(24, 35, 168, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Welcome Back", style: GoogleFonts.plusJakartaSans(
+                    Text(S.of(context).welcomeBack, style: GoogleFonts.plusJakartaSans(
                         textStyle: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(height: 20,),
-                    Text("Sign in to your account", style: GoogleFonts.plusJakartaSans(
+                    Text(S.of(context).signInToYourAccount, style: GoogleFonts.plusJakartaSans(
                         textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(
                             0xFFC1C1C2))),)
                   ],
@@ -89,7 +91,7 @@ class _LoginState extends State<Login> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Email Address", style:  GoogleFonts.plusJakartaSans(
+                      Text(S.of(context).emailAddress, style:  GoogleFonts.plusJakartaSans(
                           textStyle: TextStyle(fontSize: 14, color:  Color(0xFF868687), fontWeight: FontWeight.w500)
                       ),),
                       SizedBox(height: 16,),
@@ -101,7 +103,7 @@ class _LoginState extends State<Login> {
                           enabled: !loading,
                           validator: (email){
                             if(email == ""){
-                              return "Please enter a email";
+                              return S.of(context).pleaseEnterAEmail;
                             }
                             else{
                               return null;
@@ -139,7 +141,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(height: 24,),
-                      Text("Password", style:  GoogleFonts.plusJakartaSans(
+                      Text(S.of(context).password, style:  GoogleFonts.plusJakartaSans(
                           textStyle: TextStyle(fontSize: 14, color:  Color(0xFF868687), fontWeight: FontWeight.w500)
                       )),
                       SizedBox(height: 16,),
@@ -151,7 +153,7 @@ class _LoginState extends State<Login> {
                           enabled: !loading,
                           validator: (password){
                             if(password == ""){
-                              return "Please enter a password";
+                              return S.of(context).pleaseEnterAPassword;
                             }
                             return null;
                           },
@@ -206,7 +208,7 @@ class _LoginState extends State<Login> {
                          children: [
                            TextButton(
                                   onPressed: (){},
-                                  child: Text("Forgot password?", style: GoogleFonts.plusJakartaSans(
+                                  child: Text(S.of(context).forgotPassword, style: GoogleFonts.plusJakartaSans(
                                       textStyle: TextStyle(fontSize: 14, color:  Color(
                                           0xFF09635F), fontWeight: FontWeight.bold)
                                   ),)
@@ -228,13 +230,13 @@ class _LoginState extends State<Login> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Don't have an account?", style: GoogleFonts.plusJakartaSans(
+                    Text(S.of(context).dontHaveAnAccount, style: GoogleFonts.plusJakartaSans(
                         textStyle: TextStyle(
                             fontSize: 14, color:  Color(0xFF878788), fontWeight: FontWeight.w500
                         ))),
                     TextButton(
                         onPressed: (){},
-                        child: Text("Sign up",style: GoogleFonts.plusJakartaSans(
+                        child: Text(S.of(context).signUp,style: GoogleFonts.plusJakartaSans(
                             textStyle: TextStyle(
                                 fontSize: 14, color:  Color(0xFF09635F), fontWeight: FontWeight.bold
                             ))))
@@ -279,18 +281,18 @@ class _LoginState extends State<Login> {
                   var errorMessage;
                   if(e.response != null){
                     if(e.response!.data["message"] == "Le mot de passe ou le nom d'utilisateur ne correspond pas."){
-                      errorMessage = "Please verify you Password and your Email Address";
+                      errorMessage = S.of(context).PleaseCheck;
                     }
                     setState(() {
                       wrongInformationError = errorMessage;
-                      "Please verify your Email Address and Password";
+                      S.of(context).PleaseCheck;
                     });
                   }
                   else if(e.type.name == "connectionTimeout"){
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar('Nos serveurs rencontre actuellement un probléme. Veuillez réesayer plus tard'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar(S.of(context).VeuillezRessayerPlusTard));
                   }
                   else if(e.type.name == "connectionError"){
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar('Veuillez vous reconectez internet pour continuer.'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar(S.of(context).ReconectezInternetPourContinuer));
                   }
                   throw (e);
                 }
@@ -303,7 +305,7 @@ class _LoginState extends State<Login> {
             child: (loading) ? CircularProgressIndicator(
               valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
             ) :
-            Text("Login", style: GoogleFonts.plusJakartaSans(
+            Text(S.of(context).login, style: GoogleFonts.plusJakartaSans(
                 textStyle: TextStyle(fontSize: 18, color:  Colors.white, fontWeight: FontWeight.bold)
             ),),
             color: Color(0xFF09635F),
@@ -322,7 +324,7 @@ class _LoginState extends State<Login> {
     return SnackBar(
       content: Text(text),
       action: SnackBarAction(
-        label: 'Stop',
+        label: S.of(context).stop,
         onPressed: () {
           // Some code to undo the change.
         },

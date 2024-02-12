@@ -50,60 +50,60 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Vos randonnées`
+  /// `Your hikes`
   String get vosRandonnes {
     return Intl.message(
-      'Vos randonnées',
+      'Your hikes',
       name: 'vosRandonnes',
       desc: '',
       args: [],
     );
   }
 
-  /// `Nous rencontrons un probleme avec le serveur actuellement veuillez revenir plus tard.`
+  /// `We are currently experiencing an issue with the server. Please try again later.`
   String get nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir {
     return Intl.message(
-      'Nous rencontrons un probleme avec le serveur actuellement veuillez revenir plus tard.',
+      'We are currently experiencing an issue with the server. Please try again later.',
       name: 'nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir',
       desc: '',
       args: [],
     );
   }
 
-  /// `Vous n'avez crée aucune randonnée jusqu'à aujourd'hui. Afin de continuer dans cette section veuillez crée une randonnée.`
+  /// `You haven't created any hikes until today. To continue in this section, please create a hike.`
   String get vousNavezCreAucuneRandonne {
     return Intl.message(
-      'Vous n\'avez crée aucune randonnée jusqu\'à aujourd\'hui. Afin de continuer dans cette section veuillez crée une randonnée.',
+      'You haven\'t created any hikes until today. To continue in this section, please create a hike.',
       name: 'vousNavezCreAucuneRandonne',
       desc: '',
       args: [],
     );
   }
 
-  /// `Chercher une randonnée`
+  /// `Search for a hike`
   String get chercherUneRandonne {
     return Intl.message(
-      'Chercher une randonnée',
+      'Search for a hike',
       name: 'chercherUneRandonne',
       desc: '',
       args: [],
     );
   }
 
-  /// `Location :`
+  /// `Location:`
   String get location {
     return Intl.message(
-      'Location :',
+      'Location:',
       name: 'location',
       desc: '',
       args: [],
     );
   }
 
-  /// `Type :`
+  /// `Type:`
   String get type {
     return Intl.message(
-      'Type :',
+      'Type:',
       name: 'type',
       desc: '',
       args: [],
@@ -125,6 +125,166 @@ class S {
     return Intl.message(
       'Start',
       name: 'start',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `- Distance:`
+  String get distance {
+    return Intl.message(
+      '- Distance:',
+      name: 'distance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a password`
+  String get pleaseEnterAPassword {
+    return Intl.message(
+      'Please enter a password',
+      name: 'pleaseEnterAPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot password?`
+  String get forgotPassword {
+    return Intl.message(
+      'Forgot password?',
+      name: 'forgotPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't have an account?`
+  String get dontHaveAnAccount {
+    return Intl.message(
+      'Don\'t have an account?',
+      name: 'dontHaveAnAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign up`
+  String get signUp {
+    return Intl.message(
+      'Sign up',
+      name: 'signUp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please verify your password and your email address`
+  String get PleaseCheck {
+    return Intl.message(
+      'Please verify your password and your email address',
+      name: 'PleaseCheck',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Our servers are currently experiencing a problem. Please try again later.`
+  String get VeuillezRessayerPlusTard {
+    return Intl.message(
+      'Our servers are currently experiencing a problem. Please try again later.',
+      name: 'VeuillezRessayerPlusTard',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please reconnect to the internet to continue.`
+  String get ReconectezInternetPourContinuer {
+    return Intl.message(
+      'Please reconnect to the internet to continue.',
+      name: 'ReconectezInternetPourContinuer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get login {
+    return Intl.message(
+      'Login',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stop`
+  String get stop {
+    return Intl.message(
+      'Stop',
+      name: 'stop',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message(
+      'Password',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter an email address`
+  String get pleaseEnterAEmail {
+    return Intl.message(
+      'Please enter an email address',
+      name: 'pleaseEnterAEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email Address`
+  String get emailAddress {
+    return Intl.message(
+      'Email Address',
+      name: 'emailAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in to your account`
+  String get signInToYourAccount {
+    return Intl.message(
+      'Sign in to your account',
+      name: 'signInToYourAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome Back`
+  String get welcomeBack {
+    return Intl.message(
+      'Welcome Back',
+      name: 'welcomeBack',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get home {
+    return Intl.message(
+      'Home',
+      name: 'home',
       desc: '',
       args: [],
     );

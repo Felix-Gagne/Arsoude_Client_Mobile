@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                                   ),),
                                                   SizedBox(width: 5,),
                                                   Icon(icon),
-                                                  Text(" -  Distance : 16km", style:
+                                                  Text(S.of(context).distance+"16km", style:
                                                   GoogleFonts.plusJakartaSans(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w400,
