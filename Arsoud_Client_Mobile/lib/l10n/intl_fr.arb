@@ -21,5 +21,6 @@
   "pleaseEnterAEmail": "Veuillez entrer une adresse e-mail",
   "emailAddress": "Adresse e-mail",
   "signInToYourAccount": "Connectez-vous à votre compte",
-  "welcomeBack": "Bienvenue de retour"
+  "welcomeBack": "Bienvenue de retour",
+  "home": "Home"
 }

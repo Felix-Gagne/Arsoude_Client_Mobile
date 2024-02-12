@@ -9,6 +9,7 @@ import 'package:motion_tab_bar_v2/motion-tab-controller.dart';
 import 'package:untitled/Views/Accueil.dart';
 import 'package:untitled/Views/Suivi.dart';
 
+import '../generated/l10n.dart';
 import 'Login.dart';
 
 class navBar extends StatefulWidget {
@@ -74,7 +75,7 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
       ),
       bottomNavigationBar: MotionTabBar(
         controller: _motionTabBarController, // ADD THIS if you need to change your tab programmatically
-        initialSelectedTab: "Home",
+        initialSelectedTab: S.of(context).home,
         labels: const ["Search", "Home", "Navigate", "Favorite", "Profile"],
         icons: const [Icons.search, Icons.home, IconData(0xe41e, fontFamily: 'MaterialIcons'),Icons.bookmark, Icons.people_alt],
 

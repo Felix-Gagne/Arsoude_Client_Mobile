@@ -37,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password?"),
         "getDirections": MessageLookupByLibrary.simpleMessage("Get Directions"),
+        "home": MessageLookupByLibrary.simpleMessage("Home"),
         "location": MessageLookupByLibrary.simpleMessage("Location:"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir":
