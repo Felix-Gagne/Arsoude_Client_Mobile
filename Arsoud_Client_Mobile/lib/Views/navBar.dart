@@ -11,11 +11,13 @@ import 'package:untitled/Views/Suivi.dart';
 
 import '../generated/l10n.dart';
 import 'Login.dart';
+import 'Profile.dart';
 
 class navBar extends StatefulWidget {
   const navBar({super.key, required this.page});
 
   final int page;
+
 
   @override
   State<navBar> createState() => _navBarState();
@@ -24,24 +26,16 @@ class navBar extends StatefulWidget {
 class _navBarState extends State<navBar> with TickerProviderStateMixin {
 
   MotionTabBarController? _motionTabBarController;
-  static const _kFontFam = 'MyFlutterApp';
-  static const String? _kFontPkg = null;
+  int _initialTabIndex = 0;
+  List<String> labels = ["Search", "Home", "Navigate", "Favorite", "Profile"];
 
 
   void initState() {
     super.initState();
 
-    //// Use normal tab controller
-    // _tabController = TabController(
-    //   initialIndex: 1,
-    //   length: 4,
-    //   vsync: this,
-    // );
-
-    //// use "MotionTabBarController" to replace with "TabController", if you need to programmatically change the tab
+    _initialTabIndex = widget.page;
     _motionTabBarController = MotionTabBarController(
-      //initialIndex: widget.page,
-      initialIndex: 1,
+      initialIndex: _initialTabIndex,
       length: 5,
       vsync: this,
     );
@@ -70,15 +64,14 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
           HomePage(),
           HomePage(),
           HomePage(),
-          Login(),
+          Profile(),
         ],
       ),
       bottomNavigationBar: MotionTabBar(
         controller: _motionTabBarController, // ADD THIS if you need to change your tab programmatically
-        initialSelectedTab: S.of(context).home,
-        labels: const ["Search", "Home", "Navigate", "Favorite", "Profile"],
+        initialSelectedTab: labels[widget.page],
+        labels: labels,
         icons: const [Icons.search, Icons.home, IconData(0xe41e, fontFamily: 'MaterialIcons'),Icons.bookmark, Icons.people_alt],
-
         // optional badges, length must be same with labels
         badges: [
           null,

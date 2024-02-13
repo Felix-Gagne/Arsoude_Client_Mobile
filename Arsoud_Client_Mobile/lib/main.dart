@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:untitled/Views/Accueil.dart';
+import 'package:untitled/Views/Profile.dart';
 
 import 'Http/HttpService.dart';
 import 'Views/Login.dart';

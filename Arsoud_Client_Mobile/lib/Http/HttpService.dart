@@ -10,8 +10,8 @@ import 'Models.dart';
 
   void configureDio() {
     // Set default configs
-    dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
-    //dio.options.baseUrl = 'http://10.0.2.2:5050/api';
+    //dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
+    dio.options.baseUrl = 'http://10.0.2.2:5050/api';
     dio.options.connectTimeout = Duration(seconds: 30);
     dio.options.receiveTimeout = Duration(seconds: 30);
   }
@@ -86,6 +86,7 @@ Future<List<Coordinates>> getCoordinates(int trailId) async {
       print(response);
       var token = response.data["token"];
       await storage.write(key: 'jwt', value: token);
+      await storage.write(key: 'email', value: data.username);
 
       return true;
     }
@@ -117,6 +118,7 @@ Future<List<Coordinates>> getCoordinates(int trailId) async {
         throw e;
     }
   }
+
 
 
 
