@@ -97,22 +97,11 @@ class _DetailRanonneState extends State<DetailRanonne> {
 
         if (markers.length > 1) {
           for (var mark in markers) {
-
                 polylineCoordinates.add(mark.position);
-
-
-
-
-
           }
-
          await addPolyLine(polylineCoordinates);
           markers.clear();
-
-
         }
-
-
         showModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
@@ -128,8 +117,6 @@ class _DetailRanonneState extends State<DetailRanonne> {
                   initialCameraPosition: cem,
                   markers: SEMark,
                   polylines: Set<Polyline>.of(polylines.values),
-
-
                 ),
               ),
             );
