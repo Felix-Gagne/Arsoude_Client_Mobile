@@ -97,22 +97,11 @@ class _DetailRanonneState extends State<DetailRanonne> {
 
         if (markers.length > 1) {
           for (var mark in markers) {
-
                 polylineCoordinates.add(mark.position);
-
-
-
-
-
           }
-
          await addPolyLine(polylineCoordinates);
           markers.clear();
-
-
         }
-
-
         showModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
@@ -128,8 +117,6 @@ class _DetailRanonneState extends State<DetailRanonne> {
                   initialCameraPosition: cem,
                   markers: SEMark,
                   polylines: Set<Polyline>.of(polylines.values),
-
-
                 ),
               ),
             );
@@ -259,40 +246,6 @@ class _DetailRanonneState extends State<DetailRanonne> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Difficile", style: GoogleFonts.plusJakartaSans(
-                                      textStyle: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    )),
-                                    SizedBox(height: height * 0.01),
-                                    difficulty(),
-                                    SizedBox(height: height * 0.03),
-                                    Text(
-                                      "10.5 Km",
-                                      style: GoogleFonts.plusJakartaSans(
-                                        textStyle: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      "Distance",
-                                      style: GoogleFonts.plusJakartaSans(
-                                        textStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 20), // Adjust the space between columns
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
                                     Text(
                                       S.of(context).location,
                                       style: GoogleFonts.plusJakartaSans(
@@ -310,27 +263,32 @@ class _DetailRanonneState extends State<DetailRanonne> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: height * 0.03),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          S.of(context).type,
-                                          style: GoogleFonts.plusJakartaSans(
-                                            textStyle: TextStyle(
-                                              fontSize: 16,
-                                            ),
-                                          ),
+
+
+
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 20), // Adjust the space between columns
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      S.of(context).type,
+                                      style: GoogleFonts.plusJakartaSans(
+                                        textStyle: TextStyle(
+                                          fontSize: 16,
                                         ),
-                                        (widget.randonne.type == 1)
-                                            ? Icon(
-                                          IconData(0xe1d2, fontFamily: 'MaterialIcons'),
-                                          size: 30,
-                                        )
-                                            : Icon(
-                                          IconData(0xe1e1, fontFamily: 'MaterialIcons'),
-                                          size: 30,
-                                        ),
-                                      ],
+                                      ),
+                                    ),
+                                    (widget.randonne.type == 1)
+                                        ? Icon(
+                                      IconData(0xe1d2, fontFamily: 'MaterialIcons'),
+                                      size: 30,
+                                    )
+                                        : Icon(
+                                      IconData(0xe1e1, fontFamily: 'MaterialIcons'),
+                                      size: 30,
                                     ),
                                   ],
                                 ),
@@ -360,6 +318,45 @@ class _DetailRanonneState extends State<DetailRanonne> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: width * 0.87,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.blue.withOpacity(0.4), // shadow color
+                                  spreadRadius: 1, // spread radius
+                                  blurRadius: 5, // blur radius
+                                  offset: Offset(5, 5), // changes position of shadow
+                                ),
+
+                              ],
+                            ),
+                            child: !widget.randonne.isPublic ? MaterialButton(onPressed: (){
+                                   SetPublic(widget.randonne.id);
+
+                            }, child: Text("Rendre publique", style: GoogleFonts.plusJakartaSans(
+                                textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16
+                                )
+                            )), color: Colors.blue,) : MaterialButton(onPressed: (){
+                              SetPrivate(widget.randonne.id);
+                            }, child: Text("Rendre Privé", style: GoogleFonts.plusJakartaSans(
+                                textStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16
+                                )
+                            )), color: Colors.pinkAccent,)
+                          )
+                        ],
+
+                      ),
+                      SizedBox(height: 10,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

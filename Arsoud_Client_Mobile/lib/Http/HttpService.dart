@@ -37,6 +37,46 @@ import 'Models.dart';
     }
   }
 
+
+  Future<String> SetPublic(int Trailid) async{
+    try{
+      String? token = await storage.read(key: "jwt");
+      final response = await dio.get(dio.options.baseUrl + "/SetTrailToPublic/"+Trailid.toString(),options: Options(
+          contentType: "application/json",
+          headers: {
+            "Authorization": "Bearer $token",
+          }));
+
+
+    }
+    catch(e){
+
+      print(e);
+      throw(e);
+    }
+
+    return "";
+  }
+Future<String> SetPrivate(int Trailid) async{
+  try{
+    String? token = await storage.read(key: "jwt");
+    final response = await dio.get(dio.options.baseUrl + "/SetTrailToPrivate/"+Trailid.toString(),options: Options(
+        contentType: "application/json",
+        headers: {
+          "Authorization": "Bearer $token",
+        }));
+
+
+  }
+  catch(e){
+
+    print(e);
+    throw(e);
+  }
+
+  return "";
+}
+
 Future<List<Coordinates>> getCoordinates(int trailId) async {
   try{
     String? token = await storage.read(key: 'jwt');
