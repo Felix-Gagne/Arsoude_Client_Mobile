@@ -47,6 +47,7 @@ class Randonne{
   String imageUrl="";
   Coordinates startingCoordinates = new Coordinates();
   Coordinates endingCoordinates = new Coordinates();
+  bool isPublic = false;
 
 
   factory Randonne.fromJson(Map<String, dynamic> json) => _$RandonneFromJson(json);
