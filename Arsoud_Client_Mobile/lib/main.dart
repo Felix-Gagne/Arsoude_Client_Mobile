@@ -8,6 +8,7 @@ import 'package:untitled/Views/Profile.dart';
 
 import 'Http/HttpService.dart';
 import 'Views/Login.dart';
+import 'Views/navBar.dart';
 import 'firebase_options.dart';
 import 'generated/l10n.dart';
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       title: 'Flutter Demo',
-      home: new Login(),
+      home: new navBar(page: 1),
 
 
     );

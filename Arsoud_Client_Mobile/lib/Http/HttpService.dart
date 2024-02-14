@@ -119,6 +119,48 @@ Future<List<Coordinates>> getCoordinates(int trailId) async {
     }
   }
 
+Future<List<Randonne>> getAllTrails() async{
+  try{
+    configureDio();
+    var response = await dio.get('/Trail/GetAllTrails', options: Options(
+        contentType: "application/json",
+    ));
+    print(response);
+    var listJson = response.data as List;
+    var listTrail = listJson.map((elementJson){
+      return Randonne.fromJson((elementJson));
+    }).toList();
+    return listTrail;
+  }
+  catch (e){
+    print(e);
+    throw e;
+  }
+}
+
+Future<List<Randonne>> getUserFavoriteTrails() async{
+  try{
+    String? token = await storage.read(key: 'jwt');
+
+    var response = await dio.get('/Trail/GetFavoriteTrails', options: Options(
+        contentType: "application/json",
+        headers: {
+          "Authorization": "Bearer $token",
+        }
+    ));
+    print(response);
+    var listJson = response.data as List;
+    var listTrail = listJson.map((elementJson){
+      return Randonne.fromJson((elementJson));
+    }).toList();
+    return listTrail;
+  }
+  catch (e){
+    print(e);
+    throw e;
+  }
+}
+
 
 
 

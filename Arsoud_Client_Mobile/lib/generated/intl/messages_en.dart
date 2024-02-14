@@ -30,16 +30,29 @@ class MessageLookup extends MessageLookupByLibrary {
             "Our servers are currently experiencing a problem. Please try again later."),
         "chercherUneRandonne":
             MessageLookupByLibrary.simpleMessage("Search for a hike"),
+        "discoverNewHikes":
+            MessageLookupByLibrary.simpleMessage("Discover new hikes"),
         "distance": MessageLookupByLibrary.simpleMessage("- Distance:"),
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
         "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
+        "favoriteTrail":
+            MessageLookupByLibrary.simpleMessage("Your favorite trails"),
+        "favorites": MessageLookupByLibrary.simpleMessage("Favorites"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password?"),
         "getDirections": MessageLookupByLibrary.simpleMessage("Get Directions"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "info": MessageLookupByLibrary.simpleMessage("Info"),
         "location": MessageLookupByLibrary.simpleMessage("Location:"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
+        "myListOfTrails":
+            MessageLookupByLibrary.simpleMessage("My list of trails"),
+        "noFavorites":
+            MessageLookupByLibrary.simpleMessage("You have no favorite hikes"),
+        "noHikesExist": MessageLookupByLibrary.simpleMessage(
+            "There are no hikes that can be found"),
         "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir":
             MessageLookupByLibrary.simpleMessage(
                 "We are currently experiencing an issue with the server. Please try again later."),
@@ -48,6 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter an email address"),
         "pleaseEnterAPassword":
             MessageLookupByLibrary.simpleMessage("Please enter a password"),
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signInToYourAccount":
             MessageLookupByLibrary.simpleMessage("Sign in to your account"),
         "signUp": MessageLookupByLibrary.simpleMessage("Sign up"),

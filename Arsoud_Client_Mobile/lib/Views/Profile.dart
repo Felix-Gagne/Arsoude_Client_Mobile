@@ -4,6 +4,7 @@ import 'package:untitled/Design/MyClipperBackground.dart';
 import 'package:untitled/Http/HttpService.dart';
 import 'package:untitled/Views/navBar.dart';
 
+import '../generated/l10n.dart';
 import 'Accueil.dart';
 
 class Profile extends StatefulWidget {
@@ -71,19 +72,22 @@ class _ProfileState extends State<Profile> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          options(width, Icons.info, "Info", (){}),
-                          options(width, Icons.settings, "Settings", (){}),
-                          options(width, Icons.collections, "My list of trails", (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => navBar(page: 1)));
+                          options(width, Icons.info, S.of(context).info, (){}),
+                          options(width, Icons.settings, S.of(context).settings, (){}),
+                          options(width, Icons.collections, S.of(context).myListOfTrails, (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => navBar(page: 2)));
                           }),
-                          options(width, Icons.bookmark, "Favorites", (){
+                          options(width, Icons.bookmark, S.of(context).favorites, (){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => navBar(page: 3)));
                           }),
-                          options(width, Icons.logout, "Logout",(){}),
+                          options(width, Icons.logout, S.of(context).logout,() async{
+                            await storage.delete(key: "email");
+                            await storage.delete(key: "jwt");
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => navBar(page: 1)));
+                          }),
                         ],
                       )
                     )
-
                 ],
               ),
             ),

@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:untitled/Http/Models.dart';
-import 'package:location_distance_calculator/location_distance_calculator.dart';
+import 'package:untitled/Http/HttpService.dart';
 
-import '../Http/HttpService.dart';
+import '../Http/Models.dart';
 import '../generated/l10n.dart';
-import 'DetailRandonné.dart';
+import 'Accueil.dart';
 import 'ListOfTrails.dart';
 import 'SearchBar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key});
+class FavoritTerails extends StatefulWidget {
+  const FavoritTerails({Key? key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<FavoritTerails> createState() => _FavoritTerailsState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _FavoritTerailsState extends State<FavoritTerails> {
   final searchController = SearchController();
   List<Randonne> listTrails = [];
   var distance;
 
   Future<List<Randonne>> refresh() async {
-    listTrails = await getAllTrails();
+    listTrails = await getUserFavoriteTrails();
     return listTrails;
   }
 
@@ -40,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    S.of(context).discoverNewHikes,
+                    S.of(context).favoriteTrail,
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 22,
                       fontWeight: FontWeight.w500,
@@ -56,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                         return SizedBox(
                           width: 400,
                           child: Text(
-                            S.of(context).nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir,
+                              S.of(context).noFavorites,
                               style: GoogleFonts.plusJakartaSans(
                                   textStyle: TextStyle(
                                       fontWeight: FontWeight.w400,
@@ -68,13 +67,13 @@ class _HomePageState extends State<HomePage> {
                       } else if(listTrails.length == 0){
                         return SizedBox(
                           width: 400,
-                          child: Text(S.of(context).noHikesExist,
+                          child: Text(S.of(context).vousNavezCreAucuneRandonne,
                             style: GoogleFonts.plusJakartaSans(
-                              textStyle: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16
-                              )
-                          ),),
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16
+                                )
+                            ),),
                         );
                       }
                       else {
@@ -91,9 +90,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-
-
 
 

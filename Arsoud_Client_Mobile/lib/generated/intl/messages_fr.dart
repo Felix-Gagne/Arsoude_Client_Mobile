@@ -30,17 +30,30 @@ class MessageLookup extends MessageLookupByLibrary {
             "Nos serveurs rencontrent actuellement un problème. Veuillez réessayer plus tard."),
         "chercherUneRandonne":
             MessageLookupByLibrary.simpleMessage("Chercher une randonnée"),
+        "discoverNewHikes": MessageLookupByLibrary.simpleMessage(
+            "Découvrez de nouvelle randonnée"),
         "distance": MessageLookupByLibrary.simpleMessage("- Distance :"),
         "dontHaveAnAccount": MessageLookupByLibrary.simpleMessage(
             "Vous n\'avez pas de compte ?"),
         "emailAddress": MessageLookupByLibrary.simpleMessage("Adresse e-mail"),
+        "favoriteTrail":
+            MessageLookupByLibrary.simpleMessage("Vos randonnées favorites"),
+        "favorites": MessageLookupByLibrary.simpleMessage("Favoris"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Mot de passe oublié ?"),
         "getDirections":
             MessageLookupByLibrary.simpleMessage("Obtenir des directions"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "info": MessageLookupByLibrary.simpleMessage("Information"),
         "location": MessageLookupByLibrary.simpleMessage("Endroit :"),
         "login": MessageLookupByLibrary.simpleMessage("Connexion"),
+        "logout": MessageLookupByLibrary.simpleMessage("Déconnexion"),
+        "myListOfTrails":
+            MessageLookupByLibrary.simpleMessage("Ma liste de randonnée"),
+        "noFavorites": MessageLookupByLibrary.simpleMessage(
+            "Vous avez aucune randonnée dans vos favoris"),
+        "noHikesExist": MessageLookupByLibrary.simpleMessage(
+            "Aucune randonnée ne peut etre trouver"),
         "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir":
             MessageLookupByLibrary.simpleMessage(
                 "Nous rencontrons un problème avec le serveur actuellement. Veuillez revenir plus tard."),
@@ -49,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Veuillez entrer une adresse e-mail"),
         "pleaseEnterAPassword": MessageLookupByLibrary.simpleMessage(
             "Veuillez entrer un mot de passe"),
+        "settings": MessageLookupByLibrary.simpleMessage("paramètre"),
         "signInToYourAccount": MessageLookupByLibrary.simpleMessage(
             "Connectez-vous à votre compte"),
         "signUp": MessageLookupByLibrary.simpleMessage("S\'inscrire"),

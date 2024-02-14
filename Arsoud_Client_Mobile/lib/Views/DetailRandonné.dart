@@ -155,7 +155,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                     Container(
                       width: width,
                       height: height * 0.3,
-                      child: Image.network(widget.randonne.imageUrl, fit: BoxFit.cover,),
+                      child: Image.network(widget.randonne.imageUrl!, fit: BoxFit.cover,),
                     ),
                     // Making background darker
                     Positioned.fill(

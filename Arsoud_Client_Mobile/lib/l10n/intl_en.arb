@@ -22,5 +22,14 @@
   "emailAddress": "Email Address",
   "signInToYourAccount": "Sign in to your account",
   "welcomeBack": "Welcome Back",
-  "home": "Home"
+  "home": "Home",
+  "discoverNewHikes": "Discover new hikes",
+  "noHikesExist": "There are no hikes that can be found",
+  "favoriteTrail": "Your favorite trails",
+  "noFavorites": "You have no favorite hikes",
+  "info": "Info",
+  "settings": "Settings",
+  "myListOfTrails": "My list of trails",
+  "favorites": "Favorites",
+  "logout": "Logout"
 }
