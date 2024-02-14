@@ -54,8 +54,7 @@ class _SuiviPageState extends State<SuiviPage>{
         markerId: MarkerId("End"),
         position: LatLng(widget.randonne.endingCoordinates.latitude , widget.randonne.endingCoordinates.longitude),
       );
-      markers.add(start);
-      markers.add(end);
+
     });
   }
 
@@ -128,7 +127,6 @@ class _SuiviPageState extends State<SuiviPage>{
   stoplListening() {
     subscription!.cancel();
     List<Coordinates> coordinatesList = [];
-
     for(var marker in markers){
       Coordinates coor = new Coordinates();
       coor.latitude = marker.position.latitude;
