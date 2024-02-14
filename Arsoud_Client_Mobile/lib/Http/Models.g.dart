@@ -33,7 +33,8 @@ Randonne _$RandonneFromJson(Map<String, dynamic> json) => Randonne()
   ..startingCoordinates =
       Coordinates.fromJson(json['startingCoordinates'] as Map<String, dynamic>)
   ..endingCoordinates =
-      Coordinates.fromJson(json['endingCoordinates'] as Map<String, dynamic>);
+      Coordinates.fromJson(json['endingCoordinates'] as Map<String, dynamic>)
+  ..isPublic = json['isPublic'] as bool;
 
 Map<String, dynamic> _$RandonneToJson(Randonne instance) => <String, dynamic>{
       'id': instance.id,
@@ -44,6 +45,7 @@ Map<String, dynamic> _$RandonneToJson(Randonne instance) => <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'startingCoordinates': instance.startingCoordinates,
       'endingCoordinates': instance.endingCoordinates,
+      'isPublic': instance.isPublic,
     };
 
 Coordinates _$CoordinatesFromJson(Map<String, dynamic> json) => Coordinates()
