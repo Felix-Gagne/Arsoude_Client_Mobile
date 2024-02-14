@@ -12,6 +12,7 @@ import 'package:untitled/Views/Accueil.dart';
 import 'package:untitled/Views/navBar.dart';
 import '../Http/LocationService.dart';
 import '../Models/Position.dart';
+import 'DetailRandonné.dart';
 
 class SuiviPage extends StatefulWidget{
   final FloatingActionButtonLocation fabLocation;
@@ -37,7 +38,7 @@ class _SuiviPageState extends State<SuiviPage>{
   CameraPosition cem = new CameraPosition( target: LatLng(45.543589 , -73.491606) );
   int seconds = 0;
   bool trailStarted = false;
-  late Timer _timer;
+
 
   @override
   void initState(){
@@ -89,25 +90,39 @@ class _SuiviPageState extends State<SuiviPage>{
     }
 
     //Reçoit la position actuelle et l'ajoute dans la liste de coordonnées
-    subscription = LocationService.getPositionStream().listen((Position? position) {
-     _mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng( position!.latitude, position.longitude ), 20.0));
-      positions.add(position);
-      print(positions);
+    if  (subscription == null) {
+      subscription =
+          LocationService.getPositionStream().listen((Position? position) {
+            _mapController.animateCamera(CameraUpdate.newLatLngZoom(
+                LatLng(position!.latitude, position.longitude), 20.0));
+            positions.add(position);
+            print(positions);
 
-      //Ajoute un marker dans la position courante de l'utilisateur
-      Marker marker = Marker(
-        markerId: MarkerId("Marker: " + position.hashCode.toString()),
-        position: LatLng(position!.latitude , position!.longitude),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRose)
-      );
-      markers.add(marker);
-      lastPosition = LatLng(position!.latitude, position!.longitude);
-    });
+            //Ajoute un marker dans la position courante de l'utilisateur
+            Marker marker = Marker(
+                markerId: MarkerId("Marker: " + position.hashCode.toString()),
+                position: LatLng(position!.latitude, position!.longitude),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueRose)
+            );
+            markers.add(marker);
+            lastPosition = LatLng(position!.latitude, position!.longitude);
+            setState(() {
+
+            });
+          });
+    }
+    else  {
+      subscription!.resume();
+
+    }
 
     //Commence le timer lorsqu'on commence la randonnée
-    startTimer();
-  }
 
+  }
+  PauseListening(){
+    subscription!.pause();
+  }
 
   //Arrête la randonné et le timer
   stoplListening() {
@@ -122,7 +137,7 @@ class _SuiviPageState extends State<SuiviPage>{
     }
 
     addCoordinates(coordinatesList, widget.randonne.id);
-    stopTimer();
+
   }
 
 
@@ -140,23 +155,9 @@ class _SuiviPageState extends State<SuiviPage>{
     );
   }
 
-  //Commence le timer
-  void startTimer() {
-    _timer = Timer.periodic(Duration(microseconds: 1), (timer) {
-      setState(() {
-        seconds++;
-      });
-    });
-  }
 
-  //Arrête le timer
-  void stopTimer() {
-    if (_timer.isActive) {
-      _timer.cancel();
-      setState(() {
-      });
-    }
-  }
+
+
 
 
 
@@ -180,15 +181,7 @@ class _SuiviPageState extends State<SuiviPage>{
                 markers: markers,
                 onMapCreated: _onMapCreated,
               ),),
-              Container(
-                height: 50,
-                alignment: Alignment.center,
-                color:  Color(0xff09635f),
-                child: Text(
-                  ' ${Duration(milliseconds: 1 *seconds).toString()}',
-                  style: TextStyle(fontSize: 30, color: Colors.white),
-                ),
-              )
+
             ],
           ),
         floatingActionButton: FloatingActionButton(
@@ -224,17 +217,17 @@ class _SuiviPageState extends State<SuiviPage>{
                     onPressed: () {
                       setState(() {
                         trailStarted = true;
-                        startTimer();
+
                         isVisible = !isVisible;
                         moveToStartMarker();
                         startListening();
                       });
                     },
                   ) : IconButton(onPressed: () {
-                    stopTimer();
+
                     isVisible = !isVisible;
                     moveToStartMarker();
-                    stoplListening();
+                    PauseListening();
                     setState(() {
 
                     });
@@ -251,6 +244,7 @@ class _SuiviPageState extends State<SuiviPage>{
                       _mapController.animateCamera(
                         CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.latitude, widget.randonne.startingCoordinates.longitude), 15.0),
                       );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRanonne(randonne: widget.randonne,)));
                     },
                   ),
                 ),
