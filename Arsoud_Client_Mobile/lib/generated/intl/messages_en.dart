@@ -48,12 +48,19 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter an email address"),
         "pleaseEnterAPassword":
             MessageLookupByLibrary.simpleMessage("Please enter a password"),
+        "sessionHasExpiredPleaseLoginAgain":
+            MessageLookupByLibrary.simpleMessage(
+                "Session has expired. Please login again."),
         "signInToYourAccount":
             MessageLookupByLibrary.simpleMessage("Sign in to your account"),
         "signUp": MessageLookupByLibrary.simpleMessage("Sign up"),
         "start": MessageLookupByLibrary.simpleMessage("Start"),
         "stop": MessageLookupByLibrary.simpleMessage("Stop"),
+        "theTrailDoesNotExist":
+            MessageLookupByLibrary.simpleMessage("The trail does not exist."),
         "type": MessageLookupByLibrary.simpleMessage("Type:"),
+        "uneErreurCestProduite":
+            MessageLookupByLibrary.simpleMessage("Une erreur c\'est produite"),
         "vosRandonnes": MessageLookupByLibrary.simpleMessage("Your hikes"),
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
             "You haven\'t created any hikes until today. To continue in this section, please create a hike."),

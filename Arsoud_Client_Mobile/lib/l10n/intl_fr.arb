@@ -22,5 +22,8 @@
   "emailAddress": "Adresse e-mail",
   "signInToYourAccount": "Connectez-vous à votre compte",
   "welcomeBack": "Bienvenue de retour",
-  "home": "Home"
+  "home": "Home",
+  "sessionHasExpiredPleaseLoginAgain": "La session a expirer. veuillez vous reconnecter",
+  "theTrailDoesNotExist": "La randonné n'existe pas",
+  "uneErreurCestProduite": "Une erreur c'est produite"
 }
