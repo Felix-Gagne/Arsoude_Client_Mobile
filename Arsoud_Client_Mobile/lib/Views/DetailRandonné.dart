@@ -34,6 +34,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
   Map<PolylineId, Polyline> polylines = {};
   var favorite = false;
   var isConnected = false;
+  bool  owner = false;
   CameraPosition cem = CameraPosition(
     target: LatLng(45.536447 , -73.495223),
     zoom: 10,
@@ -62,7 +63,15 @@ class _DetailRanonneState extends State<DetailRanonne> {
   void initState() {
     super.initState();
     verifyIfTrailIsFavorit();
+    CheckisOwner();
     // Call the function inside initState
+  }
+
+  CheckisOwner() async {
+   owner =await IsOwner(widget.randonne.id);
+   setState(() {
+
+   });
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -449,10 +458,11 @@ class _DetailRanonneState extends State<DetailRanonne> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
+                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
+
+                        owner ?  Container(
                             width: width * 0.87,
                             decoration: BoxDecoration(
                               boxShadow: [
@@ -484,6 +494,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                                 )
                             )), color: Colors.pinkAccent,)
                         )
+                            : SizedBox()
                       ],
 
                     ),
