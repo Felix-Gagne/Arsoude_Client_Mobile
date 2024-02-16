@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
@@ -10,8 +11,8 @@ import 'Models.dart';
 
   void configureDio() {
     // Set default configs
-    dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
-    //dio.options.baseUrl = 'http://10.0.2.2:5050/api';
+    //dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
+    dio.options.baseUrl = 'http://10.0.2.2:5050/api';
     dio.options.connectTimeout = Duration(seconds: 30);
     dio.options.receiveTimeout = Duration(seconds: 30);
   }
@@ -35,6 +36,30 @@ import 'Models.dart';
       print(e);
       throw(e);
     }
+  }
+
+
+  Future<bool> IsOwner(int trailId) async{
+    try{
+      String? token = await storage.read(key: 'jwt');
+      //Il faudra changer l'adresse lors du deploiment du serveur
+      ;
+      final response = await dio.get(dio.options.baseUrl + "/trail/CheckOwnerByTrailId/$trailId",options: Options(
+          contentType: "application/json",
+          headers: {
+            "Authorization": "Bearer $token",
+          }));
+      print(response);
+      bool result = bool.parse(response.data.toString());
+      return result ;
+    }
+    catch (e){
+      print(e);
+      throw(e);
+    }
+
+
+
   }
 
 
