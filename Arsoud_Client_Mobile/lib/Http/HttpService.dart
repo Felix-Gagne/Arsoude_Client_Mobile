@@ -10,8 +10,8 @@ import 'Models.dart';
 
   void configureDio() {
     // Set default configs
-    //dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
-    dio.options.baseUrl = 'http://10.0.2.2:5050/api';
+    dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
+    //dio.options.baseUrl = 'http://10.0.2.2:5050/api';
     dio.options.connectTimeout = Duration(seconds: 30);
     dio.options.receiveTimeout = Duration(seconds: 30);
   }
@@ -194,6 +194,25 @@ Future<List<Randonne>> getUserFavoriteTrails() async{
       return Randonne.fromJson((elementJson));
     }).toList();
     return listTrail;
+  }
+  catch (e){
+    print(e);
+    throw e;
+  }
+}
+
+Future<bool> manageTrailFavorite(int id, bool etat) async{
+  try{
+    String? token = await storage.read(key: 'jwt');
+    var response = await dio.get('/Trail/ManageTrailFavorite/$id', options: Options(
+        contentType: "application/json",
+        headers: {
+          "Authorization": "Bearer $token",
+        }
+    ));
+    print(response);
+
+    return !etat;
   }
   catch (e){
     print(e);

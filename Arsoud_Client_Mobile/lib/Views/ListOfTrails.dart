@@ -56,7 +56,7 @@ class ListOfTrails extends StatelessWidget {
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
-                      child: (randonne.imageUrl != null)
+                      child: (randonne.imageUrl != null && randonne.imageUrl != "")
                           ? Image.network(
                         randonne.imageUrl!,
                         fit: BoxFit.cover,

@@ -31,5 +31,12 @@
   "settings": "Settings",
   "myListOfTrails": "My list of trails",
   "favorites": "Favorites",
-  "logout": "Logout"
+  "logout": "Logout",
+  "advertisement": "Advertisement",
+  "youNeedToBeLoggedInToAccessThisPage": "You need to be logged in to access this page.",
+  "cancel": "Cancel",
+  "search": "Search",
+  "myTrails": "My trails",
+  "favorite": "Favorite",
+  "profile": "Profile"
 }

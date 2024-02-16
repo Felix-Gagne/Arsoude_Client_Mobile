@@ -379,6 +379,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Advertisement`
+  String get advertisement {
+    return Intl.message(
+      'Advertisement',
+      name: 'advertisement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You need to be logged in to access this page.`
+  String get youNeedToBeLoggedInToAccessThisPage {
+    return Intl.message(
+      'You need to be logged in to access this page.',
+      name: 'youNeedToBeLoggedInToAccessThisPage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My trails`
+  String get myTrails {
+    return Intl.message(
+      'My trails',
+      name: 'myTrails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Favorite`
+  String get favorite {
+    return Intl.message(
+      'Favorite',
+      name: 'favorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -28,6 +28,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please reconnect to the internet to continue."),
         "VeuillezRessayerPlusTard": MessageLookupByLibrary.simpleMessage(
             "Our servers are currently experiencing a problem. Please try again later."),
+        "advertisement": MessageLookupByLibrary.simpleMessage("Advertisement"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chercherUneRandonne":
             MessageLookupByLibrary.simpleMessage("Search for a hike"),
         "discoverNewHikes":
@@ -36,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
         "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
+        "favorite": MessageLookupByLibrary.simpleMessage("Favorite"),
         "favoriteTrail":
             MessageLookupByLibrary.simpleMessage("Your favorite trails"),
         "favorites": MessageLookupByLibrary.simpleMessage("Favorites"),
@@ -49,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "myListOfTrails":
             MessageLookupByLibrary.simpleMessage("My list of trails"),
+        "myTrails": MessageLookupByLibrary.simpleMessage("My trails"),
         "noFavorites":
             MessageLookupByLibrary.simpleMessage("You have no favorite hikes"),
         "noHikesExist": MessageLookupByLibrary.simpleMessage(
@@ -61,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter an email address"),
         "pleaseEnterAPassword":
             MessageLookupByLibrary.simpleMessage("Please enter a password"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "search": MessageLookupByLibrary.simpleMessage("Search"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signInToYourAccount":
             MessageLookupByLibrary.simpleMessage("Sign in to your account"),
@@ -71,6 +77,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "vosRandonnes": MessageLookupByLibrary.simpleMessage("Your hikes"),
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
             "You haven\'t created any hikes until today. To continue in this section, please create a hike."),
-        "welcomeBack": MessageLookupByLibrary.simpleMessage("Welcome Back")
+        "welcomeBack": MessageLookupByLibrary.simpleMessage("Welcome Back"),
+        "youNeedToBeLoggedInToAccessThisPage":
+            MessageLookupByLibrary.simpleMessage(
+                "You need to be logged in to access this page.")
       };
 }

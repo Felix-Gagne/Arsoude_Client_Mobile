@@ -30,15 +30,17 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
 
   MotionTabBarController? _motionTabBarController;
   int _initialTabIndex = 0;
-  List<String> labels = ["Search", "Home", "My trails", "Favorite", "Profile"];
 
 
   String _email = "";
+  String _user = "";
 
   Future<String?> getEmail() async{
     String? email = await storage.read(key: 'email');
+    String? user = await storage.read(key: 'jwt');
     setState(() {
       _email = email ?? "";
+      _user = user ?? "";
     });
   }
 
@@ -65,6 +67,7 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    List<String> labels = [S.of(context).search, S.of(context).home, S.of(context).myTrails, S.of(context).favorite, S.of(context).profile];
 
     return Scaffold(
       body: TabBarView(
@@ -108,13 +111,13 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
         onTabItemSelected: (int value) {
           setState(() {
             // _tabController!.index = value;
-            if(value != 1 && value != 0 && _email == null){
+            if(value != 1 && value != 0 && _user == null || _user == ""){
               showDialog(
                   context: context,
                   builder: (BuildContext context){
                     return AlertDialog(
-                      title: Text("Advertisement"),
-                      content: Text('You need to be logged in to access this page.'),
+                      title: Text(S.of(context).advertisement),
+                      content: Text(S.of(context).youNeedToBeLoggedInToAccessThisPage),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () {
@@ -136,7 +139,7 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
                                 MaterialPageRoute(builder: (context) => navBar(page: 1))
                             );
                           },
-                          child: Text('Cancel'),
+                          child: Text(S.of(context).cancel),
                         ),
                       ],
                     );
@@ -144,6 +147,7 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
               );
             }
             else{
+              print(_user);
               _motionTabBarController!.index = value;
             }
           });

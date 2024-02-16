@@ -31,5 +31,12 @@
   "settings": "paramètre",
   "myListOfTrails": "Ma liste de randonnée",
   "favorites": "Favoris",
-  "logout": "Déconnexion"
+  "logout": "Déconnexion",
+  "advertisement": "Advertissement",
+  "youNeedToBeLoggedInToAccessThisPage": "Vous devez vous connectez afin d'accedez a cette page",
+  "cancel": "Cancel",
+  "search": "Chercher",
+  "myTrails": "Mes randonnées",
+  "favorite": "Favoris",
+  "profile": "Profile"
 }

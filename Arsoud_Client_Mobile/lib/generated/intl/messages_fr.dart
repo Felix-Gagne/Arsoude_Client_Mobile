@@ -28,6 +28,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Veuillez vous reconnecter à Internet pour continuer."),
         "VeuillezRessayerPlusTard": MessageLookupByLibrary.simpleMessage(
             "Nos serveurs rencontrent actuellement un problème. Veuillez réessayer plus tard."),
+        "advertisement": MessageLookupByLibrary.simpleMessage("Advertissement"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chercherUneRandonne":
             MessageLookupByLibrary.simpleMessage("Chercher une randonnée"),
         "discoverNewHikes": MessageLookupByLibrary.simpleMessage(
@@ -36,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dontHaveAnAccount": MessageLookupByLibrary.simpleMessage(
             "Vous n\'avez pas de compte ?"),
         "emailAddress": MessageLookupByLibrary.simpleMessage("Adresse e-mail"),
+        "favorite": MessageLookupByLibrary.simpleMessage("Favoris"),
         "favoriteTrail":
             MessageLookupByLibrary.simpleMessage("Vos randonnées favorites"),
         "favorites": MessageLookupByLibrary.simpleMessage("Favoris"),
@@ -50,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "logout": MessageLookupByLibrary.simpleMessage("Déconnexion"),
         "myListOfTrails":
             MessageLookupByLibrary.simpleMessage("Ma liste de randonnée"),
+        "myTrails": MessageLookupByLibrary.simpleMessage("Mes randonnées"),
         "noFavorites": MessageLookupByLibrary.simpleMessage(
             "Vous avez aucune randonnée dans vos favoris"),
         "noHikesExist": MessageLookupByLibrary.simpleMessage(
@@ -62,6 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Veuillez entrer une adresse e-mail"),
         "pleaseEnterAPassword": MessageLookupByLibrary.simpleMessage(
             "Veuillez entrer un mot de passe"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "search": MessageLookupByLibrary.simpleMessage("Chercher"),
         "settings": MessageLookupByLibrary.simpleMessage("paramètre"),
         "signInToYourAccount": MessageLookupByLibrary.simpleMessage(
             "Connectez-vous à votre compte"),
@@ -73,6 +79,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
             "Vous n\'avez créé aucune randonnée jusqu\'à aujourd\'hui. Afin de continuer dans cette section veuillez créer une randonnée."),
         "welcomeBack":
-            MessageLookupByLibrary.simpleMessage("Bienvenue de retour")
+            MessageLookupByLibrary.simpleMessage("Bienvenue de retour"),
+        "youNeedToBeLoggedInToAccessThisPage":
+            MessageLookupByLibrary.simpleMessage(
+                "Vous devez vous connectez afin d\'accedez a cette page")
       };
 }
