@@ -38,7 +38,7 @@
   "search": "Search",
   "myTrails": "My trails",
   "favorite": "Favorite",
-  "profile": "Profile"
+  "profile": "Profile",
   "home": "Home",
   "sessionHasExpiredPleaseLoginAgain": "Session has expired. Please login again.",
   "theTrailDoesNotExist": "The trail does not exist.",

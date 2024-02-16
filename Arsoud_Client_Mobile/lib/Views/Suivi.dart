@@ -29,6 +29,7 @@ class SuiviPage extends StatefulWidget{
 }
 
 class _SuiviPageState extends State<SuiviPage>{
+
   StreamSubscription<Position>? subscription;
   List<Position?> positions = [];
   LatLng? lastPosition;
@@ -36,7 +37,6 @@ class _SuiviPageState extends State<SuiviPage>{
   late GoogleMapController _mapController;
   Set<Marker> markers = Set();
   CameraPosition cem = new CameraPosition( target: LatLng(45.543589 , -73.491606) );
-  int seconds = 0;
   bool trailStarted = false;
 
 
@@ -107,18 +107,14 @@ class _SuiviPageState extends State<SuiviPage>{
             markers.add(marker);
             lastPosition = LatLng(position!.latitude, position!.longitude);
             setState(() {
-
             });
           });
     }
     else  {
       subscription!.resume();
-
     }
-
-    //Commence le timer lorsqu'on commence la randonnée
-
   }
+
   PauseListening(){
     subscription!.pause();
   }
@@ -133,11 +129,8 @@ class _SuiviPageState extends State<SuiviPage>{
       coor.longitude = marker.position.longitude;
       coordinatesList.add(coor);
     }
-
     addCoordinates(coordinatesList, widget.randonne.id);
-
   }
-
 
   //Initialise le google map controller
   void _onMapCreated(GoogleMapController controller) {
@@ -153,12 +146,6 @@ class _SuiviPageState extends State<SuiviPage>{
     );
   }
 
-
-
-
-
-
-
   @override
   void dispose() {
     super.dispose();
@@ -173,13 +160,13 @@ class _SuiviPageState extends State<SuiviPage>{
             children: [
               Expanded(
                 child: GoogleMap(
-                mapType: MapType.satellite,
-                initialCameraPosition: cem,
-                myLocationEnabled: true,
-                markers: markers,
-                onMapCreated: _onMapCreated,
-              ),),
-
+                  mapType: MapType.satellite,
+                  initialCameraPosition: cem,
+                  myLocationEnabled: true,
+                  markers: markers,
+                  onMapCreated: _onMapCreated,
+                ),
+              ),
             ],
           ),
         floatingActionButton: FloatingActionButton(
@@ -215,21 +202,20 @@ class _SuiviPageState extends State<SuiviPage>{
                     onPressed: () {
                       setState(() {
                         trailStarted = true;
-
                         isVisible = !isVisible;
                         moveToStartMarker();
                         startListening();
                       });
                     },
-                  ) : IconButton(onPressed: () {
-
-                    isVisible = !isVisible;
-                    moveToStartMarker();
-                    PauseListening();
-                    setState(() {
-
-                    });
-                  }, icon: Icon(Icons.pause, size: 45)),
+                  ) : IconButton(onPressed: ()
+                      {
+                        isVisible = !isVisible;
+                        moveToStartMarker();
+                        PauseListening();
+                        setState(() {});
+                      },
+                      icon: Icon(Icons.pause, size: 45)
+                  ),
                 ),
                 Opacity(
                   opacity: trailStarted ? 1.0 : 0.0,
