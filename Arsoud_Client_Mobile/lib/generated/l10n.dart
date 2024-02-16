@@ -449,6 +449,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Session has expired. Please login again.`
+  String get sessionHasExpiredPleaseLoginAgain {
+    return Intl.message(
+      'Session has expired. Please login again.',
+      name: 'sessionHasExpiredPleaseLoginAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The trail does not exist.`
+  String get theTrailDoesNotExist {
+    return Intl.message(
+      'The trail does not exist.',
+      name: 'theTrailDoesNotExist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Une erreur c'est produite`
+  String get uneErreurCestProduite {
+    return Intl.message(
+      'Une erreur c\'est produite',
+      name: 'uneErreurCestProduite',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

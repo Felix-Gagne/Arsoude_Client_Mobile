@@ -69,12 +69,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "search": MessageLookupByLibrary.simpleMessage("Chercher"),
         "settings": MessageLookupByLibrary.simpleMessage("paramètre"),
+        "sessionHasExpiredPleaseLoginAgain":
+            MessageLookupByLibrary.simpleMessage(
+                "La session a expirer. veuillez vous reconnecter"),
         "signInToYourAccount": MessageLookupByLibrary.simpleMessage(
             "Connectez-vous à votre compte"),
         "signUp": MessageLookupByLibrary.simpleMessage("S\'inscrire"),
         "start": MessageLookupByLibrary.simpleMessage("Démarrer"),
         "stop": MessageLookupByLibrary.simpleMessage("Arrêter"),
+        "theTrailDoesNotExist":
+            MessageLookupByLibrary.simpleMessage("La randonné n\'existe pas"),
         "type": MessageLookupByLibrary.simpleMessage("Type :"),
+        "uneErreurCestProduite":
+            MessageLookupByLibrary.simpleMessage("Une erreur c\'est produite"),
         "vosRandonnes": MessageLookupByLibrary.simpleMessage("Vos randonnées"),
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
             "Vous n\'avez créé aucune randonnée jusqu\'à aujourd\'hui. Afin de continuer dans cette section veuillez créer une randonnée."),
