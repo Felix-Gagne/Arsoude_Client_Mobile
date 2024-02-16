@@ -84,8 +84,7 @@ class _SuiviPageState extends State<SuiviPage>{
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
     }
 
     //Reçoit la position actuelle et l'ajoute dans la liste de coordonnées
@@ -168,77 +167,88 @@ class _SuiviPageState extends State<SuiviPage>{
                 ),
               ),
             ],
-          ),
+        ),
         floatingActionButton: FloatingActionButton(
           shape: CircleBorder(),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () { Navigator.pop(context); },
           child: Icon(Icons.arrow_back, color: Colors.white,),
           backgroundColor: Color(0xff09635f),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         bottomNavigationBar: BottomAppBar(
-          color:  Color(0xff09635f),
+          color: Color(0xff09635f),
           elevation: 0,
-          child: IconTheme(
-            data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  tooltip: 'Open navigation menu',
-                  icon: const Icon(Icons.camera_alt, size: 40,),
-                  onPressed: () {},
-                ),
-                Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.amber,),
-                  child:  !isVisible ? IconButton(
-                    tooltip: 'Start',
-                    icon: const FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Icon(Icons.play_arrow_sharp, size: 45,)
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        trailStarted = true;
-                        isVisible = !isVisible;
-                        moveToStartMarker();
-                        startListening();
-                      });
-                    },
-                  ) : IconButton(onPressed: ()
-                      {
-                        isVisible = !isVisible;
-                        moveToStartMarker();
-                        PauseListening();
-                        setState(() {});
-                      },
-                      icon: Icon(Icons.pause, size: 45)
-                  ),
-                ),
-                Opacity(
-                  opacity: trailStarted ? 1.0 : 0.0,
-                  child:  IconButton(
-                    tooltip: 'Favorite',
-                    icon: const Icon(Icons.stop_circle_rounded, size: 40,),
-                    onPressed: () {
-                      stoplListening();
-                      trailStarted = false;
-                      _mapController.animateCamera(
-                        CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.latitude, widget.randonne.startingCoordinates.longitude), 15.0),
-                      );
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRanonne(randonne: widget.randonne,)));
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
+          child: iconsList(context),
         ),
       ),
     );
   }
 
+  IconTheme iconsList(BuildContext context) {
+    return IconTheme(
+          data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              cameraIcon(),
+              startIcon(),
+              stopIcon(context),
+            ],
+          ),
+    );
+  }
 
+  IconButton cameraIcon() {
+    return IconButton(
+              tooltip: 'Camera',
+              icon: const Icon(Icons.camera_alt, size: 40,),
+              onPressed: () {},
+            );
+  }
+
+  Container startIcon() {
+    return Container(
+                decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.amber,),
+                child:  !isVisible ? IconButton(
+                  tooltip: 'Start',
+                  icon: const FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Icon(Icons.play_arrow_sharp, size: 45,)
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      trailStarted = true;
+                      isVisible = !isVisible;
+                      moveToStartMarker();
+                      startListening();
+                    });
+                  },
+                ) : IconButton(onPressed: ()
+                    {
+                      isVisible = !isVisible;
+                      moveToStartMarker();
+                      PauseListening();
+                      setState(() {});
+                    },
+                    icon: Icon(Icons.pause, size: 45)),
+    );
+  }
+
+  Opacity stopIcon(BuildContext context) {
+    return Opacity(
+                opacity: trailStarted ? 1.0 : 0.0,
+                child:  IconButton(
+                  tooltip: 'Stop',
+                  icon: const Icon(Icons.stop_circle_rounded, size: 40,),
+                  onPressed: () {
+                    stoplListening();
+                    trailStarted = false;
+                    _mapController.animateCamera(
+                      CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.latitude, widget.randonne.startingCoordinates.longitude), 15.0),
+                    );
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRanonne(randonne: widget.randonne,)));
+                  },
+                ),
+    );
+  }
 }
