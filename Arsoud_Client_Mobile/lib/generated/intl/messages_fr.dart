@@ -68,10 +68,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Veuillez entrer un mot de passe"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "search": MessageLookupByLibrary.simpleMessage("Chercher"),
-        "settings": MessageLookupByLibrary.simpleMessage("paramètre"),
         "sessionHasExpiredPleaseLoginAgain":
             MessageLookupByLibrary.simpleMessage(
                 "La session a expirer. veuillez vous reconnecter"),
+        "settings": MessageLookupByLibrary.simpleMessage("paramètre"),
         "signInToYourAccount": MessageLookupByLibrary.simpleMessage(
             "Connectez-vous à votre compte"),
         "signUp": MessageLookupByLibrary.simpleMessage("S\'inscrire"),
