@@ -1,17 +1,10 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:untitled/Http/GeoService.dart';
 import 'package:untitled/Http/HttpService.dart';
 import 'package:untitled/Http/Models.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:untitled/Views/Accueil.dart';
-import 'package:untitled/Views/navBar.dart';
 import '../Http/LocationService.dart';
-import '../Models/Position.dart';
 import 'DetailRandonné.dart';
 
 class SuiviPage extends StatefulWidget{
@@ -19,7 +12,7 @@ class SuiviPage extends StatefulWidget{
   final NotchedShape? shape;
   final Randonne randonne;
 
-  const SuiviPage({
+  const SuiviPage({super.key,
     this.fabLocation = FloatingActionButtonLocation.endDocked,
     this.shape = const CircularNotchedRectangle(),
     required this.randonne
@@ -35,26 +28,26 @@ class _SuiviPageState extends State<SuiviPage>{
   LatLng? lastPosition;
   bool isVisible = false;
   late GoogleMapController _mapController;
-  Set<Marker> markers = Set();
-  CameraPosition cem = new CameraPosition( target: LatLng(45.543589 , -73.491606) );
+  Set<Marker> markers = {};
+  CameraPosition cem = const CameraPosition( target: LatLng(45.543589 , -73.491606) );
   bool trailStarted = false;
 
 
   @override
   void initState(){
+    super.initState();
     LocationService.requestPermission();
 
     setState(() {
-      cem = new CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude), zoom: 14);
+      cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude), zoom: 14);
       Marker start = Marker(
-        markerId: MarkerId("Start"),
+        markerId: const MarkerId("Start"),
         position: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude),
       );
       Marker end = Marker(
-        markerId: MarkerId("End"),
+        markerId: const MarkerId("End"),
         position: LatLng(widget.randonne.endingCoordinates.latitude , widget.randonne.endingCoordinates.longitude),
       );
-
     });
   }
 
@@ -94,17 +87,16 @@ class _SuiviPageState extends State<SuiviPage>{
             _mapController.animateCamera(CameraUpdate.newLatLngZoom(
                 LatLng(position!.latitude, position.longitude), 20.0));
             positions.add(position);
-            print(positions);
 
             //Ajoute un marker dans la position courante de l'utilisateur
             Marker marker = Marker(
-                markerId: MarkerId("Marker: " + position.hashCode.toString()),
-                position: LatLng(position!.latitude, position!.longitude),
+                markerId: MarkerId("Marker: ${position.hashCode}"),
+                position: LatLng(position.latitude, position.longitude),
                 icon: BitmapDescriptor.defaultMarkerWithHue(
                     BitmapDescriptor.hueRose)
             );
             markers.add(marker);
-            lastPosition = LatLng(position!.latitude, position!.longitude);
+            lastPosition = LatLng(position.latitude, position.longitude);
             setState(() {
             });
           });
@@ -114,7 +106,7 @@ class _SuiviPageState extends State<SuiviPage>{
     }
   }
 
-  PauseListening(){
+  pauseListening(){
     subscription!.pause();
   }
 
@@ -123,7 +115,7 @@ class _SuiviPageState extends State<SuiviPage>{
     subscription!.cancel();
     List<Coordinates> coordinatesList = [];
     for(var marker in markers){
-      Coordinates coor = new Coordinates();
+      Coordinates coor = Coordinates();
       coor.latitude = marker.position.latitude;
       coor.longitude = marker.position.longitude;
       coordinatesList.add(coor);
@@ -169,36 +161,36 @@ class _SuiviPageState extends State<SuiviPage>{
             ],
         ),
         floatingActionButton: FloatingActionButton(
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
           onPressed: () { Navigator.pop(context); },
-          child: Icon(Icons.arrow_back, color: Colors.white,),
-          backgroundColor: Color(0xff09635f),
+          backgroundColor: const Color(0xff09635f),
+          child: const Icon(Icons.arrow_back, color: Colors.white,),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         bottomNavigationBar: BottomAppBar(
-          color: Color(0xff09635f),
+          color: const Color(0xff09635f),
           elevation: 0,
-          child: iconsList(context),
+          child: _iconsList(context),
         ),
       ),
     );
   }
 
-  IconTheme iconsList(BuildContext context) {
+  IconTheme _iconsList(BuildContext context) {
     return IconTheme(
           data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              cameraIcon(),
-              startIcon(),
+              _cameraIcon(),
+              _startIcon(),
               stopIcon(context),
             ],
           ),
     );
   }
 
-  IconButton cameraIcon() {
+  IconButton _cameraIcon() {
     return IconButton(
               tooltip: 'Camera',
               icon: const Icon(Icons.camera_alt, size: 40,),
@@ -206,9 +198,9 @@ class _SuiviPageState extends State<SuiviPage>{
             );
   }
 
-  Container startIcon() {
+  Container _startIcon() {
     return Container(
-                decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.amber,),
+                decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.amber,),
                 child:  !isVisible ? IconButton(
                   tooltip: 'Start',
                   icon: const FittedBox(
@@ -227,10 +219,10 @@ class _SuiviPageState extends State<SuiviPage>{
                     {
                       isVisible = !isVisible;
                       moveToStartMarker();
-                      PauseListening();
+                      pauseListening();
                       setState(() {});
                     },
-                    icon: Icon(Icons.pause, size: 45)),
+                    icon: const Icon(Icons.pause, size: 45)),
     );
   }
 
