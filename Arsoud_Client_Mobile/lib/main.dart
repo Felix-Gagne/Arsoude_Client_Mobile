@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:untitled/Views/Accueil.dart';
+import 'package:untitled/Views/Profile.dart';
 
 import 'Http/HttpService.dart';
 import 'Views/Login.dart';
+import 'Views/navBar.dart';
 import 'firebase_options.dart';
 import 'generated/l10n.dart';
 
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       title: 'Flutter Demo',
-      home: new Login(),
+      home: new navBar(page: 1),
 
 
     );

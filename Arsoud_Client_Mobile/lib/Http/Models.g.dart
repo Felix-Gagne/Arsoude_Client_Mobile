@@ -29,7 +29,7 @@ Randonne _$RandonneFromJson(Map<String, dynamic> json) => Randonne()
   ..description = json['description'] as String
   ..location = json['location'] as String
   ..type = json['type'] as int
-  ..imageUrl = json['imageUrl'] as String
+  ..imageUrl = json['imageUrl'] as String?
   ..startingCoordinates =
       Coordinates.fromJson(json['startingCoordinates'] as Map<String, dynamic>)
   ..endingCoordinates =

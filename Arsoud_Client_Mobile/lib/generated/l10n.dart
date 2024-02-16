@@ -289,6 +289,166 @@ class S {
       args: [],
     );
   }
+
+  /// `Discover new hikes`
+  String get discoverNewHikes {
+    return Intl.message(
+      'Discover new hikes',
+      name: 'discoverNewHikes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There are no hikes that can be found`
+  String get noHikesExist {
+    return Intl.message(
+      'There are no hikes that can be found',
+      name: 'noHikesExist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your favorite trails`
+  String get favoriteTrail {
+    return Intl.message(
+      'Your favorite trails',
+      name: 'favoriteTrail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have no favorite hikes`
+  String get noFavorites {
+    return Intl.message(
+      'You have no favorite hikes',
+      name: 'noFavorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Info`
+  String get info {
+    return Intl.message(
+      'Info',
+      name: 'info',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My list of trails`
+  String get myListOfTrails {
+    return Intl.message(
+      'My list of trails',
+      name: 'myListOfTrails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Favorites`
+  String get favorites {
+    return Intl.message(
+      'Favorites',
+      name: 'favorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message(
+      'Logout',
+      name: 'logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Advertisement`
+  String get advertisement {
+    return Intl.message(
+      'Advertisement',
+      name: 'advertisement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You need to be logged in to access this page.`
+  String get youNeedToBeLoggedInToAccessThisPage {
+    return Intl.message(
+      'You need to be logged in to access this page.',
+      name: 'youNeedToBeLoggedInToAccessThisPage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My trails`
+  String get myTrails {
+    return Intl.message(
+      'My trails',
+      name: 'myTrails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Favorite`
+  String get favorite {
+    return Intl.message(
+      'Favorite',
+      name: 'favorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profile {
+    return Intl.message(
+      'Profile',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

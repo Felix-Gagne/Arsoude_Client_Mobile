@@ -28,18 +28,35 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please reconnect to the internet to continue."),
         "VeuillezRessayerPlusTard": MessageLookupByLibrary.simpleMessage(
             "Our servers are currently experiencing a problem. Please try again later."),
+        "advertisement": MessageLookupByLibrary.simpleMessage("Advertisement"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "chercherUneRandonne":
             MessageLookupByLibrary.simpleMessage("Search for a hike"),
+        "discoverNewHikes":
+            MessageLookupByLibrary.simpleMessage("Discover new hikes"),
         "distance": MessageLookupByLibrary.simpleMessage("- Distance:"),
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
         "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
+        "favorite": MessageLookupByLibrary.simpleMessage("Favorite"),
+        "favoriteTrail":
+            MessageLookupByLibrary.simpleMessage("Your favorite trails"),
+        "favorites": MessageLookupByLibrary.simpleMessage("Favorites"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password?"),
         "getDirections": MessageLookupByLibrary.simpleMessage("Get Directions"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "info": MessageLookupByLibrary.simpleMessage("Info"),
         "location": MessageLookupByLibrary.simpleMessage("Location:"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
+        "myListOfTrails":
+            MessageLookupByLibrary.simpleMessage("My list of trails"),
+        "myTrails": MessageLookupByLibrary.simpleMessage("My trails"),
+        "noFavorites":
+            MessageLookupByLibrary.simpleMessage("You have no favorite hikes"),
+        "noHikesExist": MessageLookupByLibrary.simpleMessage(
+            "There are no hikes that can be found"),
         "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir":
             MessageLookupByLibrary.simpleMessage(
                 "We are currently experiencing an issue with the server. Please try again later."),
@@ -48,6 +65,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Please enter an email address"),
         "pleaseEnterAPassword":
             MessageLookupByLibrary.simpleMessage("Please enter a password"),
+        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "signInToYourAccount":
             MessageLookupByLibrary.simpleMessage("Sign in to your account"),
         "signUp": MessageLookupByLibrary.simpleMessage("Sign up"),
@@ -57,6 +77,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "vosRandonnes": MessageLookupByLibrary.simpleMessage("Your hikes"),
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
             "You haven\'t created any hikes until today. To continue in this section, please create a hike."),
-        "welcomeBack": MessageLookupByLibrary.simpleMessage("Welcome Back")
+        "welcomeBack": MessageLookupByLibrary.simpleMessage("Welcome Back"),
+        "youNeedToBeLoggedInToAccessThisPage":
+            MessageLookupByLibrary.simpleMessage(
+                "You need to be logged in to access this page.")
       };
 }

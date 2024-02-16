@@ -22,5 +22,21 @@
   "emailAddress": "Adresse e-mail",
   "signInToYourAccount": "Connectez-vous à votre compte",
   "welcomeBack": "Bienvenue de retour",
-  "home": "Home"
+  "home": "Home",
+  "discoverNewHikes": "Découvrez de nouvelle randonnée",
+  "noHikesExist": "Aucune randonnée ne peut etre trouver",
+  "favoriteTrail": "Vos randonnées favorites",
+  "noFavorites": "Vous avez aucune randonnée dans vos favoris",
+  "info": "Information",
+  "settings": "paramètre",
+  "myListOfTrails": "Ma liste de randonnée",
+  "favorites": "Favoris",
+  "logout": "Déconnexion",
+  "advertisement": "Advertissement",
+  "youNeedToBeLoggedInToAccessThisPage": "Vous devez vous connectez afin d'accedez a cette page",
+  "cancel": "Cancel",
+  "search": "Chercher",
+  "myTrails": "Mes randonnées",
+  "favorite": "Favoris",
+  "profile": "Profile"
 }

@@ -10,8 +10,8 @@ import 'Models.dart';
 
   void configureDio() {
     // Set default configs
-   // dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
-    dio.options.baseUrl = 'http://10.0.2.2:5050/api';
+    dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
+    //dio.options.baseUrl = 'http://10.0.2.2:5050/api';
     dio.options.connectTimeout = Duration(seconds: 30);
     dio.options.receiveTimeout = Duration(seconds: 30);
   }
@@ -126,6 +126,7 @@ Future<List<Coordinates>> getCoordinates(int trailId) async {
       print(response);
       var token = response.data["token"];
       await storage.write(key: 'jwt', value: token);
+      await storage.write(key: 'email', value: data.username);
 
       return true;
     }
@@ -157,6 +158,68 @@ Future<List<Coordinates>> getCoordinates(int trailId) async {
         throw e;
     }
   }
+
+Future<List<Randonne>> getAllTrails() async{
+  try{
+    configureDio();
+    var response = await dio.get('/Trail/GetAllTrails', options: Options(
+        contentType: "application/json",
+    ));
+    print(response);
+    var listJson = response.data as List;
+    var listTrail = listJson.map((elementJson){
+      return Randonne.fromJson((elementJson));
+    }).toList();
+    return listTrail;
+  }
+  catch (e){
+    print(e);
+    throw e;
+  }
+}
+
+Future<List<Randonne>> getUserFavoriteTrails() async{
+  try{
+    String? token = await storage.read(key: 'jwt');
+
+    var response = await dio.get('/Trail/GetFavoriteTrails', options: Options(
+        contentType: "application/json",
+        headers: {
+          "Authorization": "Bearer $token",
+        }
+    ));
+    print(response);
+    var listJson = response.data as List;
+    var listTrail = listJson.map((elementJson){
+      return Randonne.fromJson((elementJson));
+    }).toList();
+    return listTrail;
+  }
+  catch (e){
+    print(e);
+    throw e;
+  }
+}
+
+Future<bool> manageTrailFavorite(int id, bool etat) async{
+  try{
+    String? token = await storage.read(key: 'jwt');
+    var response = await dio.get('/Trail/ManageTrailFavorite/$id', options: Options(
+        contentType: "application/json",
+        headers: {
+          "Authorization": "Bearer $token",
+        }
+    ));
+    print(response);
+
+    return !etat;
+  }
+  catch (e){
+    print(e);
+    throw e;
+  }
+}
+
 
 
 

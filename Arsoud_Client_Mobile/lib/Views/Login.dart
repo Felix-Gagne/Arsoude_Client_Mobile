@@ -30,6 +30,51 @@ class _LoginState extends State<Login> {
 
   LoginDTO loginInfo = new LoginDTO();
 
+  loginUser() async{
+    if(_formKey.currentState!.validate()){
+      try{
+        setState(() {
+          loading = true;
+        });
+        loginInfo.password = password.value.text;
+        loginInfo.username = email.value.text;
+        var request = await login(loginInfo);
+        print("Ca marche");
+        setState(() {
+          wrongInformationError = "";
+          loading = false;
+        });
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 1)));
+      }
+      on DioException catch (e){
+        setState(() {
+          loading = false;
+        });
+        var errorMessage;
+        if(e.response != null){
+          if(e.response!.data["message"] == "Le mot de passe ou le nom d'utilisateur ne correspond pas."){
+            errorMessage = S.of(context).PleaseCheck;
+          }
+          setState(() {
+            wrongInformationError = errorMessage;
+            S.of(context).PleaseCheck;
+          });
+        }
+        else if(e.type.name == "connectionTimeout"){
+          ScaffoldMessenger.of(context).showSnackBar(snackBar(S.of(context).VeuillezRessayerPlusTard));
+        }
+        else if(e.type.name == "connectionError"){
+          ScaffoldMessenger.of(context).showSnackBar(snackBar(S.of(context).ReconectezInternetPourContinuer));
+        }
+        throw (e);
+      }
+      catch (a){
+        print(a);
+        throw(a);
+      }
+    }
+  }
+
 
   final _formKey = GlobalKey<FormState>();
 
@@ -49,15 +94,16 @@ class _LoginState extends State<Login> {
         SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               //Login title and button
               Container(
                 padding: EdgeInsets.fromLTRB(20, 30, 0, 0),
                 child: Row(
                   children: [
+                    //BackArrow
                     IconButton(onPressed: (){
-
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 1)));
                     }, icon: Icon(Icons.arrow_back_ios, color: Colors.black.withOpacity(0.5),), style: ButtonStyle(),),
                     SizedBox(width: 12,),
                     Text(S.of(context).login, style: GoogleFonts.plusJakartaSans(
@@ -67,185 +113,206 @@ class _LoginState extends State<Login> {
                 ),
               ),
               //Login Welcome title
-              Container(
-                padding: EdgeInsets.fromLTRB(24, 35, 168, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(S.of(context).welcomeBack, style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(height: 20,),
-                    Text(S.of(context).signInToYourAccount, style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(
-                            0xFFC1C1C2))),)
-                  ],
-                ),
-              ),
+              WelcomeTitle(context),
               SizedBox(height: 36,),
               //connexion information
-              Form(
-                key: _formKey,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(24, 0, 40, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(S.of(context).emailAddress, style:  GoogleFonts.plusJakartaSans(
-                          textStyle: TextStyle(fontSize: 14, color:  Color(0xFF868687), fontWeight: FontWeight.w500)
-                      ),),
-                      SizedBox(height: 16,),
-                      //Email
-                      SizedBox(
-                        width: 320,
-                        //height: 48,
-                        child: TextFormField(
-                          enabled: !loading,
-                          validator: (email){
-                            if(email == ""){
-                              return S.of(context).pleaseEnterAEmail;
-                            }
-                            else{
-                              return null;
-                            }
-                          },
-                          controller: email,
-
-                          textAlignVertical: TextAlignVertical.center,
-                          textAlign: TextAlign.start,
-                          decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
-                                borderRadius: BorderRadius.all(Radius.circular(36))
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1.5, color: Color(0xFF797575)),
-                                borderRadius: BorderRadius.all(Radius.circular(36))
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1.5, color: Colors.red), // Customize error border color here
-                              borderRadius: BorderRadius.all(Radius.circular(36)),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1.5, color: Colors.red), // Same as error border for consistency
-                              borderRadius: BorderRadius.all(Radius.circular(36)),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
-                                borderRadius: BorderRadius.all(Radius.circular(36))
-                            ),
-
-                            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                          ),
-
-                        ),
-                      ),
-                      SizedBox(height: 24,),
-                      Text(S.of(context).password, style:  GoogleFonts.plusJakartaSans(
-                          textStyle: TextStyle(fontSize: 14, color:  Color(0xFF868687), fontWeight: FontWeight.w500)
-                      )),
-                      SizedBox(height: 16,),
-                      //Password
-                      SizedBox(
-                        width: 320,
-                        //height: 48,
-                        child: TextFormField(
-                          enabled: !loading,
-                          validator: (password){
-                            if(password == ""){
-                              return S.of(context).pleaseEnterAPassword;
-                            }
-                            return null;
-                          },
-                          obscureText: showPassword,
-                          controller: password,
-                          textAlignVertical: TextAlignVertical.center,
-                          textAlign: TextAlign.start,
-                          decoration: InputDecoration(
-
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                    (showPassword) ? Icons.visibility : Icons.visibility_off
-                                ),
-                                onPressed: (){
-                                  showPassword = !showPassword;
-                                  setState(() {
-
-                                  });
-                                },
-                              ),
-
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
-                                  borderRadius: BorderRadius.all(Radius.circular(36))
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1.5, color: Color(0xFF797575)),
-                                  borderRadius: BorderRadius.all(Radius.circular(36))
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1.5, color: Colors.red), // Customize error border color here
-                                borderRadius: BorderRadius.all(Radius.circular(36)),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1.5, color: Colors.red), // Same as error border for consistency
-                                borderRadius: BorderRadius.all(Radius.circular(36)),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
-                                  borderRadius: BorderRadius.all(Radius.circular(36))
-                              ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                              errorText: wrongInformationError.isNotEmpty ? wrongInformationError : null
-                          ),
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done,
-                          onChanged: (text) => setState(() => {}),
-                        ),
-                      ),
-                       Column(
-                         crossAxisAlignment: CrossAxisAlignment.end,
-                         children: [
-                           TextButton(
-                                  onPressed: (){},
-                                  child: Text(S.of(context).forgotPassword, style: GoogleFonts.plusJakartaSans(
-                                      textStyle: TextStyle(fontSize: 14, color:  Color(
-                                          0xFF09635F), fontWeight: FontWeight.bold)
-                                  ),)
-                              ),
-                         ],
-                       ),
-
-                    ],
-                  ),
-                ),
-              ),
+              informationForm(context),
               //Forgot button
-
               //Login button
               LoginButton(),
               //Sign up section
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(S.of(context).dontHaveAnAccount, style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(
-                            fontSize: 14, color:  Color(0xFF878788), fontWeight: FontWeight.w500
-                        ))),
-                    TextButton(
-                        onPressed: (){},
-                        child: Text(S.of(context).signUp,style: GoogleFonts.plusJakartaSans(
-                            textStyle: TextStyle(
-                                fontSize: 14, color:  Color(0xFF09635F), fontWeight: FontWeight.bold
-                            ))))
-                  ],
-                ),
-              )
+              SignUp(context)
             ],
           ),
         )
+    );
+  }
+
+  Container WelcomeTitle(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(24, 35, 168, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(S.of(context).welcomeBack, style: GoogleFonts.plusJakartaSans(
+              textStyle: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(height: 20,),
+          Text(S.of(context).signInToYourAccount, style: GoogleFonts.plusJakartaSans(
+              textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(
+                  0xFFC1C1C2))),)
+        ],
+      ),
+    );
+  }
+
+  Form informationForm(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(24, 0, 40, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(S.of(context).emailAddress, style:  GoogleFonts.plusJakartaSans(
+                textStyle: TextStyle(fontSize: 14, color:  Color(0xFF868687), fontWeight: FontWeight.w500)
+            ),),
+            SizedBox(height: 16,),
+            //Email
+            EmailInput(context),
+            SizedBox(height: 24,),
+            Text(S.of(context).password, style:  GoogleFonts.plusJakartaSans(
+                textStyle: TextStyle(fontSize: 14, color:  Color(0xFF868687), fontWeight: FontWeight.w500)
+            )),
+            SizedBox(height: 16,),
+            //Password
+            PasswordInput(context),
+            //Forgot Password
+            ForgotPassword(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  SizedBox EmailInput(BuildContext context) {
+    return SizedBox(
+      width: 320,
+      //height: 48,
+      child: TextFormField(
+        enabled: !loading,
+        validator: (email){
+          if(email == ""){
+            return S.of(context).pleaseEnterAEmail;
+          }
+          else{
+            return null;
+          }
+        },
+        controller: email,
+
+        textAlignVertical: TextAlignVertical.center,
+        textAlign: TextAlign.start,
+        decoration: const InputDecoration(
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
+              borderRadius: BorderRadius.all(Radius.circular(36))
+          ),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 1.5, color: Color(0xFF797575)),
+              borderRadius: BorderRadius.all(Radius.circular(36))
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1.5, color: Colors.red), // Customize error border color here
+            borderRadius: BorderRadius.all(Radius.circular(36)),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1.5, color: Colors.red), // Same as error border for consistency
+            borderRadius: BorderRadius.all(Radius.circular(36)),
+          ),
+          disabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
+              borderRadius: BorderRadius.all(Radius.circular(36))
+          ),
+
+          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        ),
+
+      ),
+    );
+  }
+
+  SizedBox PasswordInput(BuildContext context) {
+    return SizedBox(
+      width: 320,
+      //height: 48,
+      child: TextFormField(
+        enabled: !loading,
+        validator: (password){
+          if(password == ""){
+            return S.of(context).pleaseEnterAPassword;
+          }
+          return null;
+        },
+        obscureText: showPassword,
+        controller: password,
+        textAlignVertical: TextAlignVertical.center,
+        textAlign: TextAlign.start,
+        decoration: InputDecoration(
+            suffixIcon: IconButton(
+              icon: Icon(
+                  (showPassword) ? Icons.visibility : Icons.visibility_off
+              ),
+              onPressed: (){
+                showPassword = !showPassword;
+                setState(() {
+
+                });
+              },
+            ),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
+                borderRadius: BorderRadius.all(Radius.circular(36))
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1.5, color: Color(0xFF797575)),
+                borderRadius: BorderRadius.all(Radius.circular(36))
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 1.5, color: Colors.red), // Customize error border color here
+              borderRadius: BorderRadius.all(Radius.circular(36)),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 1.5, color: Colors.red), // Same as error border for consistency
+              borderRadius: BorderRadius.all(Radius.circular(36)),
+            ),
+            disabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1.0, color: Color(0xFFCDCDD2)),
+                borderRadius: BorderRadius.all(Radius.circular(36))
+            ),
+            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            errorText: wrongInformationError.isNotEmpty ? wrongInformationError : null
+        ),
+        keyboardType: TextInputType.visiblePassword,
+        textInputAction: TextInputAction.done,
+        onChanged: (text) => setState(() => {}),
+      ),
+    );
+  }
+
+  Column ForgotPassword(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        TextButton(
+            onPressed: (){},
+            child: Text(S.of(context).forgotPassword, style: GoogleFonts.plusJakartaSans(
+                textStyle: TextStyle(fontSize: 14, color:  Color(
+                    0xFF09635F), fontWeight: FontWeight.bold)
+            ),)
+        ),
+      ],
+    );
+  }
+
+  Padding SignUp(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(S.of(context).dontHaveAnAccount, style: GoogleFonts.plusJakartaSans(
+              textStyle: TextStyle(
+                  fontSize: 14, color:  Color(0xFF878788), fontWeight: FontWeight.w500
+              ))),
+          TextButton(
+              onPressed: (){},
+              child: Text(S.of(context).signUp,style: GoogleFonts.plusJakartaSans(
+                  textStyle: TextStyle(
+                      fontSize: 14, color:  Color(0xFF09635F), fontWeight: FontWeight.bold
+                  ))))
+        ],
+      ),
     );
   }
 
@@ -259,48 +326,7 @@ class _LoginState extends State<Login> {
           height: 56,
           child: MaterialButton(
             onPressed: (loading) ? null : () async{
-              if(_formKey.currentState!.validate()){
-                try{
-                  setState(() {
-                    loading = true;
-                  });
-                  loginInfo.password = password.value.text;
-                  loginInfo.username = email.value.text;
-                  var request = await login(loginInfo);
-                  print("Ca marche");
-                  setState(() {
-                    wrongInformationError = "";
-                    loading = false;
-                  });
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 0)));
-                }
-                on DioException catch (e){
-                  setState(() {
-                    loading = false;
-                  });
-                  var errorMessage;
-                  if(e.response != null){
-                    if(e.response!.data["message"] == "Le mot de passe ou le nom d'utilisateur ne correspond pas."){
-                      errorMessage = S.of(context).PleaseCheck;
-                    }
-                    setState(() {
-                      wrongInformationError = errorMessage;
-                      S.of(context).PleaseCheck;
-                    });
-                  }
-                  else if(e.type.name == "connectionTimeout"){
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar(S.of(context).VeuillezRessayerPlusTard));
-                  }
-                  else if(e.type.name == "connectionError"){
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar(S.of(context).ReconectezInternetPourContinuer));
-                  }
-                  throw (e);
-                }
-                catch (a){
-                  print(a);
-                  throw(a);
-                }
-              }
+              await loginUser();
             },
             child: (loading) ? CircularProgressIndicator(
               valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
