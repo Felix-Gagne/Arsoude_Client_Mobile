@@ -68,10 +68,10 @@ class _DetailRanonneState extends State<DetailRanonne> {
   }
 
   CheckisOwner() async {
-   owner =await IsOwner(widget.randonne.id);
-   setState(() {
+    owner =await IsOwner(widget.randonne.id);
+    setState(() {
 
-   });
+    });
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -129,20 +129,19 @@ class _DetailRanonneState extends State<DetailRanonne> {
           Navigator.of(context).pop();
         });
       }
-      if(e.response?.statusCode == 403)
-        {
+      if(e.response?.statusCode == 403) {
 
-          // Show a snackbar with the error message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(S.of(context).sessionHasExpiredPleaseLoginAgain),
-            ),
-          );
-          // Navigate back to the login screen after a short delay
-          Future.delayed(Duration(seconds: 2), () {
-            Navigator.push(context,MaterialPageRoute(builder: (context) => Login())); 
-          });
-        }
+        // Show a snackbar with the error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(S.of(context).sessionHasExpiredPleaseLoginAgain),
+          ),
+        );
+        // Navigate back to the login screen after a short delay
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.push(context,MaterialPageRoute(builder: (context) => Login()));
+        });
+      }
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(S.of(context).uneErreurCestProduite),
@@ -169,21 +168,21 @@ class _DetailRanonneState extends State<DetailRanonne> {
 
 
 
-    Future<void> _showMapOverlay() async {
-//On Ajoute les markers
+  Future<void> _showMapOverlay() async {
+    //On Ajoute les markers
     markers.clear();
     polylineCoordinates.clear();
     await setMarkers();
 
 
-//On Utilise les markers pour faire les polylines et on les supprimes
-        if (markers.length > 1) {
-          for (var mark in markers) {
-                polylineCoordinates.add(mark.position);
-          }
-         await addPolyLine(polylineCoordinates);
-          markers.clear();
-        }
+    //On Utilise les markers pour faire les polylines et on les supprimes
+    if (markers.length > 1) {
+      for (var mark in markers) {
+        polylineCoordinates.add(mark.position);
+      }
+      await addPolyLine(polylineCoordinates);
+      markers.clear();
+    }
 
     //On affiche le dialogue
     showDialog(
@@ -197,7 +196,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
             child: Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10),
                   color: Colors.white.withOpacity(0.5), // Adjust the opacity as needed
                 ),
                 child: ClipRRect(
@@ -217,7 +216,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
         );
       },
     );
-      }
+  }
 
 
   @override
@@ -274,286 +273,286 @@ class _DetailRanonneState extends State<DetailRanonne> {
 
   Stack TopPage(double width, double height, BuildContext context) {
     return Stack(
-                children: [
-                  Container(
-                    width: width,
-                    height: height * 0.3,
-                    child: Image.network(widget.randonne.imageUrl!, fit: BoxFit.cover,),
-                  ),
-                  // Making background darker
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.center,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.transparent,
-                            Colors.black.withOpacity(0.7), // Adjust opacity as needed
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  //Map icon
-
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        _showMapOverlay();
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(14),
-                        width: width * 0.15,
-                        height: height * 0.07,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        child: ClipRRect(
-                          borderRadius:BorderRadius.circular(10) ,
-                          child: GoogleMap(
-                            onMapCreated: _onMapCreated,
-                            mapType: MapType.terrain,
-                            initialCameraPosition: cem,
-                            markers: SEMark,
-                            polylines: Set<Polyline>.of(polylines.values),
-                            onTap: (LatLng lat) {
-                              print(lat);
-                              _showMapOverlay();
-                            },
-                            zoomControlsEnabled: false,
-                            zoomGesturesEnabled: false,
-                            mapToolbarEnabled: false,
-
-
-
-
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(top:10, left: 10, child: IconButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 0)));
-                  }, icon: Icon(Icons.arrow_back, color: Colors.white, size: 30,),)),
+      children: [
+        Container(
+          width: width,
+          height: height * 0.3,
+          child: Image.network(widget.randonne.imageUrl!, fit: BoxFit.cover,),
+        ),
+        // Making background darker
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.center,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withOpacity(0.7), // Adjust opacity as needed
                 ],
-              );
+              ),
+            ),
+          ),
+        ),
+        //Map icon
+
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: GestureDetector(
+            onTap: () {
+              _showMapOverlay();
+            },
+            child: Container(
+              margin: EdgeInsets.all(14),
+              width: width * 0.15,
+              height: height * 0.07,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+              ),
+              child: ClipRRect(
+                borderRadius:BorderRadius.circular(10) ,
+                child: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  mapType: MapType.terrain,
+                  initialCameraPosition: cem,
+                  markers: SEMark,
+                  polylines: Set<Polyline>.of(polylines.values),
+                  onTap: (LatLng lat) {
+                    print(lat);
+                    _showMapOverlay();
+                  },
+                  zoomControlsEnabled: false,
+                  zoomGesturesEnabled: false,
+                  mapToolbarEnabled: false,
+
+
+
+
+                ),
+              ),
+            ),
+          ),
+        ),
+
+        Positioned(top:10, left: 10, child: IconButton(onPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 0)));
+        }, icon: Icon(Icons.arrow_back, color: Colors.white, size: 30,),)),
+      ],
+    );
   }
 
   Positioned TrailInfo(double heightInfo, BuildContext context, double height) {
     return Positioned(
-                top: heightInfo,
-                left: 10,
-                right: 10,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+      top: heightInfo,
+      left: 10,
+      right: 10,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  S.of(context).location,
-                                  style: GoogleFonts.plusJakartaSans(
-                                    textStyle: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  widget.randonne.location,
-                                  style: GoogleFonts.plusJakartaSans(
-                                    textStyle: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-
-
-
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: 20), // Adjust the space between columns
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  S.of(context).type,
-                                  style: GoogleFonts.plusJakartaSans(
-                                    textStyle: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                (widget.randonne.type == 1)
-                                    ? Icon(
-                                  IconData(0xe1d2, fontFamily: 'MaterialIcons'),
-                                  size: 30,
-                                )
-                                    : Icon(
-                                  IconData(0xe1e1, fontFamily: 'MaterialIcons'),
-                                  size: 30,
-                                ),
-                                (isConnected) ?
-                                GestureDetector(
-                                  onTap: () async{
-                                    try{
-                                      var response = await manageTrailFavorite(widget.randonne.id, favorite);
-                                      favorite = response;
-                                    }
-                                    catch (e){
-                                      throw e;
-                                    }
-                                    setState(() {
-
-                                    });
-                                  },
-                                  child: (favorite)
-                                      ? Icon(Icons.bookmark, color: Colors.black, size: 36,)
-                                      : Icon(Icons.bookmark_outline, color: Colors.black, size: 36,),
-                                ) : Text("")
-
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: height *0.02,),
-                      Container(
-                        height: 2,
-                        width: double.infinity,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: height *0.02,),
                       Text(
-                        widget.randonne.description,
+                        S.of(context).location,
                         style: GoogleFonts.plusJakartaSans(
-                          textStyle: TextStyle(fontSize: 16),
-                        ),)
+                          textStyle: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        widget.randonne.location,
+                        style: GoogleFonts.plusJakartaSans(
+                          textStyle: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+
 
 
                     ],
                   ),
                 ),
-              );
+                SizedBox(width: 20), // Adjust the space between columns
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        S.of(context).type,
+                        style: GoogleFonts.plusJakartaSans(
+                          textStyle: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      (widget.randonne.type == 1)
+                          ? Icon(
+                        IconData(0xe1d2, fontFamily: 'MaterialIcons'),
+                        size: 30,
+                      )
+                          : Icon(
+                        IconData(0xe1e1, fontFamily: 'MaterialIcons'),
+                        size: 30,
+                      ),
+                      (isConnected) ?
+                      GestureDetector(
+                        onTap: () async{
+                          try{
+                            var response = await manageTrailFavorite(widget.randonne.id, favorite);
+                            favorite = response;
+                          }
+                          catch (e){
+                            throw e;
+                          }
+                          setState(() {
+
+                          });
+                        },
+                        child: (favorite)
+                            ? Icon(Icons.bookmark, color: Colors.black, size: 36,)
+                            : Icon(Icons.bookmark_outline, color: Colors.black, size: 36,),
+                      ) : Text("")
+
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: height *0.02,),
+            Container(
+              height: 2,
+              width: double.infinity,
+              color: Colors.black,
+            ),
+            SizedBox(height: height *0.02,),
+            Text(
+              widget.randonne.description,
+              style: GoogleFonts.plusJakartaSans(
+                textStyle: TextStyle(fontSize: 16),
+              ),)
+
+
+          ],
+        ),
+      ),
+    );
   }
 
   Padding Buttons(double width, BuildContext context) {
     return Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                   Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
 
-                        owner ?  Container(
-                            width: width * 0.87,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blue.withOpacity(0.4), // shadow color
-                                  spreadRadius: 1, // spread radius
-                                  blurRadius: 5, // blur radius
-                                  offset: Offset(5, 5), // changes position of shadow
-                                ),
+              owner ?  Container(
+                  width: width * 0.87,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.withOpacity(0.4), // shadow color
+                        spreadRadius: 1, // spread radius
+                        blurRadius: 5, // blur radius
+                        offset: Offset(5, 5), // changes position of shadow
+                      ),
 
-                              ],
-                            ),
-                            child: !widget.randonne.isPublic ? MaterialButton(onPressed: (){
-                              SetPublic(widget.randonne.id);
+                    ],
+                  ),
+                  child: !widget.randonne.isPublic ? MaterialButton(onPressed: (){
+                    SetPublic(widget.randonne.id);
 
-                            }, child: Text("Rendre publique", style: GoogleFonts.plusJakartaSans(
-                                textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16
-                                )
-                            )), color: Colors.blue,) : MaterialButton(onPressed: (){
-                              SetPrivate(widget.randonne.id);
-                            }, child: Text("Rendre Privé", style: GoogleFonts.plusJakartaSans(
-                                textStyle: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 16
-                                )
-                            )), color: Colors.pinkAccent,)
-                        )
-                            : SizedBox()
-                      ],
+                  }, child: Text("Rendre publique", style: GoogleFonts.plusJakartaSans(
+                      textStyle: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16
+                      )
+                  )), color: Colors.blue,) : MaterialButton(onPressed: (){
+                    SetPrivate(widget.randonne.id);
+                  }, child: Text("Rendre Privé", style: GoogleFonts.plusJakartaSans(
+                      textStyle: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16
+                      )
+                  )), color: Colors.pinkAccent,)
+              )
+                  : SizedBox()
+            ],
 
+          ),
+          SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: width *0.4,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.4), // shadow color
+                      spreadRadius: 1, // spread radius
+                      blurRadius: 5, // blur radius
+                      offset: Offset(5, 5), // changes position of shadow
                     ),
-                    SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: width *0.4,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.4), // shadow color
-                                spreadRadius: 1, // spread radius
-                                blurRadius: 5, // blur radius
-                                offset: Offset(5, 5), // changes position of shadow
-                              ),
 
-                            ],
-                          ),
-                          child : MaterialButton(onPressed: (){}, child: Text(S.of(context).getDirections, style: GoogleFonts.plusJakartaSans(
-                              textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16
-                              )
-                          )), color: Colors.grey,),
-                        ),
-                        SizedBox(width: width*0.07,),
-                        Container(
-                            width: width *0.4,
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.green.withOpacity(0.4), // shadow color
-                                  spreadRadius: 1, // spread radius
-                                  blurRadius: 5, // blur radius
-                                  offset: Offset(5, 5), // changes position of shadow
-                                ),
-
-                              ],
-                            ),
-                            child: MaterialButton(
-                              onPressed: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => SuiviPage(randonne: widget.randonne,))
-                                ); },
-                              child: Text(S.of(context).start, style: GoogleFonts.plusJakartaSans(
-                                  textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16
-                                  )
-                              ),), color: Colors.green,)
-                        ),
-                      ],
-                    ),
                   ],
                 ),
-              );
+                child : MaterialButton(onPressed: (){}, child: Text(S.of(context).getDirections, style: GoogleFonts.plusJakartaSans(
+                    textStyle: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16
+                    )
+                )), color: Colors.grey,),
+              ),
+              SizedBox(width: width*0.07,),
+              Container(
+                  width: width *0.4,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.green.withOpacity(0.4), // shadow color
+                        spreadRadius: 1, // spread radius
+                        blurRadius: 5, // blur radius
+                        offset: Offset(5, 5), // changes position of shadow
+                      ),
+
+                    ],
+                  ),
+                  child: MaterialButton(
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SuiviPage(randonne: widget.randonne,))
+                      ); },
+                    child: Text(S.of(context).start, style: GoogleFonts.plusJakartaSans(
+                        textStyle: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16
+                        )
+                    ),), color: Colors.green,)
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
 }
