@@ -38,6 +38,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
         "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
+        "faireLeTrajet":
+            MessageLookupByLibrary.simpleMessage("Faire le trajet"),
         "favorite": MessageLookupByLibrary.simpleMessage("Favorite"),
         "favoriteTrail":
             MessageLookupByLibrary.simpleMessage("Your favorite trails"),
@@ -66,6 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterAPassword":
             MessageLookupByLibrary.simpleMessage("Please enter a password"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "rendrePriv": MessageLookupByLibrary.simpleMessage("Rendre Privé"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "sessionHasExpiredPleaseLoginAgain":
             MessageLookupByLibrary.simpleMessage(

@@ -42,5 +42,7 @@
   "home": "Home",
   "sessionHasExpiredPleaseLoginAgain": "Session has expired. Please login again.",
   "theTrailDoesNotExist": "The trail does not exist.",
-  "uneErreurCestProduite": "Une erreur c'est produite"
+  "uneErreurCestProduite": "Une erreur c'est produite",
+  "faireLeTrajet": "Faire le trajet",
+  "rendrePriv": "Rendre Privé"
 }

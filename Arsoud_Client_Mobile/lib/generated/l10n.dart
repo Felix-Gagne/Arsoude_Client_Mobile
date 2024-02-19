@@ -479,6 +479,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Faire le trajet`
+  String get faireLeTrajet {
+    return Intl.message(
+      'Faire le trajet',
+      name: 'faireLeTrajet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rendre Privé`
+  String get rendrePriv {
+    return Intl.message(
+      'Rendre Privé',
+      name: 'rendrePriv',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
