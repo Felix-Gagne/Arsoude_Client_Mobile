@@ -9,6 +9,14 @@ import 'Models.dart';
 
   final dio = Dio(); // With default `Options`.
 
+  getDio(){
+    Dio dio = Dio();
+    dio.options.baseUrl = 'http://10.0.2.2:5050/api';
+    dio.options.connectTimeout = Duration(seconds: 30);
+    dio.options.receiveTimeout = Duration(seconds: 30);
+    return dio;
+  }
+
   void configureDio() {
     // Set default configs
     //dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
@@ -106,20 +114,16 @@ Future<List<Coordinates>> getCoordinates(int trailId) async {
   try{
     String? token = await storage.read(key: 'jwt');
      List<Coordinates> result = [];
-    final response = await dio.get(dio.options.baseUrl + "/trail/GetTrailCoordinates/$trailId",options: Options(
+    final response = await getDio().get("/trail/GetTrailCoordinates/$trailId",options: Options(
         contentType: "application/json",
         headers: {
           "Authorization": "Bearer $token",
         }
     ));
-    print(response);
     for(var e in response.data)
-      {
-        result.add(Coordinates.fromJson(e));
-
-      }
-
-
+    {
+      result.add(Coordinates.fromJson(e));
+    }
     return result ;
   }
   catch (e){

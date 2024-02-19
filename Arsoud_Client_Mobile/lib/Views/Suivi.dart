@@ -32,7 +32,6 @@ class _SuiviPageState extends State<SuiviPage>{
   CameraPosition cem = const CameraPosition( target: LatLng(45.543589 , -73.491606) );
   bool trailStarted = false;
 
-
   @override
   void initState(){
     super.initState();
