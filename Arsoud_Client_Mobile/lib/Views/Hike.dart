@@ -6,12 +6,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/HttpService.dart';
 import 'package:untitled/Http/Models.dart';
 import '../Http/LocationService.dart';
+import '../generated/l10n.dart';
 import 'DetailRandonné.dart';
+import 'Login.dart';
 
 class HikePage extends StatefulWidget{
   final FloatingActionButtonLocation fabLocation;
   final NotchedShape? shape;
   final Randonne randonne;
+
 
   const HikePage({super.key,
     this.fabLocation = FloatingActionButtonLocation.endDocked,
@@ -33,13 +36,17 @@ class _HikePageState extends State<HikePage>{
   CameraPosition cem = const CameraPosition( target: LatLng(45.543589 , -73.491606) );
   bool trailStarted = false;
   List<Coordinates> coordonees = [];
+  List<LatLng> polylineCoordinates = [];
+  Map<PolylineId, Polyline> polylines = {};
+  DateTime? start;
+  DateTime? end ;
 
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     LocationService.requestPermission();
-
+-    setMarkers();
     setState(() {
       cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude), zoom: 14);
       Marker start = Marker(
@@ -56,6 +63,7 @@ class _HikePageState extends State<HikePage>{
 
   //Commence la randonnée et le timer
   startListening() async {
+    start = DateTime.now();
     cem = CameraPosition(
       target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude),
       zoom: 16,
@@ -97,7 +105,7 @@ class _HikePageState extends State<HikePage>{
                 icon: BitmapDescriptor.defaultMarkerWithHue(
                     BitmapDescriptor.hueRose)
             );
-            markers.add(marker);
+
             lastPosition = LatLng(position.latitude, position.longitude);
             setState(() {
             });
@@ -114,19 +122,28 @@ class _HikePageState extends State<HikePage>{
 
   //Arrête la randonné et le timer
   stoplListening() {
+    end = DateTime.now();
     subscription!.cancel();
     List<Coordinates> coordinatesList = [];
-    for(var marker in markers){
+    for(var pos in positions){
       Coordinates coor = Coordinates();
-      coor.latitude = marker.position.latitude;
-      coor.longitude = marker.position.longitude;
+      coor.latitude = pos!.latitude;
+      coor.longitude = pos!.longitude;
       coordinatesList.add(coor);
     }
+    Hike data = new Hike();
+    data.date = DateTime.now();
+    data.Distance = positions.length * 10;
+    data.time = end!.difference(start!).inSeconds.toString();
+    data.TrailId = widget.randonne.id;
+
+   CreateHike(data);
 
   }
 
   //Initialise le google map controller
   void _onMapCreated(GoogleMapController controller) {
+
     _mapController = controller;
     _mapController.animateCamera(CameraUpdate.newLatLngZoom( lastPosition!, 14));
   }
@@ -179,7 +196,8 @@ class _HikePageState extends State<HikePage>{
       );
 
     }
-    for (var c in coordonnees) {
+    for (var c in coordonees) {
+      polylineCoordinates.add(LatLng(c.latitude, c.longitude));
       markers.add(Marker(
         markerId: MarkerId("Waypoint"),
         position: LatLng(c.latitude, c.longitude),
@@ -187,11 +205,25 @@ class _HikePageState extends State<HikePage>{
 
       ));
     }
+    await addPolyLine(polylineCoordinates);
     cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude,
         widget.randonne.startingCoordinates.longitude),
         zoom: 10
     );
 
+  }
+  addPolyLine(List<LatLng> coords) {
+    PolylineId id = PolylineId(coords.first.longitude.toString());
+    Polyline polyline = Polyline(
+      polylineId: id,
+      color: Colors.blue,
+      points: coords ,
+      width: 4,
+    );
+
+    polylines[id] = polyline;
+
+    setState(() {});
   }
 
   //À chaque update de la position de l'utilisateur, la caméra se déplace
@@ -221,6 +253,7 @@ class _HikePageState extends State<HikePage>{
                 myLocationEnabled: true,
                 markers: markers,
                 onMapCreated: _onMapCreated,
+                polylines: Set<Polyline>.of(polylines.values),
               ),
             ),
           ],

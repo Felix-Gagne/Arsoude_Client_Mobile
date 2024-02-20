@@ -7,6 +7,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/Models.dart';
+import 'package:untitled/Views/Hike.dart';
 import 'package:untitled/Views/Login.dart';
 import 'package:untitled/Views/Suivi.dart';
 
@@ -477,7 +478,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                   ),
                   child: MaterialButton(
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SuiviPage(randonne: widget.randonne,))
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HikePage(randonne: widget.randonne))
                       ); },
                     child: Text(S.of(context).start, style: GoogleFonts.plusJakartaSans(
                         textStyle: TextStyle(
