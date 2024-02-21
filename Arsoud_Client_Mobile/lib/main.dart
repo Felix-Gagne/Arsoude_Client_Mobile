@@ -19,7 +19,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(MyApp()));
+      .then((value) => runApp(const MyApp()));
   runApp(const MyApp());
 }
 
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: [
+      localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -38,9 +38,8 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       title: 'Flutter Demo',
-      home: new navBar(page: 1),
-
-
+      home: const navBar(page: 1),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
