@@ -7,6 +7,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/Models.dart';
+import 'package:untitled/Views/Hike.dart';
 import 'package:untitled/Views/Login.dart';
 import 'package:untitled/Views/Suivi.dart';
 
@@ -336,9 +337,11 @@ class _DetailRanonneState extends State<DetailRanonne> {
           ),
         ),
 
-        Positioned(top:10, left: 10, child: IconButton(onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 0)));
-        }, icon: Icon(Icons.arrow_back, color: Colors.white, size: 30,),)),
+        Positioned(top:50, left: 10, child: Container( decoration:  BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+          child: IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 0)));
+          }, icon: Icon(Icons.arrow_back, color: Colors.black, size: 30,),),
+        )),
       ],
     );
   }
@@ -460,9 +463,35 @@ class _DetailRanonneState extends State<DetailRanonne> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                  width: width *0.4,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.green.withOpacity(0.4), // shadow color
+                        spreadRadius: 1, // spread radius
+                        blurRadius: 5, // blur radius
+                        offset: Offset(5, 5), // changes position of shadow
+                      ),
+
+                    ],
+                  ),
+                  child: MaterialButton(
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HikePage(randonne: widget.randonne))
+                      ); },
+                    child: Text(S.of(context).start, style: GoogleFonts.plusJakartaSans(
+                        textStyle: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16
+                        )
+                    ),), color: Colors.green,)
+              ),
+              SizedBox(width: width*0.07,),
 
               owner ?  Container(
-                  width: width * 0.87,
+                  width: width * 0.4,
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -485,7 +514,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                       )
                   )), color: Colors.blue,) : MaterialButton(onPressed: (){
                     SetPrivate(widget.randonne.id);
-                  }, child: Text("Rendre Privé", style: GoogleFonts.plusJakartaSans(
+                  }, child: Text(S.of(context).rendrePriv, style: GoogleFonts.plusJakartaSans(
                       textStyle: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
@@ -497,6 +526,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
             ],
 
           ),
+
           SizedBox(height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -523,31 +553,32 @@ class _DetailRanonneState extends State<DetailRanonne> {
                 )), color: Colors.grey,),
               ),
               SizedBox(width: width*0.07,),
-              Container(
-                  width: width *0.4,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.green.withOpacity(0.4), // shadow color
-                        spreadRadius: 1, // spread radius
-                        blurRadius: 5, // blur radius
-                        offset: Offset(5, 5), // changes position of shadow
-                      ),
 
-                    ],
-                  ),
-                  child: MaterialButton(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SuiviPage(randonne: widget.randonne,))
-                      ); },
-                    child: Text(S.of(context).start, style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16
-                        )
-                    ),), color: Colors.green,)
-              ),
+             owner && coordonnees.length < 3 ?  Container(
+                 width: width *0.4,
+                 decoration: BoxDecoration(
+                   boxShadow: [
+                     BoxShadow(
+                       color: Colors.green.withOpacity(0.4), // shadow color
+                       spreadRadius: 1, // spread radius
+                       blurRadius: 5, // blur radius
+                       offset: Offset(5, 5), // changes position of shadow
+                     ),
+
+                   ],
+                 ),
+                 child: MaterialButton(
+                   onPressed: (){
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => SuiviPage(randonne: widget.randonne,))
+                     ); },
+                   child: Text(S.of(context).faireLeTrajet, style: GoogleFonts.plusJakartaSans(
+                       textStyle: TextStyle(
+                           color: Colors.white,
+                           fontWeight: FontWeight.w600,
+                           fontSize: 16
+                       )
+                   ),), color: Colors.amber,)
+             ) : SizedBox(width: width*0.07,)
             ],
           ),
         ],

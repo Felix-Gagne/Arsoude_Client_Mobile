@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -57,11 +58,11 @@ class ListOfTrails extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
                       child: (randonne.imageUrl != null && randonne.imageUrl != "")
-                          ? Image.network(
-                        randonne.imageUrl!,
-                        fit: BoxFit.cover,
-                        width: 160, // Ensure consistent width
-                        height: 100, // Ensure consistent height
+                          ? CachedNetworkImage(
+                        imageUrl: randonne.imageUrl!,
+                        progressIndicatorBuilder: (context, url, downloadProgress) =>
+                            Container( child: CircularProgressIndicator(value: downloadProgress.progress ), width: 50, height: 50, ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       )
                           : Image.asset(
                         "assets/Images/imagePlaceholder.jpg",

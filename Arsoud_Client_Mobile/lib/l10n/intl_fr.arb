@@ -41,5 +41,7 @@
   "profile": "Profile",
   "sessionHasExpiredPleaseLoginAgain": "La session a expirer. veuillez vous reconnecter",
   "theTrailDoesNotExist": "La randonné n'existe pas",
-  "uneErreurCestProduite": "Une erreur c'est produite"
+  "uneErreurCestProduite": "Une erreur c'est produite",
+  "faireLeTrajet": "Faire le trajet",
+  "rendrePriv": "Rendre Privé"
 }

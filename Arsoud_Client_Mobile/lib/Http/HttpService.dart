@@ -38,6 +38,23 @@ import 'Models.dart';
     }
   }
 
+Future<String> CreateHike(Hike hike) async {
+  try{
+    String? token = await storage.read(key: 'jwt');
+    final response = await dio.post(dio.options.baseUrl + "/trail/CreateHike", data: hike.toJson(), options: Options(
+        contentType: "application/json",
+        headers: {
+          "Authorization": "Bearer $token",
+        }));
+    print(response);
+    return "Hike Sent!";
+  }
+  catch (e){
+    print(e);
+    throw(e);
+  }
+}
+
 
   Future<bool> IsOwner(int trailId) async{
     try{
