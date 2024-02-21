@@ -52,13 +52,15 @@ Hike _$HikeFromJson(Map<String, dynamic> json) => Hike()
   ..date = DateTime.parse(json['date'] as String)
   ..time = json['time'] as String
   ..Distance = json['Distance'] as int
-  ..TrailId = json['TrailId'] as int;
+  ..TrailId = json['TrailId'] as int
+  ..isCompleted = json['isCompleted'] as bool;
 
 Map<String, dynamic> _$HikeToJson(Hike instance) => <String, dynamic>{
       'date': instance.date.toIso8601String(),
       'time': instance.time,
       'Distance': instance.Distance,
       'TrailId': instance.TrailId,
+      'isCompleted': instance.isCompleted,
     };
 
 Coordinates _$CoordinatesFromJson(Map<String, dynamic> json) => Coordinates()

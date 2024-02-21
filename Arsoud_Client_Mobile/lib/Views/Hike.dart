@@ -46,7 +46,7 @@ class _HikePageState extends State<HikePage>{
   void initState() {
     super.initState();
     LocationService.requestPermission();
--    setMarkers();
+    setMarkers();
     setState(() {
       cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude), zoom: 14);
       Marker start = Marker(
@@ -136,7 +136,15 @@ class _HikePageState extends State<HikePage>{
     data.Distance = positions.length * 10;
     data.time = end!.difference(start!).inSeconds.toString();
     data.TrailId = widget.randonne.id;
-
+    if (lastPosition != null &&
+        Geolocator.distanceBetween(
+            lastPosition!.latitude,
+            lastPosition!.longitude,
+            widget.randonne.endingCoordinates.latitude,
+            widget.randonne.endingCoordinates.longitude) <= 20) {
+      data.isCompleted = true;
+    }
+    else{data.isCompleted = false;}
    CreateHike(data);
 
   }

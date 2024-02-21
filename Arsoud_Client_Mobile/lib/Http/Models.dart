@@ -63,7 +63,7 @@ class Hike{
   String time = "";
   int Distance = 0;
   int TrailId = 0;
-
+  bool isCompleted = false;
 
   factory Hike.fromJson(Map<String, dynamic> json) => _$HikeFromJson(json);
   Map<String, dynamic> toJson() => _$HikeToJson(this);
