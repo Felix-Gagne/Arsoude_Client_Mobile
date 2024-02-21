@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -36,7 +37,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
   var favorite = false;
   var isConnected = false;
   bool  owner = false;
-  CameraPosition cem = CameraPosition(
+  CameraPosition cem = const CameraPosition(
     target: LatLng(45.536447 , -73.495223),
     zoom: 10,
   );
@@ -55,9 +56,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
     else{
       isConnected = false;
     }
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
@@ -65,13 +64,11 @@ class _DetailRanonneState extends State<DetailRanonne> {
     super.initState();
     verifyIfTrailIsFavorit();
     CheckisOwner();
-    // Call the function inside initState
   }
 
   CheckisOwner() async {
     owner =await IsOwner(widget.randonne.id);
     setState(() {
-
     });
   }
 
@@ -97,19 +94,18 @@ class _DetailRanonneState extends State<DetailRanonne> {
     );
 
     polylines[id] = polyline;
-
     setState(() {});
   }
 
   Future<void> setMarkers() async {
     Marker start = Marker(
-      markerId: MarkerId("Start"),
+      markerId: const MarkerId("Start"),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
       position: LatLng(widget.randonne.startingCoordinates.latitude,
           widget.randonne.startingCoordinates.longitude),
     );
     Marker end = Marker(
-      markerId: MarkerId("End"),
+      markerId: const MarkerId("End"),
       position: LatLng(widget.randonne.endingCoordinates.latitude,
           widget.randonne.endingCoordinates.longitude),
     );
@@ -118,27 +114,21 @@ class _DetailRanonneState extends State<DetailRanonne> {
     }
     on DioError catch(e){
       if(e.response?.statusCode == 404){
-
-        // Show a snackbar with the error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(S.of(context).theTrailDoesNotExist),
           ),
         );
-        // Pop the context after a short delay
         Future.delayed(Duration(seconds: 2), () {
           Navigator.of(context).pop();
         });
       }
       if(e.response?.statusCode == 403) {
-
-        // Show a snackbar with the error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(S.of(context).sessionHasExpiredPleaseLoginAgain),
           ),
         );
-        // Navigate back to the login screen after a short delay
         Future.delayed(Duration(seconds: 2), () {
           Navigator.push(context,MaterialPageRoute(builder: (context) => Login()));
         });
@@ -148,14 +138,12 @@ class _DetailRanonneState extends State<DetailRanonne> {
             content: Text(S.of(context).uneErreurCestProduite),
           )
       );
-
     }
     for (var c in coordonnees) {
       markers.add(Marker(
-        markerId: MarkerId("Waypoint"),
+        markerId: const MarkerId("Waypoint"),
         position: LatLng(c.latitude, c.longitude),
         visible: false,
-
       ));
     }
     cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude,
@@ -167,14 +155,11 @@ class _DetailRanonneState extends State<DetailRanonne> {
     SEMark.add(end);
   }
 
-
-
   Future<void> _showMapOverlay() async {
     //On Ajoute les markers
     markers.clear();
     polylineCoordinates.clear();
     await setMarkers();
-
 
     //On Utilise les markers pour faire les polylines et on les supprimes
     if (markers.length > 1) {
@@ -184,7 +169,6 @@ class _DetailRanonneState extends State<DetailRanonne> {
       await addPolyLine(polylineCoordinates);
       markers.clear();
     }
-
     //On affiche le dialogue
     showDialog(
       context: context,
@@ -234,11 +218,10 @@ class _DetailRanonneState extends State<DetailRanonne> {
             child: Stack(
               children: [
                 TopPage(width, height, context),
-
                 Positioned(
                   top: heightNmae,
                   child: Container(
-                    margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     width: width*0.6,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -248,25 +231,23 @@ class _DetailRanonneState extends State<DetailRanonne> {
                           color: Colors.black.withOpacity(0.5), // Shadow color
                           spreadRadius: 2,  // Spread radius
                           blurRadius: 7,    // Blur radius
-                          offset: Offset(0, 3), // Offset from the top
+                          offset: const Offset(0, 3), // Offset from the top
                         ),
                       ],
                     ),
+                    padding: const EdgeInsets.all(8),
                     child: Text(widget.randonne.name, style: GoogleFonts.plusJakartaSans(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
                     ),),
-                    padding: EdgeInsets.all(8),
                   ),
                 ),
                 TrailInfo(heightInfo, context, height),
-
                 Buttons(width, context)
               ],
             ),
           ),
-
         ],
       ),
     );
@@ -275,12 +256,16 @@ class _DetailRanonneState extends State<DetailRanonne> {
   Stack TopPage(double width, double height, BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           width: width,
           height: height * 0.3,
-          child: Image.network(widget.randonne.imageUrl!, fit: BoxFit.cover,),
+          child: CachedNetworkImage(
+            imageUrl: widget.randonne.imageUrl!,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                SizedBox( width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress ), ),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
         ),
-        // Making background darker
         Positioned.fill(
           child: Container(
             decoration: BoxDecoration(
@@ -289,13 +274,12 @@ class _DetailRanonneState extends State<DetailRanonne> {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.black.withOpacity(0.7), // Adjust opacity as needed
+                  Colors.black.withOpacity(0.7),
                 ],
               ),
             ),
           ),
         ),
-        //Map icon
 
         Positioned(
           bottom: 0,
@@ -305,7 +289,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
               _showMapOverlay();
             },
             child: Container(
-              margin: EdgeInsets.all(14),
+              margin: const EdgeInsets.all(14),
               width: width * 0.15,
               height: height * 0.07,
               decoration: BoxDecoration(
@@ -321,16 +305,11 @@ class _DetailRanonneState extends State<DetailRanonne> {
                   markers: SEMark,
                   polylines: Set<Polyline>.of(polylines.values),
                   onTap: (LatLng lat) {
-                    print(lat);
                     _showMapOverlay();
                   },
                   zoomControlsEnabled: false,
                   zoomGesturesEnabled: false,
                   mapToolbarEnabled: false,
-
-
-
-
                 ),
               ),
             ),
@@ -361,14 +340,13 @@ class _DetailRanonneState extends State<DetailRanonne> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         S.of(context).location,
                         style: GoogleFonts.plusJakartaSans(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             fontSize: 16,
                           ),
                         ),
@@ -376,15 +354,12 @@ class _DetailRanonneState extends State<DetailRanonne> {
                       Text(
                         widget.randonne.location,
                         style: GoogleFonts.plusJakartaSans(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
-
-
-
                     ],
                   ),
                 ),
@@ -402,16 +377,9 @@ class _DetailRanonneState extends State<DetailRanonne> {
                         ),
                       ),
                       (widget.randonne.type == 1)
-                          ? Icon(
-                        IconData(0xe1d2, fontFamily: 'MaterialIcons'),
-                        size: 30,
-                      )
-                          : Icon(
-                        IconData(0xe1e1, fontFamily: 'MaterialIcons'),
-                        size: 30,
-                      ),
-                      (isConnected) ?
-                      GestureDetector(
+                          ? const Icon(IconData(0xe1d2, fontFamily: 'MaterialIcons'), size: 30,)
+                          : Icon(IconData(0xe1e1, fontFamily: 'MaterialIcons'), size: 30,),
+                      (isConnected) ? GestureDetector(
                         onTap: () async{
                           try{
                             var response = await manageTrailFavorite(widget.randonne.id, favorite);
@@ -420,15 +388,12 @@ class _DetailRanonneState extends State<DetailRanonne> {
                           catch (e){
                             throw e;
                           }
-                          setState(() {
-
-                          });
+                          setState(() {});
                         },
                         child: (favorite)
                             ? Icon(Icons.bookmark, color: Colors.black, size: 36,)
                             : Icon(Icons.bookmark_outline, color: Colors.black, size: 36,),
                       ) : Text("")
-
                     ],
                   ),
                 ),
@@ -446,8 +411,6 @@ class _DetailRanonneState extends State<DetailRanonne> {
               style: GoogleFonts.plusJakartaSans(
                 textStyle: TextStyle(fontSize: 16),
               ),)
-
-
           ],
         ),
       ),
@@ -464,7 +427,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  width: width *0.4,
+                  width: width *0.88,
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -473,113 +436,128 @@ class _DetailRanonneState extends State<DetailRanonne> {
                         blurRadius: 5, // blur radius
                         offset: Offset(5, 5), // changes position of shadow
                       ),
-
                     ],
                   ),
                   child: MaterialButton(
                     onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => HikePage(randonne: widget.randonne))
                       ); },
+                    color: Colors.green,
                     child: Text(S.of(context).start, style: GoogleFonts.plusJakartaSans(
-                        textStyle: TextStyle(
+                        textStyle: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
                             fontSize: 16
                         )
-                    ),), color: Colors.green,)
+                    ),
+                    ),
+                  )
               ),
-              SizedBox(width: width*0.07,),
-
-              owner ?  Container(
-                  width: width * 0.4,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.blue.withOpacity(0.4), // shadow color
-                        spreadRadius: 1, // spread radius
-                        blurRadius: 5, // blur radius
-                        offset: Offset(5, 5), // changes position of shadow
-                      ),
-
-                    ],
-                  ),
-                  child: !widget.randonne.isPublic ? MaterialButton(onPressed: (){
-                    SetPublic(widget.randonne.id);
-
-                  }, child: Text("Rendre publique", style: GoogleFonts.plusJakartaSans(
-                      textStyle: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16
-                      )
-                  )), color: Colors.blue,) : MaterialButton(onPressed: (){
-                    SetPrivate(widget.randonne.id);
-                  }, child: Text(S.of(context).rendrePriv, style: GoogleFonts.plusJakartaSans(
-                      textStyle: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16
-                      )
-                  )), color: Colors.pinkAccent,)
-              )
-                  : SizedBox()
             ],
-
           ),
-
+          SizedBox(height: 10,),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                owner ?  Container(
+                    width: width * 0.88,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.4), // shadow color
+                          spreadRadius: 1, // spread radius
+                          blurRadius: 5, // blur radius
+                          offset: Offset(5, 5), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: !widget.randonne.isPublic ? MaterialButton(onPressed: (){
+                      SetPublic(widget.randonne.id);
+                    }, color: Colors.blue, child: Text("Rendre publique", style: GoogleFonts.plusJakartaSans(
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16
+                        )
+                    )),) : MaterialButton(onPressed: (){
+                      SetPrivate(widget.randonne.id);
+                    }, color: Colors.pinkAccent, child: Text(S.of(context).rendrePriv, style: GoogleFonts.plusJakartaSans(
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16
+                        )
+                    )),)
+                ) : SizedBox()
+              ]
+          ),
           SizedBox(height: 10,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: width *0.4,
+                width: owner && coordonnees.length < 3 ? width * 0.4 : width * 0.88,
                 decoration: BoxDecoration(
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.4), // shadow color
-                      spreadRadius: 1, // spread radius
-                      blurRadius: 5, // blur radius
-                      offset: Offset(5, 5), // changes position of shadow
+                      color: Colors.grey.withOpacity(0.4),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: Offset(5, 5),
                     ),
-
                   ],
                 ),
-                child : MaterialButton(onPressed: (){}, child: Text(S.of(context).getDirections, style: GoogleFonts.plusJakartaSans(
-                    textStyle: TextStyle(
+                child: MaterialButton(
+                  onPressed: () {},
+                  color: Colors.grey,
+                  child: Text(
+                    S.of(context).getDirections,
+                    style: GoogleFonts.plusJakartaSans(
+                      textStyle: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 16
-                    )
-                )), color: Colors.grey,),
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              SizedBox(width: width*0.07,),
-
-             owner && coordonnees.length < 3 ?  Container(
-                 width: width *0.4,
-                 decoration: BoxDecoration(
-                   boxShadow: [
-                     BoxShadow(
-                       color: Colors.green.withOpacity(0.4), // shadow color
-                       spreadRadius: 1, // spread radius
-                       blurRadius: 5, // blur radius
-                       offset: Offset(5, 5), // changes position of shadow
-                     ),
-
-                   ],
-                 ),
-                 child: MaterialButton(
-                   onPressed: (){
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => SuiviPage(randonne: widget.randonne,))
-                     ); },
-                   child: Text(S.of(context).faireLeTrajet, style: GoogleFonts.plusJakartaSans(
-                       textStyle: TextStyle(
-                           color: Colors.white,
-                           fontWeight: FontWeight.w600,
-                           fontSize: 16
-                       )
-                   ),), color: Colors.amber,)
-             ) : SizedBox(width: width*0.07,)
-            ],
+              owner && coordonnees.length < 3 ? SizedBox(width: width * 0.07) : SizedBox(width: 0),
+              owner && coordonnees.length < 3 ? Container(
+                width: width * 0.4,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.green.withOpacity(0.4),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: Offset(5, 5),
+                    ),
+                  ],
+                ),
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SuiviPage(randonne: widget.randonne),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    S.of(context).faireLeTrajet,
+                    style: GoogleFonts.plusJakartaSans(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  color: Colors.amber,
+                ),
+              ) : SizedBox(width: 0),
+              ],
           ),
         ],
       ),
