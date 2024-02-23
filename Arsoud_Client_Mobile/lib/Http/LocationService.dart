@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationService {
   static LocationPermission? permission;
+  static bool? allow;
   static Completer<GoogleMapController> _controller = Completer();
 
   static requestPermission() async {
@@ -17,7 +18,7 @@ class LocationService {
 
   static requestLocationService() async {
     if (permission == null) {
-      permission = await Geolocator.isLocationServiceEnabled();
+      allow = await Geolocator.isLocationServiceEnabled();
     }
   }
 

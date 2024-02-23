@@ -480,6 +480,26 @@ class S {
     );
   }
 
+  /// `Faire le trajet`
+  String get faireLeTrajet {
+    return Intl.message(
+      'Faire le trajet',
+      name: 'faireLeTrajet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rendre Privé`
+  String get rendrePriv {
+    return Intl.message(
+      'Rendre Privé',
+      name: 'rendrePriv',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Location services are disabled`
   String get locationServiceDisabled {
     return Intl.message(
@@ -505,26 +525,6 @@ class S {
     return Intl.message(
       'Location permissions are permanently denied, we cannot request permissions.',
       name: 'locationServicePermissionsPermanentlyDisabled',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Faire le trajet`
-  String get faireLeTrajet {
-    return Intl.message(
-      'Faire le trajet',
-      name: 'faireLeTrajet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Rendre Privé`
-  String get rendrePriv {
-    return Intl.message(
-      'Rendre Privé',
-      name: 'rendrePriv',
       desc: '',
       args: [],
     );
