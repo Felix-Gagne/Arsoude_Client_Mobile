@@ -44,7 +44,7 @@
   "theTrailDoesNotExist": "The trail does not exist.",
   "uneErreurCestProduite": "Une erreur c'est produite",
   "faireLeTrajet": "Faire le trajet",
-  "rendrePriv": "Rendre Privé"
+  "rendrePriv": "Rendre Privé",
   "locationServiceDisabled" : "Location services are disabled",
   "locationServicePermissionsDisabled" : "Location services permissions are disabled",
   "locationServicePermissionsPermanentlyDisabled" : "Location permissions are permanently denied, we cannot request permissions."
