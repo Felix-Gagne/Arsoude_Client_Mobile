@@ -480,6 +480,36 @@ class S {
     );
   }
 
+  /// `Location services are disabled`
+  String get locationServiceDisabled {
+    return Intl.message(
+      'Location services are disabled',
+      name: 'locationServiceDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location services permissions are disabled`
+  String get locationServicePermissionsDisabled {
+    return Intl.message(
+      'Location services permissions are disabled',
+      name: 'locationServicePermissionsDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location permissions are permanently denied, we cannot request permissions.`
+  String get locationServicePermissionsPermanentlyDisabled {
+    return Intl.message(
+      'Location permissions are permanently denied, we cannot request permissions.',
+      name: 'locationServicePermissionsPermanentlyDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Faire le trajet`
   String get faireLeTrajet {
     return Intl.message(

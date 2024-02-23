@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/HttpService.dart';
 import 'package:untitled/Http/Models.dart';
 import '../Http/LocationService.dart';
+import '../generated/l10n.dart';
 import 'DetailRandonné.dart';
 
 class SuiviPage extends StatefulWidget{
@@ -31,7 +33,6 @@ class _SuiviPageState extends State<SuiviPage>{
   Set<Marker> markers = {};
   CameraPosition cem = const CameraPosition( target: LatLng(45.543589 , -73.491606) );
   bool trailStarted = false;
-
 
   @override
   void initState(){
@@ -63,37 +64,35 @@ class _SuiviPageState extends State<SuiviPage>{
     bool serviceEnabled;
     LocationPermission permission;
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    serviceEnabled = await LocationService.requestLocationService();
     if (!serviceEnabled) {
-      return Future.error('Location services are disabled');
+      return Future.error(S.of(context).locationServiceDisabled);
     }
 
-    permission = await Geolocator.checkPermission();
+    permission = await LocationService.requestCheckpermission();
     if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
+      permission = await LocationService.requestPermission();
       if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+        return Future.error(S.of(context).locationServicePermissionsDisabled);
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error(S.of(context).locationServicePermissionsPermanentlyDisabled);
     }
 
     //Reçoit la position actuelle et l'ajoute dans la liste de coordonnées
     if  (subscription == null) {
       subscription =
           LocationService.getPositionStream().listen((Position? position) {
-            _mapController.animateCamera(CameraUpdate.newLatLngZoom(
-                LatLng(position!.latitude, position.longitude), 20.0));
+            _mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(position!.latitude, position.longitude), 20.0));
             positions.add(position);
 
             //Ajoute un marker dans la position courante de l'utilisateur
             Marker marker = Marker(
                 markerId: MarkerId("Marker: ${position.hashCode}"),
                 position: LatLng(position.latitude, position.longitude),
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueRose)
+                icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRose)
             );
             markers.add(marker);
             lastPosition = LatLng(position.latitude, position.longitude);

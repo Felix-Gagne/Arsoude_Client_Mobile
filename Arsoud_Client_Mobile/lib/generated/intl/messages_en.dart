@@ -50,6 +50,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "info": MessageLookupByLibrary.simpleMessage("Info"),
         "location": MessageLookupByLibrary.simpleMessage("Location:"),
+        "locationServiceDisabled": MessageLookupByLibrary.simpleMessage(
+            "Location services are disabled"),
+        "locationServicePermissionsDisabled":
+            MessageLookupByLibrary.simpleMessage(
+                "Location services permissions are disabled"),
+        "locationServicePermissionsPermanentlyDisabled":
+            MessageLookupByLibrary.simpleMessage(
+                "Location permissions are permanently denied, we cannot request permissions."),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "myListOfTrails":

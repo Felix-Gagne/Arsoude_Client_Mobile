@@ -15,6 +15,18 @@ class LocationService {
     }
   }
 
+  static requestLocationService() async {
+    if (permission == null) {
+      permission = await Geolocator.isLocationServiceEnabled();
+    }
+  }
+
+  static requestCheckpermission() async {
+    if (permission == null) {
+      permission = await Geolocator.checkPermission();
+    }
+  }
+
   static Future<Position> getCurrentPosition()  async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
