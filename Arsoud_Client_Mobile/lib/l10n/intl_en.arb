@@ -42,5 +42,9 @@
   "home": "Home",
   "sessionHasExpiredPleaseLoginAgain": "Session has expired. Please login again.",
   "theTrailDoesNotExist": "The trail does not exist.",
-  "uneErreurCestProduite": "Une erreur c'est produite"
+  "uneErreurCestProduite": "Une erreur c'est produite",
+  "locationServiceDisabled" : "Location services are disabled",
+  "locationServicePermissionsDisabled" : "Location services permissions are disabled",
+  "locationServicePermissionsPermanentlyDisabled" : "Location permissions are permanently denied, we cannot request permissions."
+
 }
