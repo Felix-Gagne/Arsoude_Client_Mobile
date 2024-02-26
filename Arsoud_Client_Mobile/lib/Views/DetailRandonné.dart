@@ -261,6 +261,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
           height: height * 0.3,
           child: CachedNetworkImage(
             imageUrl: widget.randonne.imageUrl!,
+            fit: BoxFit.fill,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 SizedBox( width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress ), ),
             errorWidget: (context, url, error) => const Icon(Icons.error),

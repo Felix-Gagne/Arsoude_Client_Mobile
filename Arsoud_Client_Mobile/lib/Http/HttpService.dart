@@ -19,8 +19,8 @@ import 'Models.dart';
 
   void configureDio() {
     // Set default configs
-    //dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
-    dio.options.baseUrl = 'http://10.0.2.2:5050/api';
+    dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
+    //dio.options.baseUrl = 'http://10.0.2.2:5050/api';
     dio.options.connectTimeout = Duration(seconds: 30);
     dio.options.receiveTimeout = Duration(seconds: 30);
   }
