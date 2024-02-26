@@ -59,6 +59,7 @@ class ListOfTrails extends StatelessWidget {
                       borderRadius: BorderRadius.circular(7),
                       child: (randonne.imageUrl != null && randonne.imageUrl != "")
                           ? CachedNetworkImage(
+                        fit: BoxFit.fill,
                         imageUrl: randonne.imageUrl!,
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                             Container( child: CircularProgressIndicator(value: downloadProgress.progress ), width: 50, height: 50, ),
