@@ -45,6 +45,7 @@ class Randonne{
   String location ="";
   int type = 0;
   String? imageUrl= "";
+  List<String>? imageList = [];
   Coordinates startingCoordinates = new Coordinates();
   Coordinates endingCoordinates = new Coordinates();
   bool isPublic = false;

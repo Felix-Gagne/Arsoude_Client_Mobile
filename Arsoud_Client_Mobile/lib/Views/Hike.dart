@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,6 +8,7 @@ import 'package:untitled/Http/HttpService.dart';
 import 'package:untitled/Http/Models.dart';
 import '../Http/LocationService.dart';
 import '../generated/l10n.dart';
+import 'CameraPage.dart';
 import 'DetailRandonné.dart';
 import 'Login.dart';
 
@@ -300,7 +302,10 @@ class _HikePageState extends State<HikePage>{
     return IconButton(
       tooltip: 'Camera',
       icon: const Icon(Icons.camera_alt, size: 40,),
-      onPressed: () {},
+      onPressed: () async {
+        await availableCameras().then((value) => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => CameraPage(cameras: value, randonne: widget.randonne,))));
+      },
     );
   }
 

@@ -30,6 +30,8 @@ Randonne _$RandonneFromJson(Map<String, dynamic> json) => Randonne()
   ..location = json['location'] as String
   ..type = json['type'] as int
   ..imageUrl = json['imageUrl'] as String?
+  ..imageList =
+      (json['imageList'] as List<dynamic>?)?.map((e) => e as String).toList()
   ..startingCoordinates =
       Coordinates.fromJson(json['startingCoordinates'] as Map<String, dynamic>)
   ..endingCoordinates =
@@ -43,6 +45,7 @@ Map<String, dynamic> _$RandonneToJson(Randonne instance) => <String, dynamic>{
       'location': instance.location,
       'type': instance.type,
       'imageUrl': instance.imageUrl,
+      'imageList': instance.imageList,
       'startingCoordinates': instance.startingCoordinates,
       'endingCoordinates': instance.endingCoordinates,
       'isPublic': instance.isPublic,

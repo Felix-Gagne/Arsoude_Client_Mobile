@@ -47,6 +47,7 @@
   "rendrePriv": "Rendre Privé",
   "locationServiceDisabled" : "Location services are disabled",
   "locationServicePermissionsDisabled" : "Location services permissions are disabled",
-  "locationServicePermissionsPermanentlyDisabled" : "Location permissions are permanently denied, we cannot request permissions."
+  "locationServicePermissionsPermanentlyDisabled" : "Location permissions are permanently denied, we cannot request permissions.",
+  "sendPhoto" : "Send"
 
 }

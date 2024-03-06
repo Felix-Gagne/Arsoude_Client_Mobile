@@ -79,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "rendrePriv": MessageLookupByLibrary.simpleMessage("Rendre Privé"),
         "search": MessageLookupByLibrary.simpleMessage("Chercher"),
+        "sendPhoto": MessageLookupByLibrary.simpleMessage("Envoyer"),
         "sessionHasExpiredPleaseLoginAgain":
             MessageLookupByLibrary.simpleMessage(
                 "La session a expirer. veuillez vous reconnecter"),

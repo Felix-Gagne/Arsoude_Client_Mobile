@@ -46,5 +46,6 @@
   "rendrePriv": "Rendre Privé",
   "locationServiceDisabled" : "Les services de location sont désactivés",
   "locationServicePermissionsDisabled" : "Les permission du services de location sont désactivés",
-  "locationServicePermissionsPermanentlyDisabled" : "Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations."
+  "locationServicePermissionsPermanentlyDisabled" : "Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations.",
+  "sendPhoto" : "Envoyer"
 }

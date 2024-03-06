@@ -529,6 +529,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Send`
+  String get sendPhoto {
+    return Intl.message(
+      'Send',
+      name: 'sendPhoto',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
