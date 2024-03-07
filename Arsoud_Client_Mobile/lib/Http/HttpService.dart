@@ -56,8 +56,10 @@ import 'Models.dart';
 
 Future<String> CreateHike(Hike hike) async {
   try{
+    configureDio();
+
     String? token = await storage.read(key: 'jwt');
-    final response = await dio.post(dio.options.baseUrl + "/trail/CreateHike", data: hike.toJson(), options: Options(
+    final response = await dio.post("/trail/CreateHike", data: hike.toJson(), options: Options(
         contentType: "application/json",
         headers: {
           "Authorization": "Bearer $token",
