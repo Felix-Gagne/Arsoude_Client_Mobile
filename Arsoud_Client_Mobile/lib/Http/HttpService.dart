@@ -12,8 +12,8 @@ import 'Models.dart';
   getDio(){
     Dio dio = Dio();
     dio.options.baseUrl = 'http://10.0.2.2:5050/api';
-    dio.options.connectTimeout = Duration(seconds: 30);
-    dio.options.receiveTimeout = Duration(seconds: 30);
+    dio.options.connectTimeout = Duration(seconds: 60);
+    dio.options.receiveTimeout = Duration(seconds: 60);
     return dio;
   }
 
@@ -21,8 +21,8 @@ import 'Models.dart';
     // Set default configs
     //dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
     dio.options.baseUrl = 'http://10.0.2.2:5050/api';
-    dio.options.connectTimeout = Duration(seconds: 30);
-    dio.options.receiveTimeout = Duration(seconds: 30);
+    dio.options.connectTimeout = Duration(seconds: 60);
+    dio.options.receiveTimeout = Duration(seconds: 60);
   }
 
    getOptions() async{

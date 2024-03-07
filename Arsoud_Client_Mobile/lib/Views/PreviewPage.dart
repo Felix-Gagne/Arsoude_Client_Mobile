@@ -39,8 +39,14 @@ class PreviewPage extends StatelessWidget {
     imageUrl = url;
     print(imageUrl);
 
-    randonne.imageList?.add(imageUrl);
 
+    print(randonne.name);
+
+    randonne.imageList ??= [];
+
+    randonne.imageList?.add(imageUrl.toString());
+
+    print(randonne.imageList);
   }
 
   @override
