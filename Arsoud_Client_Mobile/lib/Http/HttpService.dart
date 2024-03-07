@@ -42,8 +42,9 @@ import 'Models.dart';
     try{
       String? token = await storage.read(key: 'jwt');
       //Il faudra changer l'adresse lors du deploiment du serveur
+      configureDio();
       List<Map<String, dynamic>> coordsJsonList = coords.map((coord) => coord.toJson()).toList();
-      final response = await dio.post(dio.options.baseUrl + "/trail/addCoordinates/$trailId", data: jsonEncode(coordsJsonList),options: await getOptions());
+      final response = await dio.post("/trail/addCoordinates/$trailId", data: jsonEncode(coordsJsonList),options: await getOptions());
       print(response);
       return "Coordinates changed";
     }
