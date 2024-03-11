@@ -72,6 +72,24 @@ Future<String> CreateHike(Hike hike) async {
     throw(e);
   }
 }
+Future<String> sendImage(String url, int trailId) async {
+  try{
+    String imageurl = url;
+    configureDio();
+
+    ImageRequestModel img = new ImageRequestModel();
+    img.url = url;
+
+    final response = await dio.post("/trail/SendImage/$trailId", data: img.toJson(),options: await getOptions());
+    var responseInfo = response;
+    print(response);
+    return "Image added to list";
+  }
+  catch (e){
+    print(e);
+    throw(e);
+  }
+}
 
 
   Future<bool> IsOwner(int trailId) async{

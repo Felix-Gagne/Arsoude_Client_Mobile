@@ -37,16 +37,16 @@ class PreviewPage extends StatelessWidget {
 
     var url = await snapshot.ref.getDownloadURL();
     imageUrl = url;
-    print(imageUrl);
 
 
-    print(randonne.name);
+    sendImage(imageUrl.toString(), randonne.id);
 
-    randonne.imageList ??= [];
+    // randonne.imageList ??= [];
+    //
+    // randonne.imageList?.add(imageUrl.toString());
 
-    randonne.imageList?.add(imageUrl.toString());
 
-    print(randonne.imageList);
+
   }
 
   @override

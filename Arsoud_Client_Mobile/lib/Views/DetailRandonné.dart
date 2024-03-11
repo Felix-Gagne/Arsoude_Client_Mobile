@@ -62,6 +62,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
   @override
   void initState() {
     super.initState();
+
     verifyIfTrailIsFavorit();
     CheckisOwner();
   }
