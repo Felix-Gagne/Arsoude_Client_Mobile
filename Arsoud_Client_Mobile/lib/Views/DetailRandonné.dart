@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -37,6 +38,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
   var favorite = false;
   var isConnected = false;
   bool  owner = false;
+  late List<String> listImage = [];
   CameraPosition cem = const CameraPosition(
     target: LatLng(45.536447 , -73.495223),
     zoom: 10,
@@ -65,6 +67,8 @@ class _DetailRanonneState extends State<DetailRanonne> {
 
     verifyIfTrailIsFavorit();
     CheckisOwner();
+
+    getImages();
   }
 
   CheckisOwner() async {
@@ -72,6 +76,14 @@ class _DetailRanonneState extends State<DetailRanonne> {
     setState(() {
     });
   }
+
+  getImages() async {
+    listImage = await getTrailImages(widget.randonne.id);
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
 
   void _onMapCreated(GoogleMapController controller) {
     cem =  CameraPosition(
@@ -257,18 +269,50 @@ class _DetailRanonneState extends State<DetailRanonne> {
   Stack TopPage(double width, double height, BuildContext context) {
     return Stack(
       children: [
-        SizedBox(
+          SizedBox(
           width: width,
           height: height * 0.3,
-          child: CachedNetworkImage(
+          child: listImage.isNotEmpty
+              ? CarouselSlider(
+            options: CarouselOptions(
+              height: height * 0.3,
+              enlargeCenterPage: true,
+              autoPlay: true,
+              aspectRatio: 16 / 9,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: true,
+              autoPlayAnimationDuration: const Duration(milliseconds: 250),
+              viewportFraction: 1,
+            ),
+            items: listImage.map((imageUrl) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.fill,
+                      progressIndicatorBuilder: (context, url, downloadProgress) =>
+                          SizedBox(width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress),),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+          )
+              : CachedNetworkImage(
             imageUrl: widget.randonne.imageUrl!,
             fit: BoxFit.fill,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
-                SizedBox( width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress ), ),
+                SizedBox(width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress),),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
-        Positioned.fill(
+       Positioned.fill(
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -282,7 +326,6 @@ class _DetailRanonneState extends State<DetailRanonne> {
             ),
           ),
         ),
-
         Positioned(
           bottom: 0,
           right: 0,

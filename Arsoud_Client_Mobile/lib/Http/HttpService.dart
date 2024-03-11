@@ -257,6 +257,23 @@ Future<bool> manageTrailFavorite(int id, bool etat) async{
   }
 }
 
+Future<List<String>> getTrailImages(int trailId) async{
+  try{
+    configureDio();
+    var response = await dio.get('/Trail/GetTrailImages/$trailId', options: await getOptions());
+
+    List<dynamic> list = response.data;
+    List<String> imageList = list.cast<String>();
+
+    return imageList;
+
+  }
+  catch (e){
+    print(e);
+    throw e;
+  }
+}
+
 
 
 

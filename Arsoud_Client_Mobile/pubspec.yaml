@@ -47,6 +47,7 @@ dependencies:
   firebase_storage: ^11.6.1
   location_distance_calculator: ^0.0.5
   geolocator: ^10.1.0
+  carousel_slider: ^4.0.0
   google_maps_flutter: ^2.5.3
   flutter_polyline_points: ^2.0.0
   flutter_timer_widget: ^0.0.2
