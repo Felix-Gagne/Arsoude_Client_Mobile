@@ -49,7 +49,6 @@ class Randonne{
   Coordinates endingCoordinates = new Coordinates();
   bool isPublic = false;
 
-
   factory Randonne.fromJson(Map<String, dynamic> json) => _$RandonneFromJson(json);
 
   Map<String, dynamic> toJson() => _$RandonneToJson(this);
@@ -84,5 +83,29 @@ class Coordinates{
   factory Coordinates.fromJson(Map<String, dynamic> json) => _$CoordinatesFromJson(json);
 
   Map<String, dynamic> toJson() => _$CoordinatesToJson(this);
+
+}
+
+@JsonSerializable()
+class ImageRequestModel{
+  ImageRequestModel();
+
+  String url = "";
+
+  factory ImageRequestModel.fromJson(Map<String, dynamic> json) => _$ImageRequestModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ImageRequestModelToJson(this);
+
+}
+
+@JsonSerializable()
+class RatingRequestModel{
+  RatingRequestModel();
+
+  String Rating =  "";
+
+  factory RatingRequestModel.fromJson(Map<String, dynamic> json) => _$RatingRequestModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RatingRequestModelToJson(this);
 
 }

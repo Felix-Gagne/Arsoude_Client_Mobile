@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
+import 'package:untitled/Views/Hike.dart';
 
 import 'Models.dart';
 
@@ -12,17 +13,17 @@ import 'Models.dart';
   getDio(){
     Dio dio = Dio();
     dio.options.baseUrl = 'http://10.0.2.2:5050/api';
-    dio.options.connectTimeout = Duration(seconds: 30);
-    dio.options.receiveTimeout = Duration(seconds: 30);
+    dio.options.connectTimeout = Duration(seconds: 60);
+    dio.options.receiveTimeout = Duration(seconds: 60);
     return dio;
   }
 
   void configureDio() {
     // Set default configs
-    dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
-    //dio.options.baseUrl = 'http://10.0.2.2:5050/api';
-    dio.options.connectTimeout = Duration(seconds: 30);
-    dio.options.receiveTimeout = Duration(seconds: 30);
+    //dio.options.baseUrl = 'https://arsoudeserv.azurewebsites.net/api';
+    dio.options.baseUrl = 'http://10.0.2.2:5050/api';
+    dio.options.connectTimeout = Duration(seconds: 60);
+    dio.options.receiveTimeout = Duration(seconds: 60);
   }
 
    getOptions() async{
@@ -42,8 +43,9 @@ import 'Models.dart';
     try{
       String? token = await storage.read(key: 'jwt');
       //Il faudra changer l'adresse lors du deploiment du serveur
+      configureDio();
       List<Map<String, dynamic>> coordsJsonList = coords.map((coord) => coord.toJson()).toList();
-      final response = await dio.post(dio.options.baseUrl + "/trail/addCoordinates/$trailId", data: jsonEncode(coordsJsonList),options: getOptions());
+      final response = await dio.post("/trail/addCoordinates/$trailId", data: jsonEncode(coordsJsonList),options: await getOptions());
       print(response);
       return "Coordinates changed";
     }
@@ -55,8 +57,10 @@ import 'Models.dart';
 
 Future<String> CreateHike(Hike hike) async {
   try{
+    configureDio();
+
     String? token = await storage.read(key: 'jwt');
-    final response = await dio.post(dio.options.baseUrl + "/trail/CreateHike", data: hike.toJson(), options: Options(
+    final response = await dio.post("/trail/CreateHike", data: hike.toJson(), options: Options(
         contentType: "application/json",
         headers: {
           "Authorization": "Bearer $token",
@@ -69,13 +73,31 @@ Future<String> CreateHike(Hike hike) async {
     throw(e);
   }
 }
+Future<String> sendImage(String url, int trailId) async {
+  try{
+    String imageurl = url;
+    configureDio();
+
+    ImageRequestModel img = new ImageRequestModel();
+    img.url = url;
+
+    final response = await dio.post("/trail/SendImage/$trailId", data: img.toJson(),options: await getOptions());
+    var responseInfo = response;
+    print(response);
+    return "Image added to list";
+  }
+  catch (e){
+    print(e);
+    throw(e);
+  }
+}
 
 
   Future<bool> IsOwner(int trailId) async{
     try{
       String? token = await storage.read(key: 'jwt');
       //Il faudra changer l'adresse lors du deploiment du serveur
-      final response = await dio.get(dio.options.baseUrl + "/trail/CheckOwnerByTrailId/$trailId",options: getOptions());
+      final response = await dio.get(dio.options.baseUrl + "/trail/CheckOwnerByTrailId/$trailId",options: await getOptions());
       print(response);
       bool result = bool.parse(response.data.toString());
       return result ;
@@ -84,44 +106,36 @@ Future<String> CreateHike(Hike hike) async {
       print(e);
       throw(e);
     }
-
-
-
   }
 
 
-  Future<String> SetPublic(int Trailid) async{
+  Future<void> SetPublic(int trailId) async{
     try{
-      String? token = await storage.read(key: "jwt");
-      final response = await dio.get(dio.options.baseUrl + "/SetTrailToPublic/"+Trailid.toString(),options: getOptions());
+      configureDio();
+      final response = await dio.get("/trail/SetTrailStatus/$trailId/true",options: await getOptions());
     }
     catch(e){
-
       print(e);
       throw(e);
     }
-
-    return "";
   }
-Future<String> SetPrivate(int Trailid) async{
+
+Future<void> SetPrivate(int trailId) async{
   try{
-    String? token = await storage.read(key: "jwt");
-    final response = await dio.get(dio.options.baseUrl + "/SetTrailToPrivate/"+Trailid.toString(),options:getOptions());
+    configureDio();
+    await dio.get("/trail/SetTrailStatus/$trailId/false",options: await getOptions());
   }
   catch(e){
-
     print(e);
     throw(e);
   }
-
-  return "";
 }
 
 Future<List<Coordinates>> getCoordinates(int trailId) async {
   try{
     String? token = await storage.read(key: 'jwt');
      List<Coordinates> result = [];
-    final response = await getDio().get("/trail/GetTrailCoordinates/$trailId", options: getOptions());
+    final response = await getDio().get("/trail/GetTrailCoordinates/$trailId", options: await getOptions());
     for(var e in response.data)
     {
       result.add(Coordinates.fromJson(e));
@@ -171,7 +185,7 @@ Future<List<Coordinates>> getCoordinates(int trailId) async {
     try{
       String? token = await storage.read(key: 'jwt');
 
-      var response = await dio.get('/Trail/GetUserTrails', options: getOptions());
+      var response = await dio.get('/Trail/GetUserTrails', options: await getOptions());
       print(response);
       var listJson = response.data as List;
       var listTrail = listJson.map((elementJson){
@@ -208,7 +222,7 @@ Future<List<Randonne>> getUserFavoriteTrails() async{
   try{
     String? token = await storage.read(key: 'jwt');
 
-    var response = await dio.get('/Trail/GetFavoriteTrails', options: getOptions());
+    var response = await dio.get('/Trail/GetFavoriteTrails', options: await getOptions());
     print(response);
     var listJson = response.data as List;
     var listTrail = listJson.map((elementJson){
@@ -225,10 +239,40 @@ Future<List<Randonne>> getUserFavoriteTrails() async{
 Future<bool> manageTrailFavorite(int id, bool etat) async{
   try{
     String? token = await storage.read(key: 'jwt');
-    var response = await dio.get('/Trail/ManageTrailFavorite/$id', options: getOptions());
+    var response = await dio.get('/Trail/ManageTrailFavorite/$id', options: await getOptions());
     print(response);
 
     return !etat;
+  }
+  catch (e){
+    print(e);
+    throw e;
+  }
+}
+
+Future<List<String>> getTrailImages(int trailId) async{
+  try{
+    configureDio();
+    var response = await dio.get('/Trail/GetTrailImages/$trailId', options: await getOptions());
+    List<dynamic> list = response.data;
+    List<String> imageList = list.cast<String>();
+    return imageList;
+  }
+  catch (e){
+    print(e);
+    throw e;
+  }
+}
+
+Future<String> rateHike(int trailId, double rating) async{
+  try{
+    configureDio();
+
+    RatingRequestModel ratingModel = RatingRequestModel();
+    ratingModel.Rating = rating.toString();
+
+    var response = await dio.post('/Trail/RateTrail/$trailId', data: ratingModel.toJson(), options: await getOptions());
+    return rating.toString();
   }
   catch (e){
     print(e);

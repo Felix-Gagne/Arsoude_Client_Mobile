@@ -1,11 +1,14 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/Design/MyClipperBackground.dart';
 import 'package:untitled/Http/HttpService.dart';
+import 'package:untitled/Views/Test.dart';
 import 'package:untitled/Views/navBar.dart';
 
 import '../generated/l10n.dart';
 import 'Accueil.dart';
+import 'CameraPage.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -17,6 +20,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+
+
 
   String _email = "";
 
@@ -73,7 +78,9 @@ class _ProfileState extends State<Profile> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           options(width, Icons.info, S.of(context).info, (){}),
-                          options(width, Icons.settings, S.of(context).settings, (){}),
+                          options(width, Icons.settings, S.of(context).settings, () async {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
+                          }),
                           options(width, Icons.collections, S.of(context).myListOfTrails, (){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => navBar(page: 2)));
                           }),

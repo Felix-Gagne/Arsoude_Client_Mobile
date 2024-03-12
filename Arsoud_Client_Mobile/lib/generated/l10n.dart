@@ -470,31 +470,41 @@ class S {
     );
   }
 
-  /// `Une erreur c'est produite`
+  /// `An error has occured`
   String get uneErreurCestProduite {
     return Intl.message(
-      'Une erreur c\'est produite',
+      'An error has occured',
       name: 'uneErreurCestProduite',
       desc: '',
       args: [],
     );
   }
 
-  /// `Faire le trajet`
+  /// `Do the hike`
   String get faireLeTrajet {
     return Intl.message(
-      'Faire le trajet',
+      'Do the hike',
       name: 'faireLeTrajet',
       desc: '',
       args: [],
     );
   }
 
-  /// `Rendre Privé`
+  /// `Make Private`
   String get rendrePriv {
     return Intl.message(
-      'Rendre Privé',
+      'Make Private',
       name: 'rendrePriv',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Make Public`
+  String get rendrePublique {
+    return Intl.message(
+      'Make Public',
+      name: 'rendrePublique',
       desc: '',
       args: [],
     );
@@ -525,6 +535,16 @@ class S {
     return Intl.message(
       'Location permissions are permanently denied, we cannot request permissions.',
       name: 'locationServicePermissionsPermanentlyDisabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get sendPhoto {
+    return Intl.message(
+      'Send',
+      name: 'sendPhoto',
       desc: '',
       args: [],
     );

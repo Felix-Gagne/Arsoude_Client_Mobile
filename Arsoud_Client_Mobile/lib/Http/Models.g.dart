@@ -72,3 +72,19 @@ Map<String, dynamic> _$CoordinatesToJson(Coordinates instance) =>
       'latitude': instance.latitude,
       'longitude': instance.longitude,
     };
+
+ImageRequestModel _$ImageRequestModelFromJson(Map<String, dynamic> json) =>
+    ImageRequestModel()..url = json['url'] as String;
+
+Map<String, dynamic> _$ImageRequestModelToJson(ImageRequestModel instance) =>
+    <String, dynamic>{
+      'url': instance.url,
+    };
+
+RatingRequestModel _$RatingRequestModelFromJson(Map<String, dynamic> json) =>
+    RatingRequestModel()..Rating = json['Rating'] as String;
+
+Map<String, dynamic> _$RatingRequestModelToJson(RatingRequestModel instance) =>
+    <String, dynamic>{
+      'Rating': instance.Rating,
+    };

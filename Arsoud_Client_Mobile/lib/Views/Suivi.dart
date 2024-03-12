@@ -63,14 +63,14 @@ class _SuiviPageState extends State<SuiviPage>{
     bool serviceEnabled;
     LocationPermission permission;
 
-    serviceEnabled = await LocationService.requestLocationService();
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error(S.of(context).locationServiceDisabled);
     }
 
-    permission = await LocationService.requestCheckpermission();
+    permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
-      permission = await LocationService.requestPermission();
+      permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         return Future.error(S.of(context).locationServicePermissionsDisabled);
       }
