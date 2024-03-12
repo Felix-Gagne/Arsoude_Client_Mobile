@@ -38,8 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
         "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
-        "faireLeTrajet":
-            MessageLookupByLibrary.simpleMessage("Faire le trajet"),
+        "faireLeTrajet": MessageLookupByLibrary.simpleMessage("Do the hike"),
         "favorite": MessageLookupByLibrary.simpleMessage("Favorite"),
         "favoriteTrail":
             MessageLookupByLibrary.simpleMessage("Your favorite trails"),
@@ -76,7 +75,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterAPassword":
             MessageLookupByLibrary.simpleMessage("Please enter a password"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
-        "rendrePriv": MessageLookupByLibrary.simpleMessage("Rendre Privé"),
+        "rendrePriv": MessageLookupByLibrary.simpleMessage("Make Private"),
+        "rendrePublique": MessageLookupByLibrary.simpleMessage("Make Public"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "sendPhoto": MessageLookupByLibrary.simpleMessage("Send"),
         "sessionHasExpiredPleaseLoginAgain":
@@ -92,7 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("The trail does not exist."),
         "type": MessageLookupByLibrary.simpleMessage("Type:"),
         "uneErreurCestProduite":
-            MessageLookupByLibrary.simpleMessage("Une erreur c\'est produite"),
+            MessageLookupByLibrary.simpleMessage("An error has occured"),
         "vosRandonnes": MessageLookupByLibrary.simpleMessage("Your hikes"),
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
             "You haven\'t created any hikes until today. To continue in this section, please create a hike."),

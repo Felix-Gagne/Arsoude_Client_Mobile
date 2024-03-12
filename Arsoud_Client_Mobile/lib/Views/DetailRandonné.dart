@@ -69,6 +69,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
     CheckisOwner();
 
     getImages();
+
   }
 
   CheckisOwner() async {
@@ -79,6 +80,8 @@ class _DetailRanonneState extends State<DetailRanonne> {
 
   getImages() async {
     listImage = await getTrailImages(widget.randonne.id);
+    print("HFDHFDHJKFHJHFJKUHVOUDHVJKHVJHFUODVHOVHOIHIOVH");
+    print(listImage);
     if (mounted) {
       setState(() {});
     }
@@ -269,53 +272,54 @@ class _DetailRanonneState extends State<DetailRanonne> {
   Stack TopPage(double width, double height, BuildContext context) {
     return Stack(
       children: [
-          SizedBox(
-          width: width,
+      SizedBox(
+      width: width,
+      height: height * 0.3,
+      child: listImage.isNotEmpty
+          ? CarouselSlider(
+        options: CarouselOptions(
           height: height * 0.3,
-          child: listImage.isNotEmpty
-              ? CarouselSlider(
-            options: CarouselOptions(
-              height: height * 0.3,
-              enlargeCenterPage: true,
-              autoPlay: true,
-              aspectRatio: 16 / 9,
-              pageSnapping: true,
-              scrollDirection: Axis.horizontal,
-              pauseAutoPlayOnManualNavigate: true ,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: true,
-              autoPlayAnimationDuration: const Duration(milliseconds: 250),
-              viewportFraction: 1,
-            ),
-            items: listImage.map((imageUrl) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      fit: BoxFit.fill,
-                      progressIndicatorBuilder: (context, url, downloadProgress) =>
-                          SizedBox(width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress),),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                    ),
-                  );
-                },
-              );
-            }).toList(),
-          )
-              : CachedNetworkImage(
-            imageUrl: widget.randonne.imageUrl!,
-            fit: BoxFit.fill,
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                SizedBox(width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress),),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-          ),
+          enlargeCenterPage: true,
+          autoPlay: true,
+          aspectRatio: 16 / 9,
+          pageSnapping: true,
+          scrollDirection: Axis.horizontal,
+          pauseAutoPlayOnManualNavigate: true,
+          autoPlayCurve: Curves.fastOutSlowIn,
+          enableInfiniteScroll: true,
+          autoPlayAnimationDuration: const Duration(milliseconds: 250),
+          viewportFraction: 1,
         ),
-       Positioned.fill(
+        items: listImage.map((imageUrl) {
+          return Builder(
+            builder: (BuildContext context) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.amber,
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  fit: BoxFit.fill,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      SizedBox(width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress),),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+              );
+            },
+          );
+        }).toList(),
+      )
+          : CachedNetworkImage(
+        imageUrl: widget.randonne.imageUrl!,
+        fit: BoxFit.fill,
+        progressIndicatorBuilder: (context, url, downloadProgress) =>
+            SizedBox(width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress),),
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+      ),
+    ),
+
+    Positioned.fill(
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -521,7 +525,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                     ),
                     child: !widget.randonne.isPublic ? MaterialButton(onPressed: (){
                       SetPublic(widget.randonne.id);
-                    }, color: Colors.blue, child: Text("Rendre publique", style: GoogleFonts.plusJakartaSans(
+                    }, color: Colors.blue, child: Text(S.of(context).rendrePublique, style: GoogleFonts.plusJakartaSans(
                         textStyle: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,

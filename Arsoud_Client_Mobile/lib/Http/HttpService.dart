@@ -109,28 +109,26 @@ Future<String> sendImage(String url, int trailId) async {
   }
 
 
-  Future<String> SetPublic(int Trailid) async{
+  Future<void> SetPublic(int trailId) async{
     try{
-      String? token = await storage.read(key: "jwt");
-      final response = await dio.get(dio.options.baseUrl + "/SetTrailToPublic/"+Trailid.toString(),options: await getOptions());
+      configureDio();
+      final response = await dio.get("/trail/SetTrailStatus/$trailId/true",options: await getOptions());
     }
     catch(e){
       print(e);
       throw(e);
     }
-
-    return "";
   }
-Future<String> SetPrivate(int Trailid) async{
+
+Future<void> SetPrivate(int trailId) async{
   try{
-    String? token = await storage.read(key: "jwt");
-    final response = await dio.get(dio.options.baseUrl + "/SetTrailToPrivate/"+Trailid.toString(),options:await getOptions());
+    configureDio();
+    await dio.get("/trail/SetTrailStatus/$trailId/false",options: await getOptions());
   }
   catch(e){
     print(e);
     throw(e);
   }
-  return "";
 }
 
 Future<List<Coordinates>> getCoordinates(int trailId) async {

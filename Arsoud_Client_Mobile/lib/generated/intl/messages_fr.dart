@@ -78,6 +78,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Veuillez entrer un mot de passe"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "rendrePriv": MessageLookupByLibrary.simpleMessage("Rendre Privé"),
+        "rendrePublique":
+            MessageLookupByLibrary.simpleMessage("Rendre Publique"),
         "search": MessageLookupByLibrary.simpleMessage("Chercher"),
         "sendPhoto": MessageLookupByLibrary.simpleMessage("Envoyer"),
         "sessionHasExpiredPleaseLoginAgain":
