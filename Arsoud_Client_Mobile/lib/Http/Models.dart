@@ -97,3 +97,15 @@ class ImageRequestModel{
   Map<String, dynamic> toJson() => _$ImageRequestModelToJson(this);
 
 }
+
+@JsonSerializable()
+class RatingRequestModel{
+  RatingRequestModel();
+
+  String Rating =  "";
+
+  factory RatingRequestModel.fromJson(Map<String, dynamic> json) => _$RatingRequestModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RatingRequestModelToJson(this);
+
+}

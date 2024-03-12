@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/HttpService.dart';
@@ -11,6 +12,8 @@ import '../generated/l10n.dart';
 import 'CameraPage.dart';
 import 'DetailRandonné.dart';
 import 'Login.dart';
+
+
 
 class HikePage extends StatefulWidget{
   final FloatingActionButtonLocation fabLocation;
@@ -42,7 +45,8 @@ class _HikePageState extends State<HikePage>{
   Map<PolylineId, Polyline> polylines = {};
   DateTime? start;
   DateTime? end ;
-
+  late double hikeRating = 0;
+  bool rated = false;
 
   @override
   void initState() {
@@ -123,7 +127,7 @@ class _HikePageState extends State<HikePage>{
   }
 
   //Arrête la randonné et le timer
-  stoplListening() {
+  stoplListening() async {
     end = DateTime.now();
     subscription!.cancel();
     List<Coordinates> coordinatesList = [];
@@ -140,14 +144,19 @@ class _HikePageState extends State<HikePage>{
     data.TrailId = widget.randonne.id;
     if (lastPosition != null &&
         Geolocator.distanceBetween(
-            lastPosition!.latitude,
-            lastPosition!.longitude,
-            widget.randonne.endingCoordinates.latitude,
-            widget.randonne.endingCoordinates.longitude) <= 20) {
+            lastPosition!.latitude, lastPosition!.longitude,
+            widget.randonne.endingCoordinates.latitude, widget.randonne.endingCoordinates.longitude) <= 20)
+    {
       data.isCompleted = true;
     }
     else{data.isCompleted = false;}
-   CreateHike(data);
+
+    if(rated == true){
+      await hikeRating;
+      rateHike(widget.randonne.id, hikeRating);
+    }
+
+    CreateHike(data);
 
   }
 
@@ -343,15 +352,59 @@ class _HikePageState extends State<HikePage>{
       child:  IconButton(
         tooltip: 'Stop',
         icon: const Icon(Icons.stop_circle_rounded, size: 40,),
-        onPressed: () {
-          stoplListening();
-          trailStarted = false;
-          _mapController.animateCamera(
-            CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.latitude, widget.randonne.startingCoordinates.longitude), 15.0),
-          );
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRanonne(randonne: widget.randonne,)));
-        },
+        onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Rate this hike!', ),
+          content: RatingBar.builder(
+            initialRating: 3,
+            minRating: 1,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+            itemBuilder: (context, _) => const Icon(Icons.star, color: Colors.amber,),
+            onRatingUpdate: (rating) {
+              hikeRating = rating;
+              print(hikeRating);
+            },
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    stoplListening();
+                    trailStarted = false;
+                    _mapController.animateCamera(
+                      CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.latitude, widget.randonne.startingCoordinates.longitude), 15.0),
+                    );
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRanonne(randonne: widget.randonne,)));
+                  },
+                  child: const Text('No'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    rated = true;
+                    stoplListening();
+                    trailStarted = false;
+                    _mapController.animateCamera(
+                      CameraUpdate.newLatLngZoom(LatLng(widget.randonne.startingCoordinates.latitude, widget.randonne.startingCoordinates.longitude), 15.0),
+                    );
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRanonne(randonne: widget.randonne,)));
+                  },
+                  child: const Text('Continue'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      )
       ),
     );
   }
+
+
+
 }

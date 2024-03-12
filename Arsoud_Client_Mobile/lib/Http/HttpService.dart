@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart' as Storage;
+import 'package:untitled/Views/Hike.dart';
 
 import 'Models.dart';
 
@@ -105,9 +106,6 @@ Future<String> sendImage(String url, int trailId) async {
       print(e);
       throw(e);
     }
-
-
-
   }
 
 
@@ -117,7 +115,6 @@ Future<String> sendImage(String url, int trailId) async {
       final response = await dio.get(dio.options.baseUrl + "/SetTrailToPublic/"+Trailid.toString(),options: await getOptions());
     }
     catch(e){
-
       print(e);
       throw(e);
     }
@@ -130,11 +127,9 @@ Future<String> SetPrivate(int Trailid) async{
     final response = await dio.get(dio.options.baseUrl + "/SetTrailToPrivate/"+Trailid.toString(),options:await getOptions());
   }
   catch(e){
-
     print(e);
     throw(e);
   }
-
   return "";
 }
 
@@ -261,12 +256,25 @@ Future<List<String>> getTrailImages(int trailId) async{
   try{
     configureDio();
     var response = await dio.get('/Trail/GetTrailImages/$trailId', options: await getOptions());
-
     List<dynamic> list = response.data;
     List<String> imageList = list.cast<String>();
-
     return imageList;
+  }
+  catch (e){
+    print(e);
+    throw e;
+  }
+}
 
+Future<String> rateHike(int trailId, double rating) async{
+  try{
+    configureDio();
+
+    RatingRequestModel ratingModel = RatingRequestModel();
+    ratingModel.Rating = rating.toString();
+
+    var response = await dio.post('/Trail/RateTrail/$trailId', data: ratingModel.toJson(), options: await getOptions());
+    return rating.toString();
   }
   catch (e){
     print(e);
