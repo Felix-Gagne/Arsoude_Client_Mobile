@@ -6,7 +6,7 @@ class SearchBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(5, 25, 5, 10),
+      padding: const EdgeInsets.fromLTRB(5, 25, 5, 10),
       child: Column(
         children: [
           // Search bar
@@ -18,12 +18,12 @@ class SearchBarWidget extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.5),
                   spreadRadius: 3,
                   blurRadius: 7,
-                  offset: Offset(0, 3), // changes position of shadow
+                  offset: const Offset(0, 3), // changes position of shadow
                 )
               ],
               borderRadius: BorderRadius.circular(36),
             ),
-            margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
+            margin: const EdgeInsets.fromLTRB(20, 30, 20, 0),
             child: TextField(
               textAlign: TextAlign.left,
               decoration: InputDecoration(
@@ -32,11 +32,11 @@ class SearchBarWidget extends StatelessWidget {
                 hintText: S.of(context).chercherUneRandonne,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(36),
-                  borderSide: BorderSide(color: Colors.black, width: 0.5),
+                  borderSide: const BorderSide(color: Colors.black, width: 0.5),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(36),
-                  borderSide: BorderSide(color: Colors.black, width: 0.5),
+                  borderSide: const BorderSide(color: Colors.black, width: 0.5),
                 ),
                 //Icon
                 prefixIcon: Container(

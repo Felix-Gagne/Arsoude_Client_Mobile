@@ -49,7 +49,7 @@ dependencies:
   geolocator: ^10.1.0
   carousel_slider: ^4.0.0
   flutter_rating_bar: ^4.0.1
-
+  share_plus: ^7.2.2
   google_maps_flutter: ^2.5.3
   flutter_polyline_points: ^2.0.0
   flutter_timer_widget: ^0.0.2

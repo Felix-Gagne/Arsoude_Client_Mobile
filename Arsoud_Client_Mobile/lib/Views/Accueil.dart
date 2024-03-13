@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/Http/Models.dart';
 import 'package:location_distance_calculator/location_distance_calculator.dart';
@@ -27,6 +28,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -35,7 +42,7 @@ class _HomePageState extends State<HomePage> {
           SearchBarWidget(),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(20, 25, 0, 0),
+              padding: const EdgeInsets.fromLTRB(20, 25, 0, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -46,19 +53,19 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 25,),
+                  const SizedBox(height: 25,),
                   FutureBuilder<List<Randonne>>(
                     future: refresh(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
                         return SizedBox(
                           width: 400,
                           child: Text(
                             S.of(context).nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir,
                               style: GoogleFonts.plusJakartaSans(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 16
                                   )
@@ -70,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                           width: 400,
                           child: Text(S.of(context).noHikesExist,
                             style: GoogleFonts.plusJakartaSans(
-                              textStyle: TextStyle(
+                              textStyle: const TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16
                               )
