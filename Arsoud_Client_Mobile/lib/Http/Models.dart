@@ -48,6 +48,7 @@ class Randonne{
   Coordinates startingCoordinates = new Coordinates();
   Coordinates endingCoordinates = new Coordinates();
   bool isPublic = false;
+  double? rating = 0;
 
   factory Randonne.fromJson(Map<String, dynamic> json) => _$RandonneFromJson(json);
 
@@ -67,10 +68,6 @@ class Hike{
   factory Hike.fromJson(Map<String, dynamic> json) => _$HikeFromJson(json);
   Map<String, dynamic> toJson() => _$HikeToJson(this);
 }
-
-
-
-
 
 @JsonSerializable()
 class Coordinates{

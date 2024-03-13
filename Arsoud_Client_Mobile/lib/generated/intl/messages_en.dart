@@ -38,7 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dontHaveAnAccount":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
         "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
-        "faireLeTrajet": MessageLookupByLibrary.simpleMessage("Do the hike"),
+        "faireLeTrajet": MessageLookupByLibrary.simpleMessage("Do the route"),
         "favorite": MessageLookupByLibrary.simpleMessage("Favorite"),
         "favoriteTrail":
             MessageLookupByLibrary.simpleMessage("Your favorite trails"),

@@ -183,27 +183,21 @@ class _HikePageState extends State<HikePage>{
     }
     on DioError catch(e){
       if(e.response?.statusCode == 404){
-
-        // Show a snackbar with the error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(S.of(context).theTrailDoesNotExist),
           ),
         );
-        // Pop the context after a short delay
         Future.delayed(Duration(seconds: 2), () {
           Navigator.of(context).pop();
         });
       }
       if(e.response?.statusCode == 403) {
-
-        // Show a snackbar with the error message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(S.of(context).sessionHasExpiredPleaseLoginAgain),
           ),
         );
-        // Navigate back to the login screen after a short delay
         Future.delayed(Duration(seconds: 2), () {
           Navigator.push(context,MaterialPageRoute(builder: (context) => Login()));
         });
@@ -213,15 +207,14 @@ class _HikePageState extends State<HikePage>{
             content: Text(S.of(context).uneErreurCestProduite),
           )
       );
-
     }
+
     for (var c in coordonees) {
       polylineCoordinates.add(LatLng(c.latitude, c.longitude));
       markers.add(Marker(
         markerId: MarkerId("Waypoint"),
         position: LatLng(c.latitude, c.longitude),
         visible: false,
-
       ));
     }
     await addPolyLine(polylineCoordinates);
@@ -231,6 +224,8 @@ class _HikePageState extends State<HikePage>{
     );
 
   }
+
+
   addPolyLine(List<LatLng> coords) {
     PolylineId id = PolylineId(coords.first.longitude.toString());
     Polyline polyline = Polyline(
@@ -239,9 +234,7 @@ class _HikePageState extends State<HikePage>{
       points: coords ,
       width: 4,
     );
-
     polylines[id] = polyline;
-
     setState(() {});
   }
 

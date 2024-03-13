@@ -480,10 +480,10 @@ class S {
     );
   }
 
-  /// `Do the hike`
+  /// `Do the route`
   String get faireLeTrajet {
     return Intl.message(
-      'Do the hike',
+      'Do the route',
       name: 'faireLeTrajet',
       desc: '',
       args: [],
