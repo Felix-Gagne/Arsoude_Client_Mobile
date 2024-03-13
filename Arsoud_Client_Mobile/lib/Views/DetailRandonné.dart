@@ -225,8 +225,8 @@ class _DetailRanonneState extends State<DetailRanonne> {
     Size size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
-    double heightNmae = height *0.27;
-    double heightInfo = height *0.35;
+    double heightNmae = height *0.25;
+    double heightInfo = height *0.33;
     return Scaffold(
       body: Column(
         children: [
@@ -386,88 +386,73 @@ class _DetailRanonneState extends State<DetailRanonne> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              widget.randonne.location,
+              style: GoogleFonts.plusJakartaSans(
+                textStyle: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.of(context).location,
-                        style: GoogleFonts.plusJakartaSans(
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                          ),
+                // Trail rating
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.randonne.rating != null ? widget.randonne.rating!.toStringAsFixed(1) : '-',
+                      style: GoogleFonts.plusJakartaSans(
+                        textStyle: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Text(
-                        widget.randonne.location,
-                        style: GoogleFonts.plusJakartaSans(
-                          textStyle: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.star, size: 30,),
+                  ],
                 ),
-                SizedBox(width: 20), // Adjust the space between columns
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        S.of(context).type,
-                        style: GoogleFonts.plusJakartaSans(
-                          textStyle: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      (widget.randonne.type == 1)
-                          ? const Icon(IconData(0xe1d2, fontFamily: 'MaterialIcons'), size: 30,)
-                          : Icon(IconData(0xe1e1, fontFamily: 'MaterialIcons'), size: 30,),
-                      (isConnected) ? GestureDetector(
-                        onTap: () async{
-                          try{
-                            var response = await manageTrailFavorite(widget.randonne.id, favorite);
-                            favorite = response;
-                          }
-                          catch (e){
-                            throw e;
-                          }
-                          setState(() {});
-                        },
-                        child: (favorite)
-                            ? Icon(Icons.bookmark, color: Colors.black, size: 36,)
-                            : Icon(Icons.bookmark_outline, color: Colors.black, size: 36,),
-                      ) : Text("")
-                    ],
-                  ),
+                Row(
+                  children: [
+                    Icon(
+                      widget.randonne.type == 1
+                          ? const IconData(0xe1d2, fontFamily: 'MaterialIcons')
+                          : const IconData(0xe1e1, fontFamily: 'MaterialIcons'),
+                      size: 30,
+                    ),
+                    const SizedBox(width: 16),
+                    // Bookmark icon
+                    (isConnected && favorite)
+                        ? const Icon(Icons.bookmark, color: Colors.black, size: 36)
+                        : const Icon(Icons.bookmark_outline, color: Colors.black, size: 36),
+                  ],
                 ),
               ],
             ),
-            SizedBox(height: height *0.02,),
+            const SizedBox(height: 16),
             Container(
               height: 2,
               width: double.infinity,
               color: Colors.black,
             ),
-            SizedBox(height: height *0.02,),
+            const SizedBox(height: 16),
             Text(
               widget.randonne.description,
               style: GoogleFonts.plusJakartaSans(
-                textStyle: TextStyle(fontSize: 16),
-              ),)
+                textStyle: const TextStyle(fontSize: 16),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+
 
   Padding Buttons(double width, BuildContext context) {
     return Padding(
