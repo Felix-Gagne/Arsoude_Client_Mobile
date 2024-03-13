@@ -471,123 +471,96 @@ class _DetailRanonneState extends State<DetailRanonne> {
 
   Padding Buttons(double width, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: owner ? const EdgeInsets.all(3.0) : const EdgeInsets.all(10.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                  width: width *0.88,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.green.withOpacity(0.4), // shadow color
-                        spreadRadius: 1, // spread radius
-                        blurRadius: 5, // blur radius
-                        offset: Offset(5, 5), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: MaterialButton(
+              SizedBox(
+                  width: width *0.45,
+                  child: ElevatedButton(
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HikePage(randonne: widget.randonne))
-                      ); },
-                    color: Colors.green,
-                    child: Text(S.of(context).start, style: GoogleFonts.plusJakartaSans(
-                        textStyle: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16
-                        )
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => HikePage(randonne: widget.randonne)));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
                     ),
+                    child: Text(S.of(context).start, style: GoogleFonts.plusJakartaSans(
+                          textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16)
+                      ),
                     ),
                   )
               ),
-            ],
-          ),
-          SizedBox(height: 10,),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                owner ?  Container(
-                    width: width * 0.88,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.blue.withOpacity(0.4), // shadow color
-                          spreadRadius: 1, // spread radius
-                          blurRadius: 5, // blur radius
-                          offset: Offset(5, 5), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: !widget.randonne.isPublic ? MaterialButton(onPressed: (){
-                      SetPublic(widget.randonne.id);
-                    }, color: Colors.blue, child: Text(S.of(context).rendrePublique, style: GoogleFonts.plusJakartaSans(
-                        textStyle: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16
-                        )
-                    )),) : MaterialButton(onPressed: (){
-                      SetPrivate(widget.randonne.id);
-                    }, color: Colors.pinkAccent, child: Text(S.of(context).rendrePriv, style: GoogleFonts.plusJakartaSans(
-                        textStyle: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16
-                        )
-                    )),)
-                ) : SizedBox()
-              ]
-          ),
-          SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: owner && coordonnees.length < 3 ? width * 0.4 : width * 0.88,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.4),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(5, 5),
-                    ),
-                  ],
-                ),
-                child: MaterialButton(
+              SizedBox(width: width * 0.03),
+              SizedBox(
+                width: width * 0.45,
+                child: ElevatedButton(
                   onPressed: () {},
-                  color: Colors.grey,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey,
+                  ),
                   child: Text(
                     S.of(context).getDirections,
                     style: GoogleFonts.plusJakartaSans(
                       textStyle: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                        fontSize: 15.3,
                       ),
                     ),
                   ),
                 ),
               ),
-              owner && coordonnees.length < 3 ? SizedBox(width: width * 0.07) : SizedBox(width: 0),
-              owner && coordonnees.length < 3 ? Container(
-                width: width * 0.4,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.green.withOpacity(0.4),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(5, 5),
+            ],
+          ),
+          const SizedBox(height: 7),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                owner ?  Container(
+                    width: width * 0.83,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30)
                     ),
-                  ],
-                ),
-                child: MaterialButton(
+                    child: !widget.randonne.isPublic ? ElevatedButton(
+                      onPressed: (){
+                        SetPublic(widget.randonne.id);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                      ),
+                      child: Text(S.of(context).rendrePublique, style: GoogleFonts.plusJakartaSans(
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16
+                        )
+                      )),
+                    ) : MaterialButton(
+                      onPressed: () {
+                        SetPrivate(widget.randonne.id);
+                      },
+                      color: Colors.pinkAccent, child: Text(S.of(context).rendrePriv, style: GoogleFonts.plusJakartaSans(
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16
+                        )
+                    )),)
+                ) : const SizedBox()
+              ]
+          ),
+          const SizedBox(height: 7),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              owner && coordonnees.length < 3 ? SizedBox(width: width * 0.83,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.amber,
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -599,17 +572,16 @@ class _DetailRanonneState extends State<DetailRanonne> {
                   child: Text(
                     S.of(context).faireLeTrajet,
                     style: GoogleFonts.plusJakartaSans(
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
                       ),
                     ),
                   ),
-                  color: Colors.amber,
                 ),
-              ) : SizedBox(width: 0),
-              ],
+              ) : const SizedBox(width: 0),
+            ],
           ),
         ],
       ),
