@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:untitled/Http/Models.dart';
 import 'package:untitled/Views/Hike.dart';
 import 'package:untitled/Views/Login.dart';
@@ -165,6 +166,10 @@ class _DetailRanonneState extends State<DetailRanonne> {
     SEMark.add(end);
   }
 
+  void onShare(BuildContext context){
+    Share.share(widget.randonne.name);
+  }
+
   Future<void> _showMapOverlay() async {
     //On Ajoute les markers
     markers.clear();
@@ -213,6 +218,8 @@ class _DetailRanonneState extends State<DetailRanonne> {
       },
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -438,10 +445,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
           ),
           child: IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const navBar(page: 0)));
+              onShare(context);
             },
             icon: const Icon(Icons.share,
                 color: Colors.black, size: 20), // Adjust icon size here
