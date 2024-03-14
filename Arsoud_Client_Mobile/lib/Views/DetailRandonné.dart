@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:untitled/Http/Models.dart';
 import 'package:untitled/Views/Hike.dart';
 import 'package:untitled/Views/Login.dart';
@@ -37,25 +38,24 @@ class _DetailRanonneState extends State<DetailRanonne> {
   Map<PolylineId, Polyline> polylines = {};
   var favorite = false;
   var isConnected = false;
-  bool  owner = false;
+  bool owner = false;
   late List<String> listImage = [];
   CameraPosition cem = const CameraPosition(
-    target: LatLng(45.536447 , -73.495223),
+    target: LatLng(45.536447, -73.495223),
     zoom: 10,
   );
 
-  Future<bool?> verifyIfTrailIsFavorit() async {
+  Future<bool?> verifyIfTrailIsFavorite() async {
     String? user = await storage.read(key: 'jwt');
-    if(user != null || user != ""){
+    if (user != null || user != "") {
       isConnected = true;
       var listTrails = await getUserFavoriteTrails();
-      for(var favoritTrail in listTrails){
-        if(widget.randonne.id  == favoritTrail.id ){
+      for (var favoriteTrail in listTrails) {
+        if (widget.randonne.id == favoriteTrail.id) {
           favorite = true;
         }
       }
-    }
-    else{
+    } else {
       isConnected = false;
     }
     setState(() {});
@@ -65,32 +65,28 @@ class _DetailRanonneState extends State<DetailRanonne> {
   void initState() {
     super.initState();
 
-    verifyIfTrailIsFavorit();
+    verifyIfTrailIsFavorite();
     CheckisOwner();
 
     getImages();
-
   }
 
   CheckisOwner() async {
-    owner =await IsOwner(widget.randonne.id);
-    setState(() {
-    });
+    owner = await IsOwner(widget.randonne.id);
+    setState(() {});
   }
 
   getImages() async {
     listImage = await getTrailImages(widget.randonne.id);
-    print("HFDHFDHJKFHJHFJKUHVOUDHVJKHVJHFUODVHOVHOIHIOVH");
-    print(listImage);
     if (mounted) {
       setState(() {});
     }
   }
 
-
   void _onMapCreated(GoogleMapController controller) {
-    cem =  CameraPosition(
-      target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude),
+    cem = CameraPosition(
+      target: LatLng(widget.randonne.startingCoordinates.latitude,
+          widget.randonne.startingCoordinates.longitude),
       zoom: 5,
     );
     _mapController = controller;
@@ -99,13 +95,12 @@ class _DetailRanonneState extends State<DetailRanonne> {
     }
   }
 
-
   addPolyLine(List<LatLng> coords) {
     PolylineId id = PolylineId(coords.first.longitude.toString());
     Polyline polyline = Polyline(
       polylineId: id,
       color: Colors.blue,
-      points: coords ,
+      points: coords,
       width: 4,
     );
 
@@ -127,33 +122,31 @@ class _DetailRanonneState extends State<DetailRanonne> {
     );
     try {
       coordonnees = await getCoordinates(widget.randonne.id);
-    }
-    on DioError catch(e){
-      if(e.response?.statusCode == 404){
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 404) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(S.of(context).theTrailDoesNotExist),
           ),
         );
-        Future.delayed(Duration(seconds: 2), () {
+        Future.delayed(const Duration(seconds: 2), () {
           Navigator.of(context).pop();
         });
       }
-      if(e.response?.statusCode == 403) {
+      if (e.response?.statusCode == 403) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(S.of(context).sessionHasExpiredPleaseLoginAgain),
           ),
         );
-        Future.delayed(Duration(seconds: 2), () {
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Login()));
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const Login()));
         });
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.of(context).uneErreurCestProduite),
-          )
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(S.of(context).uneErreurCestProduite),
+      ));
     }
     for (var c in coordonnees) {
       markers.add(Marker(
@@ -162,13 +155,19 @@ class _DetailRanonneState extends State<DetailRanonne> {
         visible: false,
       ));
     }
-    cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude,
-        widget.randonne.startingCoordinates.longitude),
-        zoom: 10
-    );
+
+    cem = CameraPosition(
+        target: LatLng(widget.randonne.startingCoordinates.latitude,
+            widget.randonne.startingCoordinates.longitude),
+        zoom: 10)
+    ;
 
     SEMark.add(start);
     SEMark.add(end);
+  }
+
+  void onShare(BuildContext context){
+    Share.share(widget.randonne.name);
   }
 
   Future<void> _showMapOverlay() async {
@@ -198,7 +197,8 @@ class _DetailRanonneState extends State<DetailRanonne> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.white.withOpacity(0.5), // Adjust the opacity as needed
+                  color: Colors.white
+                      .withOpacity(0.5), // Adjust the opacity as needed
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
@@ -220,13 +220,15 @@ class _DetailRanonneState extends State<DetailRanonne> {
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
-    double heightNmae = height *0.25;
-    double heightInfo = height *0.33;
+    double heightName = height * 0.25;
+    double heightInfo = height * 0.33;
+
     return Scaffold(
       body: Column(
         children: [
@@ -234,31 +236,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
             child: Stack(
               children: [
                 TopPage(width, height, context),
-                Positioned(
-                  top: heightNmae,
-                  child: Container(
-                    margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    width: width*0.6,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.5), // Shadow color
-                          spreadRadius: 2,  // Spread radius
-                          blurRadius: 7,    // Blur radius
-                          offset: const Offset(0, 3), // Offset from the top
-                        ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    child: Text(widget.randonne.name, style: GoogleFonts.plusJakartaSans(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),),
-                  ),
-                ),
+                randonneName(heightName, width),
                 TrailInfo(heightInfo, context, height),
                 Buttons(width, context)
               ],
@@ -269,111 +247,211 @@ class _DetailRanonneState extends State<DetailRanonne> {
     );
   }
 
+  Positioned randonneName(double heightName, double width) {
+    return Positioned(
+      top: heightName,
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+        width: width * 0.6,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.5), // Shadow color
+              spreadRadius: 2, // Spread radius
+              blurRadius: 7, // Blur radius
+              offset: const Offset(0, 3), // Offset from the top
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(8),
+        child: Text(
+          widget.randonne.name,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
   Stack TopPage(double width, double height, BuildContext context) {
     return Stack(
       children: [
-      SizedBox(
+        randonneImage(width, height),
+        randonneImageBackground(),
+        randonneImageMap(width, height),
+        arrowBackButton(context),
+        shareButton(context),
+      ],
+    );
+  }
+
+  Positioned randonneImageMap(double width, double height) {
+    return Positioned(
+      bottom: 0,
+      right: 0,
+      child: GestureDetector(
+        onTap: () {
+          _showMapOverlay();
+        },
+        child: Container(
+          margin: const EdgeInsets.all(14),
+          width: width * 0.15,
+          height: height * 0.07,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: GoogleMap(
+              onMapCreated: _onMapCreated,
+              mapType: MapType.terrain,
+              initialCameraPosition: cem,
+              markers: SEMark,
+              polylines: Set<Polyline>.of(polylines.values),
+              onTap: (LatLng lat) {
+                _showMapOverlay();
+              },
+              zoomControlsEnabled: false,
+              zoomGesturesEnabled: false,
+              mapToolbarEnabled: false,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Positioned randonneImageBackground() {
+    return Positioned.fill(
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.center,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.transparent,
+              Colors.black.withOpacity(0.7),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  SizedBox randonneImage(double width, double height) {
+    return SizedBox(
       width: width,
       height: height * 0.3,
       child: listImage.isNotEmpty
           ? CarouselSlider(
-        options: CarouselOptions(
-          height: height * 0.3,
-          enlargeCenterPage: true,
-          autoPlay: true,
-          aspectRatio: 16 / 9,
-          pageSnapping: true,
-          scrollDirection: Axis.horizontal,
-          pauseAutoPlayOnManualNavigate: true,
-          autoPlayCurve: Curves.fastOutSlowIn,
-          enableInfiniteScroll: true,
-          autoPlayAnimationDuration: const Duration(milliseconds: 250),
-          viewportFraction: 1,
-        ),
-        items: listImage.map((imageUrl) {
-          return Builder(
-            builder: (BuildContext context) {
-              return Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.amber,
-                ),
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  fit: BoxFit.fill,
-                  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                      SizedBox(width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress),),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
-              );
-            },
-          );
-        }).toList(),
-      )
-          : CachedNetworkImage(
-        imageUrl: widget.randonne.imageUrl!,
-        fit: BoxFit.fill,
-        progressIndicatorBuilder: (context, url, downloadProgress) =>
-            SizedBox(width: 50, height: 50, child: CircularProgressIndicator(value: downloadProgress.progress),),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-      ),
-    ),
-
-    Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.center,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withOpacity(0.7),
-                ],
+              options: CarouselOptions(
+                height: height * 0.3,
+                enlargeCenterPage: true,
+                autoPlay: true,
+                aspectRatio: 16 / 9,
+                pageSnapping: true,
+                scrollDirection: Axis.horizontal,
+                pauseAutoPlayOnManualNavigate: true,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: const Duration(milliseconds: 250),
+                viewportFraction: 1,
               ),
-            ),
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: GestureDetector(
-            onTap: () {
-              _showMapOverlay();
-            },
-            child: Container(
-              margin: const EdgeInsets.all(14),
-              width: width * 0.15,
-              height: height * 0.07,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-              ),
-              child: ClipRRect(
-                borderRadius:BorderRadius.circular(10) ,
-                child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  mapType: MapType.terrain,
-                  initialCameraPosition: cem,
-                  markers: SEMark,
-                  polylines: Set<Polyline>.of(polylines.values),
-                  onTap: (LatLng lat) {
-                    _showMapOverlay();
+              items: listImage.map((imageUrl) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                        color: Colors.amber,
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        fit: BoxFit.fill,
+                        progressIndicatorBuilder:
+                            (context, url, downloadProgress) => SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                              value: downloadProgress.progress),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    );
                   },
-                  zoomControlsEnabled: false,
-                  zoomGesturesEnabled: false,
-                  mapToolbarEnabled: false,
-                ),
+                );
+              }).toList(),
+            )
+          : CachedNetworkImage(
+              imageUrl: widget.randonne.imageUrl!,
+              fit: BoxFit.fill,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  SizedBox(
+                width: 50,
+                height: 50,
+                child:
+                    CircularProgressIndicator(value: downloadProgress.progress),
               ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
+    );
+  }
+
+  Positioned arrowBackButton(BuildContext context) {
+    return Positioned(
+      top: 50,
+      left: 15,
+      child: SizedBox(
+        width: 35, // Adjust width as needed
+        height: 35, // Adjust height as needed
+        child: Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+          ),
+          child: IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const navBar(page: 0)));
+            },
+            icon: const Icon(Icons.arrow_back,
+                color: Colors.black, size: 20), // Adjust icon size here
           ),
         ),
+      ),
+    );
+  }
 
-        Positioned(top:50, left: 10, child: Container( decoration:  BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-          child: IconButton(onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const navBar(page: 0)));
-          }, icon: Icon(Icons.arrow_back, color: Colors.black, size: 30,),),
-        )),
-      ],
+  Positioned shareButton(BuildContext context) {
+    return Positioned(
+      top: 50,
+      right: 15,
+      child: SizedBox(
+        width: 35, // Adjust width as needed
+        height: 35, // Adjust height as needed
+        child: Container(
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+          ),
+          child: IconButton(
+            onPressed: () {
+              onShare(context);
+            },
+            icon: const Icon(Icons.share,
+                color: Colors.black, size: 20), // Adjust icon size here
+          ),
+        ),
+      ),
     );
   }
 
@@ -405,7 +483,9 @@ class _DetailRanonneState extends State<DetailRanonne> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.randonne.rating != null ? widget.randonne.rating!.toStringAsFixed(1) : '-',
+                      widget.randonne.rating != null
+                          ? widget.randonne.rating!.toStringAsFixed(1)
+                          : '-',
                       style: GoogleFonts.plusJakartaSans(
                         textStyle: const TextStyle(
                           fontSize: 20,
@@ -414,7 +494,10 @@ class _DetailRanonneState extends State<DetailRanonne> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Icon(Icons.star, size: 30,),
+                    const Icon(
+                      Icons.star,
+                      size: 30,
+                    ),
                   ],
                 ),
                 Row(
@@ -428,8 +511,10 @@ class _DetailRanonneState extends State<DetailRanonne> {
                     const SizedBox(width: 16),
                     // Bookmark icon
                     (isConnected && favorite)
-                        ? const Icon(Icons.bookmark, color: Colors.black, size: 36)
-                        : const Icon(Icons.bookmark_outline, color: Colors.black, size: 36),
+                        ? const Icon(Icons.bookmark,
+                            color: Colors.black, size: 36)
+                        : const Icon(Icons.bookmark_outline,
+                            color: Colors.black, size: 36),
                   ],
                 ),
               ],
@@ -453,7 +538,6 @@ class _DetailRanonneState extends State<DetailRanonne> {
     );
   }
 
-
   Padding Buttons(double width, BuildContext context) {
     return Padding(
       padding: owner ? const EdgeInsets.all(3.0) : const EdgeInsets.all(10.0),
@@ -464,20 +548,27 @@ class _DetailRanonneState extends State<DetailRanonne> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                  width: width *0.45,
+                  width: width * 0.45,
                   child: ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HikePage(randonne: widget.randonne)));
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HikePage(randonne: widget.randonne)));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),
-                    child: Text(S.of(context).start, style: GoogleFonts.plusJakartaSans(
-                          textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16)
-                      ),
+                    child: Text(
+                      S.of(context).start,
+                      style: GoogleFonts.plusJakartaSans(
+                          textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16)),
                     ),
-                  )
-              ),
+                  )),
               SizedBox(width: width * 0.03),
               SizedBox(
                 width: width * 0.45,
@@ -501,77 +592,78 @@ class _DetailRanonneState extends State<DetailRanonne> {
             ],
           ),
           const SizedBox(height: 7),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                owner ?  Container(
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            owner
+                ? Container(
                     width: width * 0.83,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30)
-                    ),
-                    child: !widget.randonne.isPublic ? ElevatedButton(
-                      onPressed: (){
-                        SetPublic(widget.randonne.id);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                      ),
-                      child: Text(S.of(context).rendrePublique, style: GoogleFonts.plusJakartaSans(
-                        textStyle: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16
-                        )
-                      )),
-                    ) : MaterialButton(
-                      onPressed: () {
-                        SetPrivate(widget.randonne.id);
-                      },
-                      color: Colors.pinkAccent, child: Text(S.of(context).rendrePriv, style: GoogleFonts.plusJakartaSans(
-                        textStyle: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16
-                        )
-                    )),)
-                ) : const SizedBox()
-              ]
-          ),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                    child: !widget.randonne.isPublic
+                        ? ElevatedButton(
+                            onPressed: () {
+                              SetPublic(widget.randonne.id);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                            ),
+                            child: Text(S.of(context).rendrePublique,
+                                style: GoogleFonts.plusJakartaSans(
+                                    textStyle: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16))),
+                          )
+                        : MaterialButton(
+                            onPressed: () {
+                              SetPrivate(widget.randonne.id);
+                            },
+                            color: Colors.pinkAccent,
+                            child: Text(S.of(context).rendrePriv,
+                                style: GoogleFonts.plusJakartaSans(
+                                    textStyle: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16))),
+                          ))
+                : const SizedBox()
+          ]),
           const SizedBox(height: 7),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              owner && coordonnees.length < 3 ? SizedBox(width: width * 0.83,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SuiviPage(randonne: widget.randonne),
+              owner && coordonnees.length < 3
+                  ? SizedBox(
+                      width: width * 0.83,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.amber,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SuiviPage(randonne: widget.randonne),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          S.of(context).faireLeTrajet,
+                          style: GoogleFonts.plusJakartaSans(
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
                       ),
-                    );
-                  },
-                  child: Text(
-                    S.of(context).faireLeTrajet,
-                    style: GoogleFonts.plusJakartaSans(
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-              ) : const SizedBox(width: 0),
+                    )
+                  : const SizedBox(width: 0),
             ],
           ),
         ],
       ),
     );
   }
-
 }
-
