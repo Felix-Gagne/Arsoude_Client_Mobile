@@ -129,10 +129,6 @@ class _HikePageState extends State<HikePage>{
             lastPosition = LatLng(position.latitude, position.longitude);
 
             Timer.periodic(Duration(seconds: 5), (timer) async {
-              // Simulate movement (replace with actual logic to get position)
-              final currentLat = lastPosition!.latitude + Random().nextDouble() * 0.001;
-              final currentLon = lastPosition!.longitude + Random().nextDouble() * 0.001;
-
               const threshold = 0.02; // 20 meters in km
 
               // Check if current position is straying from the path
@@ -140,7 +136,7 @@ class _HikePageState extends State<HikePage>{
                 final startCoordinate = coordonees[i];
                 final endCoordinate = coordonees[i + 1];
                 final distanceToSegment = pointToLineDistance(
-                    currentLat, currentLon, startCoordinate.latitude, startCoordinate.longitude,
+                    lastPosition!.latitude, lastPosition!.longitude, startCoordinate.latitude, startCoordinate.longitude,
                     endCoordinate.latitude, endCoordinate.longitude);
                 if (distanceToSegment > threshold) {
                   await showNotification('Straying from the path!',
