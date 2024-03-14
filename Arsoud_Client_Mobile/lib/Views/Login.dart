@@ -81,8 +81,15 @@ class _LoginState extends State<Login> {
 
   @override
   void initState(){
-    setState(() {
-    });
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+
+    super.dispose();
   }
 
   @override

@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:math';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:vector_math/vector_math.dart' as math;
 import 'package:camera/camera.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +51,8 @@ class _HikePageState extends State<HikePage>{
   late double hikeRating = 0;
   bool rated = false;
 
+
+
   @override
   void initState() {
     super.initState();
@@ -64,11 +69,20 @@ class _HikePageState extends State<HikePage>{
         position: LatLng(widget.randonne.endingCoordinates.latitude , widget.randonne.endingCoordinates.longitude),
       );
     });
-  }
 
+
+  }
 
   //Commence la randonnée et le timer
   startListening() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await FlutterLocalNotificationsPlugin().initialize(
+      const InitializationSettings(
+        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        iOS: IOSInitializationSettings(),
+      ),
+    );
+
     start = DateTime.now();
     cem = CameraPosition(
       target: LatLng(widget.randonne.startingCoordinates.latitude , widget.randonne.startingCoordinates.longitude),
@@ -113,13 +127,84 @@ class _HikePageState extends State<HikePage>{
             );
 
             lastPosition = LatLng(position.latitude, position.longitude);
-            setState(() {
+
+            Timer.periodic(Duration(seconds: 5), (timer) async {
+              // Simulate movement (replace with actual logic to get position)
+              final currentLat = lastPosition!.latitude + Random().nextDouble() * 0.001;
+              final currentLon = lastPosition!.longitude + Random().nextDouble() * 0.001;
+
+              const threshold = 0.02; // 20 meters in km
+
+              // Check if current position is straying from the path
+              for (var i = 0; i < coordonees.length - 1; i++) {
+                final startCoordinate = coordonees[i];
+                final endCoordinate = coordonees[i + 1];
+                final distanceToSegment = pointToLineDistance(
+                    currentLat, currentLon, startCoordinate.latitude, startCoordinate.longitude,
+                    endCoordinate.latitude, endCoordinate.longitude);
+                if (distanceToSegment > threshold) {
+                  await showNotification('Straying from the path!',
+                      'Distance: ${distanceToSegment.toStringAsFixed(5)} km');
+                  break; // Show only one notification for the first straying point
+                }
+              }
             });
+
+            setState(() {});
           });
     }
     else  {
       subscription!.resume();
     }
+  }
+
+  double pointToLineDistance(double x, double y, double x1, double y1, double x2, double y2) {
+    final A = x - x1;
+    final B = y - y1;
+    final C = x2 - x1;
+    final D = y2 - y1;
+
+    final dot = A * C + B * D;
+    final lenSq = C * C + D * D;
+    double param = -1;
+
+    if (lenSq != 0) {
+      param = dot / lenSq;
+    }
+
+    double xx, yy;
+
+    if (param < 0) {
+      xx = x1;
+      yy = y1;
+    } else if (param > 1) {
+      xx = x2;
+      yy = y2;
+    } else {
+      xx = x1 + param * C;
+      yy = y1 + param * D;
+    }
+
+    final dx = x - xx;
+    final dy = y - yy;
+    return sqrt(dx * dx + dy * dy);
+  }
+
+  Future<void> showNotification(String title, String body) async {
+    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'your channel id', 'your channel name', 'your channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    final iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    final platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics,
+    );
+
+    await FlutterLocalNotificationsPlugin().show(
+      0, title, body, platformChannelSpecifics, payload: 'item x',
+    );
   }
 
   pauseListening(){
@@ -131,41 +216,43 @@ class _HikePageState extends State<HikePage>{
     end = DateTime.now();
     subscription!.cancel();
     List<Coordinates> coordinatesList = [];
+
     for(var pos in positions){
       Coordinates coor = Coordinates();
       coor.latitude = pos!.latitude;
       coor.longitude = pos!.longitude;
       coordinatesList.add(coor);
     }
+
     Hike data = new Hike();
     data.date = DateTime.now();
     data.Distance = positions.length * 10;
     data.time = end!.difference(start!).inSeconds.toString();
     data.TrailId = widget.randonne.id;
-    if (lastPosition != null &&
-        Geolocator.distanceBetween(
-            lastPosition!.latitude, lastPosition!.longitude,
-            widget.randonne.endingCoordinates.latitude, widget.randonne.endingCoordinates.longitude) <= 20)
+
+    if (lastPosition != null && Geolocator.distanceBetween(
+        lastPosition!.latitude, lastPosition!.longitude,
+        widget.randonne.endingCoordinates.latitude, widget.randonne.endingCoordinates.longitude) <= 20)
     {
       data.isCompleted = true;
     }
-    else{data.isCompleted = false;}
+    else {
+      data.isCompleted = false;
+    }
 
     if(rated == true){
       await hikeRating;
       rateHike(widget.randonne.id, hikeRating);
     }
-
     CreateHike(data);
-
   }
 
   //Initialise le google map controller
   void _onMapCreated(GoogleMapController controller) {
-
     _mapController = controller;
     _mapController.animateCamera(CameraUpdate.newLatLngZoom( lastPosition!, 14));
   }
+
   Future<void> setMarkers() async {
     Marker start = Marker(
       markerId: MarkerId("Start"),
@@ -217,6 +304,7 @@ class _HikePageState extends State<HikePage>{
         visible: false,
       ));
     }
+
     await addPolyLine(polylineCoordinates);
     cem = CameraPosition(target: LatLng(widget.randonne.startingCoordinates.latitude,
         widget.randonne.startingCoordinates.longitude),
@@ -246,10 +334,31 @@ class _HikePageState extends State<HikePage>{
     );
   }
 
+  double haversine(double lat1, double lon1, double lat2, double lon2) {
+    const R = 6371.0; // Earth radius in km
+    // Convert latitude and longitude from degrees to radians
+    final lat1Rad = math.radians(lat1);
+    final lon1Rad = math.radians(lon1);
+    final lat2Rad = math.radians(lat2);
+    final lon2Rad = math.radians(lon2);
+
+    // Difference in latitude and longitude
+    final dlat = lat2Rad - lat1Rad;
+    final dlon = lon2Rad - lon1Rad;
+
+    // Haversine formula
+    final a = pow(sin(dlat / 2), 2) + cos(lat1Rad) * cos(lat2Rad) * pow(sin(dlon / 2), 2);
+    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    final distance = R * c;
+
+    return distance;
+  }
+
   @override
   void dispose() {
-    super.dispose();
+    _mapController.dispose();
     stoplListening();
+    super.dispose();
   }
 
   @override

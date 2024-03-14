@@ -49,6 +49,8 @@
   "locationServiceDisabled" : "Location services are disabled",
   "locationServicePermissionsDisabled" : "Location services permissions are disabled",
   "locationServicePermissionsPermanentlyDisabled" : "Location permissions are permanently denied, we cannot request permissions.",
-  "sendPhoto" : "Send"
+  "sendPhoto" : "Send",
+  "shareHike": "Hey look! I just completed : ",
+  "onArsoude": " on the app Arsoude!"
 
 }

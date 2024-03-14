@@ -26,6 +26,12 @@ class _FavoritTerailsState extends State<FavoritTerails> {
   }
 
   @override
+  void dispose(){
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(

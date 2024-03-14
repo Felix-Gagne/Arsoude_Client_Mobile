@@ -137,8 +137,9 @@ class _SuiviPageState extends State<SuiviPage>{
 
   @override
   void dispose() {
-    super.dispose();
     stoplListening();
+    _mapController.dispose();
+    super.dispose();
   }
 
   @override

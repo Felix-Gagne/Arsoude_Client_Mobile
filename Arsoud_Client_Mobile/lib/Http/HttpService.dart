@@ -134,7 +134,7 @@ Future<void> SetPrivate(int trailId) async{
 Future<List<Coordinates>> getCoordinates(int trailId) async {
   try{
     String? token = await storage.read(key: 'jwt');
-     List<Coordinates> result = [];
+    List<Coordinates> result = [];
     final response = await getDio().get("/trail/GetTrailCoordinates/$trailId", options: await getOptions());
     for(var e in response.data)
     {
@@ -168,7 +168,6 @@ Future<List<Coordinates>> getCoordinates(int trailId) async {
       var response = await dio.post("/User/Login", data: data, options: Options(
           contentType: "application/json"
       ));
-      print(response);
       var token = response.data["token"];
       await storage.write(key: 'jwt', value: token);
       await storage.write(key: 'email', value: data.username);
@@ -205,7 +204,7 @@ Future<List<Randonne>> getAllTrails() async{
     var response = await dio.get('/Trail/GetAllTrails', options: Options(
         contentType: "application/json",
     ));
-    print(response);
+    //print(response);
     var listJson = response.data as List;
     var listTrail = listJson.map((elementJson){
       return Randonne.fromJson((elementJson));

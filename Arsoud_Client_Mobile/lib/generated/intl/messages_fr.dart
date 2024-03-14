@@ -71,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir":
             MessageLookupByLibrary.simpleMessage(
                 "Nous rencontrons un problème avec le serveur actuellement. Veuillez revenir plus tard."),
+        "onArsoude": MessageLookupByLibrary.simpleMessage(
+            " sur l\'application Arsoude!"),
         "password": MessageLookupByLibrary.simpleMessage("Mot de passe"),
         "pleaseEnterAEmail": MessageLookupByLibrary.simpleMessage(
             "Veuillez entrer une adresse e-mail"),
@@ -86,6 +88,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "La session a expirer. veuillez vous reconnecter"),
         "settings": MessageLookupByLibrary.simpleMessage("paramètre"),
+        "shareHike": MessageLookupByLibrary.simpleMessage(
+            "Hé regarde! je viens de terminer : "),
         "signInToYourAccount": MessageLookupByLibrary.simpleMessage(
             "Connectez-vous à votre compte"),
         "signUp": MessageLookupByLibrary.simpleMessage("S\'inscrire"),

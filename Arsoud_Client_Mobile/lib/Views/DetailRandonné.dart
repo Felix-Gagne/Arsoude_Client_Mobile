@@ -167,7 +167,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
   }
 
   void onShare(BuildContext context){
-    Share.share(widget.randonne.name);
+    Share.share(S.of(context).shareHike + widget.randonne.name + S.of(context).onArsoude);
   }
 
   Future<void> _showMapOverlay() async {
@@ -219,7 +219,11 @@ class _DetailRanonneState extends State<DetailRanonne> {
     );
   }
 
-
+  @override
+  void dispose(){
+    _mapController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -418,10 +422,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
           ),
           child: IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const navBar(page: 0)));
+              Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back,
                 color: Colors.black, size: 20), // Adjust icon size here

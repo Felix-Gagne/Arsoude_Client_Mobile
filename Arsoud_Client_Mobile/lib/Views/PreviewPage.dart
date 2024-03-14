@@ -37,16 +37,7 @@ class PreviewPage extends StatelessWidget {
 
     var url = await snapshot.ref.getDownloadURL();
     imageUrl = url;
-
-
     sendImage(imageUrl.toString(), randonne.id);
-
-    // randonne.imageList ??= [];
-    //
-    // randonne.imageList?.add(imageUrl.toString());
-
-
-
   }
 
   @override
@@ -61,7 +52,6 @@ class PreviewPage extends StatelessWidget {
               children: [
                 Image.file(File(picture.path), fit: BoxFit.cover, width: 250),
                 const SizedBox(height: 24),
-                Text(picture.name)
               ],
             ),
           ),
@@ -73,7 +63,6 @@ class PreviewPage extends StatelessWidget {
                 await SendImage();
                 int count = 0;
                 Navigator.of(context).popUntil((_) => count++ >= 2);
-                //Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage(url: imageUrl,)));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xff09635f),

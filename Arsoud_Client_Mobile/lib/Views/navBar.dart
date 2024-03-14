@@ -57,10 +57,8 @@ class _navBarState extends State<navBar> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
-
-    // _tabController.dispose();
     _motionTabBarController!.dispose();
+    super.dispose();
   }
 
 

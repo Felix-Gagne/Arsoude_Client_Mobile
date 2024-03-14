@@ -34,6 +34,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose(){
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(

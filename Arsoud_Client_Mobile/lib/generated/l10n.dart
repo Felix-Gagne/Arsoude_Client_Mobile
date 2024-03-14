@@ -549,6 +549,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Hey look! I just completed : `
+  String get shareHike {
+    return Intl.message(
+      'Hey look! I just completed : ',
+      name: 'shareHike',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` on the app Arsoude!`
+  String get onArsoude {
+    return Intl.message(
+      ' on the app Arsoude!',
+      name: 'onArsoude',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
