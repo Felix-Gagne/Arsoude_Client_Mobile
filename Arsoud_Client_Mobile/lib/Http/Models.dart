@@ -73,7 +73,6 @@ class Hike{
 class Coordinates{
 
   Coordinates();
-
   double latitude = 0;
   double longitude = 0;
 

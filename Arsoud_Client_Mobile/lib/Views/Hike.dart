@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:untitled/Http/HttpService.dart';
 import 'package:untitled/Http/Models.dart';
 import '../Http/LocationService.dart';
+import '../Http/PathDeviation.dart';
 import '../generated/l10n.dart';
 import 'CameraPage.dart';
 import 'DetailRandonné.dart';
@@ -50,6 +51,8 @@ class _HikePageState extends State<HikePage>{
   DateTime? end ;
   late double hikeRating = 0;
   bool rated = false;
+  int currentCoordIndex = 0;
+  int warningIndex = 0;
 
 
 
@@ -128,23 +131,7 @@ class _HikePageState extends State<HikePage>{
 
             lastPosition = LatLng(position.latitude, position.longitude);
 
-            Timer.periodic(Duration(seconds: 5), (timer) async {
-              const threshold = 0.02; // 20 meters in km
-
-              // Check if current position is straying from the path
-              for (var i = 0; i < coordonees.length - 1; i++) {
-                final startCoordinate = coordonees[i];
-                final endCoordinate = coordonees[i + 1];
-                final distanceToSegment = pointToLineDistance(
-                    lastPosition!.latitude, lastPosition!.longitude, startCoordinate.latitude, startCoordinate.longitude,
-                    endCoordinate.latitude, endCoordinate.longitude);
-                if (distanceToSegment > threshold) {
-                  await showNotification('Straying from the path!',
-                      'Distance: ${distanceToSegment.toStringAsFixed(5)} km');
-                  break; // Show only one notification for the first straying point
-                }
-              }
-            });
+            checkDeviation();
 
             setState(() {});
           });
@@ -154,54 +141,72 @@ class _HikePageState extends State<HikePage>{
     }
   }
 
-  double pointToLineDistance(double x, double y, double x1, double y1, double x2, double y2) {
-    final A = x - x1;
-    final B = y - y1;
-    final C = x2 - x1;
-    final D = y2 - y1;
+  checkDeviation(){
+    double distance = 0;
+    double leastDistance = double.infinity;
+    double threshold = 30;
+    double lastLat = lastPosition!.latitude;
+    double lastLong = lastPosition!.longitude;
 
-    final dot = A * C + B * D;
-    final lenSq = C * C + D * D;
-    double param = -1;
-
-    if (lenSq != 0) {
-      param = dot / lenSq;
+    for(int i = 0; i <= coordonees.length; i++){
+      distance = Geolocator.distanceBetween(lastPosition!.latitude, lastPosition!.longitude, coordonees[i].latitude, coordonees[i].longitude);
+      if (distance < leastDistance) {
+        leastDistance = distance;
+        currentCoordIndex = i;
+      }
     }
 
-    double xx, yy;
+    if(warningIndex <= 1){
+      if(currentCoordIndex == 0){
+        if(Geolocator.distanceBetween(lastPosition!.latitude, lastPosition!.longitude, coordonees[currentCoordIndex].latitude, coordonees[currentCoordIndex].longitude) >= threshold
+            || Geolocator.distanceBetween(lastPosition!.latitude, lastPosition!.longitude, coordonees[currentCoordIndex + 1].latitude, coordonees[currentCoordIndex +1].longitude)  >= threshold ){
+          checkDeviation();
+          warningIndex++;
+          return;
+        }
+      }
 
-    if (param < 0) {
-      xx = x1;
-      yy = y1;
-    } else if (param > 1) {
-      xx = x2;
-      yy = y2;
-    } else {
-      xx = x1 + param * C;
-      yy = y1 + param * D;
+      if(Geolocator.distanceBetween(lastLat,lastLong, coordonees[currentCoordIndex].latitude, coordonees[currentCoordIndex].longitude) >= threshold
+          || Geolocator.distanceBetween(lastLat, lastLong, coordonees[currentCoordIndex + 1].latitude, coordonees[currentCoordIndex +1].longitude)  >= threshold
+          || Geolocator.distanceBetween(lastLat, lastLong, coordonees[currentCoordIndex + 2].latitude, coordonees[currentCoordIndex +2].longitude)  >= threshold
+          || Geolocator.distanceBetween(lastLat, lastLong, coordonees[currentCoordIndex -1].latitude, coordonees[currentCoordIndex -1].longitude)  >= threshold){
+        checkDeviation();
+        warningIndex++;
+        return;
+      }
     }
+    else{
+      warningIndex = 0;
 
-    final dx = x - xx;
-    final dy = y - yy;
-    return sqrt(dx * dx + dy * dy);
+      const snackBar = SnackBar(
+        behavior: SnackBarBehavior.floating,
+        elevation: 0,
+        backgroundColor: Color(0xFFC72C41),
+        dismissDirection: DismissDirection.down,
+        content: Text('Warning'),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
   }
 
-  Future<void> showNotification(String title, String body) async {
-    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'your channel id', 'your channel name', 'your channel description',
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-
-    final iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    final platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics,
-    );
-
-    await FlutterLocalNotificationsPlugin().show(
-      0, title, body, platformChannelSpecifics, payload: 'item x',
-    );
-  }
+  // Future<void> showNotification(String title, String body) async {
+  //   const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //     'your channel id', 'your channel name', 'your channel description',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //   );
+  //
+  //   final iOSPlatformChannelSpecifics = IOSNotificationDetails();
+  //   final platformChannelSpecifics = NotificationDetails(
+  //     android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics,
+  //   );
+  //
+  //   await FlutterLocalNotificationsPlugin().show(
+  //     0, title, body, platformChannelSpecifics, payload: 'item x',
+  //   );
+  // }
 
   pauseListening(){
     subscription!.pause();
@@ -330,25 +335,25 @@ class _HikePageState extends State<HikePage>{
     );
   }
 
-  double haversine(double lat1, double lon1, double lat2, double lon2) {
-    const R = 6371.0; // Earth radius in km
-    // Convert latitude and longitude from degrees to radians
-    final lat1Rad = math.radians(lat1);
-    final lon1Rad = math.radians(lon1);
-    final lat2Rad = math.radians(lat2);
-    final lon2Rad = math.radians(lon2);
-
-    // Difference in latitude and longitude
-    final dlat = lat2Rad - lat1Rad;
-    final dlon = lon2Rad - lon1Rad;
-
-    // Haversine formula
-    final a = pow(sin(dlat / 2), 2) + cos(lat1Rad) * cos(lat2Rad) * pow(sin(dlon / 2), 2);
-    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    final distance = R * c;
-
-    return distance;
-  }
+  // double haversine(double lat1, double lon1, double lat2, double lon2) {
+  //   const R = 6371.0; // Earth radius in km
+  //   // Convert latitude and longitude from degrees to radians
+  //   final lat1Rad = math.radians(lat1);
+  //   final lon1Rad = math.radians(lon1);
+  //   final lat2Rad = math.radians(lat2);
+  //   final lon2Rad = math.radians(lon2);
+  //
+  //   // Difference in latitude and longitude
+  //   final dlat = lat2Rad - lat1Rad;
+  //   final dlon = lon2Rad - lon1Rad;
+  //
+  //   // Haversine formula
+  //   final a = pow(sin(dlat / 2), 2) + cos(lat1Rad) * cos(lat2Rad) * pow(sin(dlon / 2), 2);
+  //   final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+  //   final distance = R * c;
+  //
+  //   return distance;
+  // }
 
   @override
   void dispose() {
