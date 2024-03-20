@@ -54,6 +54,9 @@
   "shareHike": "Hey look! I just completed : ",
   "onArsoude": " on the app Arsoude!",
   "warningDeviation": "Warning! You are deviating from the path.",
-  "hikeUpdate": "Hike Updates"
+  "hikeUpdate": "Hike Updates",
+  "rateHike": "Rate this hike!",
+  "noRateHike": "No",
+  "rateHikeContinue": "Continue"
 
 }

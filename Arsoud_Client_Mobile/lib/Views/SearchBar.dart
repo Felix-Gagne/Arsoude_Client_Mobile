@@ -9,7 +9,6 @@ class SearchBarWidget extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(5, 25, 5, 10),
       child: Column(
         children: [
-          // Search bar
           Container(
             height: 50,
             decoration: BoxDecoration(
@@ -38,7 +37,6 @@ class SearchBarWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(36),
                   borderSide: const BorderSide(color: Colors.black, width: 0.5),
                 ),
-                //Icon
                 prefixIcon: Container(
                   margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                   child: Image.asset(
@@ -63,8 +61,7 @@ class SearchBarWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               ),
             ),
           ),

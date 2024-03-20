@@ -72,6 +72,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Vous avez aucune randonnée dans vos favoris"),
         "noHikesExist": MessageLookupByLibrary.simpleMessage(
             "Aucune randonnée ne peut etre trouver"),
+        "noRateHike": MessageLookupByLibrary.simpleMessage("Non"),
         "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir":
             MessageLookupByLibrary.simpleMessage(
                 "Nous rencontrons un problème avec le serveur actuellement. Veuillez revenir plus tard."),
@@ -83,6 +84,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterAPassword": MessageLookupByLibrary.simpleMessage(
             "Veuillez entrer un mot de passe"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "rateHike":
+            MessageLookupByLibrary.simpleMessage("Évaluer cette randonnée!"),
+        "rateHikeContinue": MessageLookupByLibrary.simpleMessage("Continuer"),
         "rendrePriv": MessageLookupByLibrary.simpleMessage("Rendre Privé"),
         "rendrePublique":
             MessageLookupByLibrary.simpleMessage("Rendre Publique"),

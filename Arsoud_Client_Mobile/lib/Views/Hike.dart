@@ -391,13 +391,9 @@ class _HikePageState extends State<HikePage> {
         size: 40,
       ),
       onPressed: () async {
-        await availableCameras().then((value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => CameraPage(
-                      cameras: value,
-                      randonne: widget.randonne,
-                    ))));
+        await availableCameras().then((value) => Navigator.push(context, MaterialPageRoute(
+            builder: (_) => CameraPage(cameras: value, randonne: widget.randonne,)))
+        );
       },
     );
   }
@@ -408,15 +404,15 @@ class _HikePageState extends State<HikePage> {
         shape: BoxShape.circle,
         color: Colors.amber,
       ),
-      child: !isVisible
-          ? IconButton(
+      child: !isVisible ? IconButton(
               tooltip: 'Start',
               icon: const FittedBox(
                   fit: BoxFit.fitHeight,
                   child: Icon(
                     Icons.play_arrow_sharp,
                     size: 45,
-                  )),
+                  )
+              ),
               onPressed: () {
                 setState(() {
                   trailStarted = true;
@@ -425,15 +421,15 @@ class _HikePageState extends State<HikePage> {
                   startListening();
                 });
               },
-            )
-          : IconButton(
+            ) : IconButton(
               onPressed: () {
                 isVisible = !isVisible;
                 moveToStartMarker();
                 pauseListening();
                 setState(() {});
               },
-              icon: const Icon(Icons.pause, size: 45)),
+              icon: const Icon(Icons.pause, size: 45)
+      ),
     );
   }
 
@@ -449,9 +445,7 @@ class _HikePageState extends State<HikePage> {
           onPressed: () => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
-                  title: const Text(
-                    'Rate this hike!',
-                  ),
+                  title: Text(S.of(context).rateHike),
                   content: RatingBar.builder(
                     initialRating: 3,
                     minRating: 1,
@@ -478,20 +472,18 @@ class _HikePageState extends State<HikePage> {
                             _mapController.animateCamera(
                               CameraUpdate.newLatLngZoom(
                                   LatLng(
-                                      widget.randonne.startingCoordinates
-                                          .latitude,
-                                      widget.randonne.startingCoordinates
-                                          .longitude),
-                                  15.0),
+                                      widget.randonne.startingCoordinates.latitude,
+                                      widget.randonne.startingCoordinates.longitude
+                                  ),
+                                  15.0
+                              ),
                             );
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DetailRandonne(
-                                          randonne: widget.randonne,
-                                        )));
+                            Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => DetailRandonne(randonne: widget.randonne,)
+                             )
+                            );
                           },
-                          child: const Text('No'),
+                          child: Text(S.of(context).noRateHike),
                         ),
                         TextButton(
                           onPressed: () {
@@ -501,20 +493,20 @@ class _HikePageState extends State<HikePage> {
                             _mapController.animateCamera(
                               CameraUpdate.newLatLngZoom(
                                   LatLng(
-                                      widget.randonne.startingCoordinates
-                                          .latitude,
-                                      widget.randonne.startingCoordinates
-                                          .longitude),
+                                      widget.randonne.startingCoordinates.latitude,
+                                      widget.randonne.startingCoordinates.longitude
+                                  ),
                                   15.0),
                             );
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => DetailRandonne(
-                                          randonne: widget.randonne,
-                                        )));
+                                      randonne: widget.randonne,)
+                                )
+                            );
                           },
-                          child: const Text('Continue'),
+                          child: Text(S.of(context).rateHikeContinue),
                         ),
                       ],
                     ),

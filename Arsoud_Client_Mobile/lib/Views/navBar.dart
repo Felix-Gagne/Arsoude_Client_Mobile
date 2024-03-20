@@ -112,37 +112,36 @@ class _NavBarState extends State<NavBar> with TickerProviderStateMixin {
         tabBarColor: const Color(0xFF10625F),
         onTabItemSelected: (int value) {
           setState(() {
-            // _tabController!.index = value;
             if (value != 1 && value != 0 && _user == null || _user == "") {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text(S.of(context).advertisement),
-                      content: Text(
-                          S.of(context).youNeedToBeLoggedInToAccessThisPage),
+                      content: Text(S.of(context).youNeedToBeLoggedInToAccessThisPage),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context).pop(); // Close the dialog
-                            // Navigate to the login page
+                            Navigator.of(context).pop();
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Login()),
+                                  builder: (context) => const Login()
+                              ),
                             );
                           },
                           child: const Text('Login'),
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context).pop(); // Close the dialog
-                            // Navigate to the login page
+                            Navigator.of(context).pop();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const NavBar(page: 1)));
+                                        const NavBar(page: 1)
+                                )
+                            );
                           },
                           child: Text(S.of(context).cancel),
                         ),

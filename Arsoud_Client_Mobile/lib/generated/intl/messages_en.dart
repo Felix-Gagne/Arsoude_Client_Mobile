@@ -69,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("You have no favorite hikes"),
         "noHikesExist": MessageLookupByLibrary.simpleMessage(
             "There are no hikes that can be found"),
+        "noRateHike": MessageLookupByLibrary.simpleMessage("No"),
         "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir":
             MessageLookupByLibrary.simpleMessage(
                 "We are currently experiencing an issue with the server. Please try again later."),
@@ -80,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterAPassword":
             MessageLookupByLibrary.simpleMessage("Please enter a password"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "rateHike": MessageLookupByLibrary.simpleMessage("Rate this hike!"),
+        "rateHikeContinue": MessageLookupByLibrary.simpleMessage("Continue"),
         "rendrePriv": MessageLookupByLibrary.simpleMessage("Make Private"),
         "rendrePublique": MessageLookupByLibrary.simpleMessage("Make Public"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),

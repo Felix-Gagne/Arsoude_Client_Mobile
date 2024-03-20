@@ -100,34 +100,35 @@ class _ProfileState extends State<Profile> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-                    padding: const EdgeInsets.all(10),
-                    width: width * 0.9,
-                    decoration: BoxDecoration(
-                        color: const Color(0xC5051717),
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5), // Shadow color
-                            spreadRadius: 4, // Spread radius
-                            blurRadius: 7, // Blur radius
-                            offset: const Offset(0, 3), // Offset for the shadow (vertical, horizontal)
-                          ),
-                        ],
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(icon, color: Colors.white, size: 32,),
-                        SizedBox(width: width * 0.04,),
-                        Text(optionName, style: GoogleFonts.plusJakartaSans(
-                            textStyle: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500
-                            )
-                        ),)
-                      ],
-                    ),
-                  ),
+        padding: const EdgeInsets.all(10),
+        width: width * 0.9,
+        decoration: BoxDecoration(
+          color: const Color(0xC5051717),
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5), // Shadow color
+              spreadRadius: 4, // Spread radius
+              blurRadius: 7, // Blur radius
+              offset: const Offset(0, 3), // Offset for the shadow (vertical, horizontal)
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.white, size: 32,),
+            SizedBox(width: width * 0.04,),
+            Text(optionName, style: GoogleFonts.plusJakartaSans(
+                textStyle: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500
+                )
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -137,21 +138,21 @@ class _ProfileState extends State<Profile> {
       width: width * 0.3,
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.black, // Border color
-          width: 2, // Border width
+          color: Colors.black,
+          width: 2,
         ),
-        borderRadius: BorderRadius.circular(45), // Adjust the value to match the container's border radius
+        borderRadius: BorderRadius.circular(45),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5), // Shadow color
-            spreadRadius: 2, // Spread radius
-            blurRadius: 7, // Blur radius
-            offset: const Offset(0, 3), // Offset for the shadow (vertical, horizontal)
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 7,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(45), // Adjust the value to match the container's border radius
+        borderRadius: BorderRadius.circular(45),
         child: Image.asset(
           "assets/Images/avatarPlaceHolder.png",
           fit: BoxFit.cover,

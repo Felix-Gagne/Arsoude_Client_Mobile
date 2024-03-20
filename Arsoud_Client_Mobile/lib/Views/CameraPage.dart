@@ -72,12 +72,9 @@ class _CameraPageState extends State<CameraPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-      child: Stack(children: [
-        (_cameraController.value.isInitialized)
+      child: Stack(children: [(_cameraController.value.isInitialized)
             ? CameraPreview(_cameraController)
-            : Container(
-                color: Colors.black,
-                child: const Center(child: CircularProgressIndicator())),
+            : Container(color: Colors.black, child: const Center(child: CircularProgressIndicator())),
         Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -106,10 +103,9 @@ class _CameraPageState extends State<CameraPage> {
                 Expanded(child: IconButton(
                       padding: EdgeInsets.zero,
                       iconSize: 30,
-                      icon: Icon(_isRearCameraSelected
-                              ? CupertinoIcons.switch_camera
-                              : CupertinoIcons.switch_camera_solid,
-                          color: Colors.white),
+                      icon: Icon(
+                          _isRearCameraSelected ? CupertinoIcons.switch_camera : CupertinoIcons.switch_camera_solid, color: Colors.white
+                      ),
                       onPressed: () {
                         setState(() => _isRearCameraSelected = !_isRearCameraSelected);
                         initCamera(widget.cameras![_isRearCameraSelected ? 0 : 1]);

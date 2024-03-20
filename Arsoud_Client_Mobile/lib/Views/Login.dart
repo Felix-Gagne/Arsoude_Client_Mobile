@@ -36,13 +36,14 @@ class _LoginState extends State<Login> {
           loading = false;
         });
         if(!mounted) return;
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const NavBar(page: 1)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const NavBar(page: 1)));
+
       } on DioException catch (e) {
         if(!mounted) return;
         setState(() {
           loading = false;
         });
+
         var errorMessage;
         if (e.response != null) {
           if (e.response!.data["message"] ==
@@ -76,7 +77,6 @@ class _LoginState extends State<Login> {
   void dispose() {
     email.dispose();
     password.dispose();
-
     super.dispose();
   }
 
@@ -89,7 +89,6 @@ class _LoginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              //Login title and button
               Container(
                 padding: const EdgeInsets.fromLTRB(20, 30, 0, 0),
                 child: Row(
@@ -100,7 +99,9 @@ class _LoginState extends State<Login> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const NavBar(page: 1)));
+                                builder: (context) => const NavBar(page: 1)
+                            )
+                        );
                       },
                       icon: Icon(
                         Icons.arrow_back_ios,
@@ -113,17 +114,13 @@ class _LoginState extends State<Login> {
                     ),
                     Text(
                       S.of(context).login,
-                      style: GoogleFonts.plusJakartaSans(
-                          textStyle: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
+                      style: GoogleFonts.plusJakartaSans(textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     )
                   ],
                 ),
               ),
               welcomeTitle(context),
-              const SizedBox(
-                height: 36,
-              ),
+              const SizedBox(height: 36,),
               informationForm(context),
               loginButton(),
               signUp(context)
@@ -140,20 +137,14 @@ class _LoginState extends State<Login> {
         children: [
           Text(
             S.of(context).welcomeBack,
-            style: GoogleFonts.plusJakartaSans(
-                textStyle:
-                    const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+            style: GoogleFonts.plusJakartaSans(textStyle: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 20,),
           Text(
             S.of(context).signInToYourAccount,
             style: GoogleFonts.plusJakartaSans(
-                textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFFC1C1C2))),
+                textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xFFC1C1C2))
+            ),
           )
         ],
       ),
@@ -176,22 +167,13 @@ class _LoginState extends State<Login> {
                       color: Color(0xFF868687),
                       fontWeight: FontWeight.w500)),
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16,),
             emailInput(context),
-            const SizedBox(
-              height: 24,
+            const SizedBox(height: 24,),
+            Text(S.of(context).password, style: GoogleFonts.plusJakartaSans(
+                    textStyle: const TextStyle(fontSize: 14, color: Color(0xFF868687), fontWeight: FontWeight.w500))
             ),
-            Text(S.of(context).password,
-                style: GoogleFonts.plusJakartaSans(
-                    textStyle: const TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF868687),
-                        fontWeight: FontWeight.w500))),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16,),
             passwordInput(context),
             forgotPassword(context),
           ],
@@ -203,7 +185,6 @@ class _LoginState extends State<Login> {
   SizedBox emailInput(BuildContext context) {
     return SizedBox(
       width: 320,
-      //height: 48,
       child: TextFormField(
         enabled: !loading,
         validator: (email) {
@@ -225,12 +206,10 @@ class _LoginState extends State<Login> {
               borderRadius: BorderRadius.all(Radius.circular(36))),
           errorBorder: OutlineInputBorder(
             borderSide: BorderSide(width: 1.5, color: Colors.red),
-            // Customize error border color here
             borderRadius: BorderRadius.all(Radius.circular(36)),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderSide: BorderSide(width: 1.5, color: Colors.red),
-            // Same as error border for consistency
             borderRadius: BorderRadius.all(Radius.circular(36)),
           ),
           disabledBorder: OutlineInputBorder(
@@ -245,7 +224,6 @@ class _LoginState extends State<Login> {
   SizedBox passwordInput(BuildContext context) {
     return SizedBox(
       width: 320,
-      //height: 48,
       child: TextFormField(
         enabled: !loading,
         validator: (password) {
@@ -260,8 +238,7 @@ class _LoginState extends State<Login> {
         textAlign: TextAlign.start,
         decoration: InputDecoration(
             suffixIcon: IconButton(
-              icon: Icon(
-                  (showPassword) ? Icons.visibility : Icons.visibility_off),
+              icon: Icon((showPassword) ? Icons.visibility : Icons.visibility_off),
               onPressed: () {
                 showPassword = !showPassword;
                 setState(() {});
@@ -275,12 +252,10 @@ class _LoginState extends State<Login> {
                 borderRadius: BorderRadius.all(Radius.circular(36))),
             errorBorder: const OutlineInputBorder(
               borderSide: BorderSide(width: 1.5, color: Colors.red),
-              // Customize error border color here
               borderRadius: BorderRadius.all(Radius.circular(36)),
             ),
             focusedErrorBorder: const OutlineInputBorder(
               borderSide: BorderSide(width: 1.5, color: Colors.red),
-              // Same as error border for consistency
               borderRadius: BorderRadius.all(Radius.circular(36)),
             ),
             disabledBorder: const OutlineInputBorder(
@@ -288,9 +263,7 @@ class _LoginState extends State<Login> {
                 borderRadius: BorderRadius.all(Radius.circular(36))),
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            errorText: wrongInformationError.isNotEmpty
-                ? wrongInformationError
-                : null),
+            errorText: wrongInformationError.isNotEmpty ? wrongInformationError : null),
         keyboardType: TextInputType.visiblePassword,
         textInputAction: TextInputAction.done,
         onChanged: (text) => setState(() => {}),
@@ -304,14 +277,11 @@ class _LoginState extends State<Login> {
       children: [
         TextButton(
             onPressed: () {},
-            child: Text(
-              S.of(context).forgotPassword,
+            child: Text(S.of(context).forgotPassword,
               style: GoogleFonts.plusJakartaSans(
-                  textStyle: const TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF09635F),
-                      fontWeight: FontWeight.bold)),
-            )),
+                  textStyle: const TextStyle(fontSize: 14, color: Color(0xFF09635F), fontWeight: FontWeight.bold)),
+            )
+        ),
       ],
     );
   }
@@ -324,18 +294,15 @@ class _LoginState extends State<Login> {
         children: [
           Text(S.of(context).dontHaveAnAccount,
               style: GoogleFonts.plusJakartaSans(
-                  textStyle: const TextStyle(
-                      fontSize: 14,
-                      color: Color(0xFF878788),
-                      fontWeight: FontWeight.w500))),
+                  textStyle: const TextStyle(fontSize: 14, color: Color(0xFF878788), fontWeight: FontWeight.w500))
+          ),
           TextButton(
               onPressed: () {},
               child: Text(S.of(context).signUp,
                   style: GoogleFonts.plusJakartaSans(
-                      textStyle: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF09635F),
-                          fontWeight: FontWeight.bold))))
+                      textStyle: const TextStyle(fontSize: 14, color: Color(0xFF09635F), fontWeight: FontWeight.bold))
+              )
+          )
         ],
       ),
     );

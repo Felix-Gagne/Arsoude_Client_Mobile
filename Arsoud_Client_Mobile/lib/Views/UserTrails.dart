@@ -61,9 +61,7 @@ class _UserTrailsState extends State<UserTrails> {
                         return SizedBox(
                           width: 400,
                           child: Text(
-                              S
-                                  .of(context)
-                                  .nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir,
+                              S.of(context).nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir,
                               style: GoogleFonts.plusJakartaSans(
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.w400,

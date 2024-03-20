@@ -49,9 +49,7 @@ class _FavoritTerailsState extends State<FavoritTerails> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(
-                    height: 25,
-                  ),
+                  const SizedBox(height: 25,),
                   FutureBuilder<List<Randonne>>(
                     future: refresh(),
                     builder: (context, snapshot) {
@@ -64,7 +62,8 @@ class _FavoritTerailsState extends State<FavoritTerails> {
                               style: GoogleFonts.plusJakartaSans(
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 16))),
+                                      fontSize: 16))
+                          ),
                         );
                       } else if (listTrails.isEmpty) {
                         return SizedBox(

@@ -391,15 +391,13 @@ class _DetailRandonneState extends State<DetailRandonne> {
                       child: CachedNetworkImage(
                         imageUrl: imageUrl,
                         fit: BoxFit.fill,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) => SizedBox(
+                        progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
                           width: 50,
                           height: 50,
                           child: CircularProgressIndicator(
                               value: downloadProgress.progress),
                         ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     );
                   },
@@ -409,12 +407,10 @@ class _DetailRandonneState extends State<DetailRandonne> {
           : CachedNetworkImage(
               imageUrl: widget.randonne.imageUrl!,
               fit: BoxFit.fill,
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  SizedBox(
+              progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
                 width: 50,
                 height: 50,
-                child:
-                    CircularProgressIndicator(value: downloadProgress.progress),
+                child: CircularProgressIndicator(value: downloadProgress.progress),
               ),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
@@ -440,8 +436,7 @@ class _DetailRandonneState extends State<DetailRandonne> {
                   MaterialPageRoute(
                       builder: (context) => const NavBar(page: 2)));
             },
-            icon: const Icon(Icons.arrow_back,
-                color: Colors.black, size: 20), // Adjust icon size here
+            icon: const Icon(Icons.arrow_back, color: Colors.black, size: 20), // Adjust icon size here
           ),
         ),
       ),
@@ -464,8 +459,7 @@ class _DetailRandonneState extends State<DetailRandonne> {
             onPressed: () {
               onShare(context);
             },
-            icon: const Icon(Icons.share,
-                color: Colors.black, size: 20), // Adjust icon size here
+            icon: const Icon(Icons.share, color: Colors.black, size: 20), // Adjust icon size here
           ),
         ),
       ),
@@ -495,14 +489,11 @@ class _DetailRandonneState extends State<DetailRandonne> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Trail rating
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.randonne.rating != null
-                          ? widget.randonne.rating!.toStringAsFixed(1)
-                          : '-',
+                      widget.randonne.rating != null ? widget.randonne.rating!.toStringAsFixed(1) : '-',
                       style: GoogleFonts.plusJakartaSans(
                         textStyle: const TextStyle(
                           fontSize: 20,
@@ -511,27 +502,21 @@ class _DetailRandonneState extends State<DetailRandonne> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Icon(
-                      Icons.star,
-                      size: 30,
-                    ),
+                    const Icon(Icons.star, size: 30,),
                   ],
                 ),
                 Row(
                   children: [
                     Icon(
-                      widget.randonne.type == 1
-                          ? const IconData(0xe1d2, fontFamily: 'MaterialIcons')
+                      widget.randonne.type == 1 ? const IconData(0xe1d2, fontFamily: 'MaterialIcons')
                           : const IconData(0xe1e1, fontFamily: 'MaterialIcons'),
                       size: 30,
                     ),
                     const SizedBox(width: 16),
                     // Bookmark icon
                     (isConnected && favorite)
-                        ? const Icon(Icons.bookmark,
-                            color: Colors.black, size: 36)
-                        : const Icon(Icons.bookmark_outline,
-                            color: Colors.black, size: 36),
+                        ? const Icon(Icons.bookmark, color: Colors.black, size: 36)
+                        : const Icon(Icons.bookmark_outline, color: Colors.black, size: 36),
                   ],
                 ),
               ],
@@ -572,7 +557,9 @@ class _DetailRandonneState extends State<DetailRandonne> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  HikePage(randonne: widget.randonne)));
+                                  HikePage(randonne: widget.randonne)
+                          )
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -583,12 +570,12 @@ class _DetailRandonneState extends State<DetailRandonne> {
                           textStyle: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
-                              fontSize: 16)),
+                              fontSize: 16)
+                      ),
                     ),
                   )),
               SizedBox(width: width * 0.03),
-              SizedBox(
-                width: width * 0.45,
+              SizedBox(width: width * 0.45,
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
@@ -612,8 +599,7 @@ class _DetailRandonneState extends State<DetailRandonne> {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             owner ? Container(
                     width: width * 0.83,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
                     child: !widget.randonne.isPublic ? ElevatedButton(
                             onPressed: () {
                               SetPublic(widget.randonne.id);
@@ -626,7 +612,9 @@ class _DetailRandonneState extends State<DetailRandonne> {
                                     textStyle: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16))),
+                                        fontSize: 16)
+                                )
+                            ),
                           )
                         : ElevatedButton(
                             onPressed: () {
@@ -640,9 +628,11 @@ class _DetailRandonneState extends State<DetailRandonne> {
                                     textStyle: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16))),
-                          ))
-                : const SizedBox()
+                                        fontSize: 16)
+                                )
+                            ),
+                          )
+            ) : const SizedBox()
           ]),
           const SizedBox(height: 7),
           Row(

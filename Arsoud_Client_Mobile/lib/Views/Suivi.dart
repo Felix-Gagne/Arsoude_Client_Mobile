@@ -86,8 +86,7 @@ class _SuiviPageState extends State<SuiviPage> {
 
     if (permission == LocationPermission.deniedForever) {
       if(!mounted) return;
-      return Future.error(
-          S.of(context).locationServicePermissionsPermanentlyDisabled);
+      return Future.error(S.of(context).locationServicePermissionsPermanentlyDisabled);
     }
 
     //Reçoit la position actuelle et l'ajoute dans la liste de coordonnées
@@ -140,8 +139,7 @@ class _SuiviPageState extends State<SuiviPage> {
   Future<void> moveToStartMarker() async {
     Position position = await LocationService.getCurrentPosition();
     _mapController.animateCamera(
-      CameraUpdate.newLatLngZoom(
-          LatLng(position.latitude, position.longitude), 20.0),
+      CameraUpdate.newLatLngZoom(LatLng(position.latitude, position.longitude), 20.0),
     );
   }
 
@@ -246,7 +244,8 @@ class _SuiviPageState extends State<SuiviPage> {
                 pauseListening();
                 setState(() {});
               },
-              icon: const Icon(Icons.pause, size: 45)),
+              icon: const Icon(Icons.pause, size: 45)
+            ),
     );
   }
 
@@ -264,16 +263,13 @@ class _SuiviPageState extends State<SuiviPage> {
           trailStarted = false;
           _mapController.animateCamera(
             CameraUpdate.newLatLngZoom(
-                LatLng(widget.randonne.startingCoordinates.latitude,
-                    widget.randonne.startingCoordinates.longitude),
-                15.0),
+                LatLng(widget.randonne.startingCoordinates.latitude, widget.randonne.startingCoordinates.longitude), 15.0),
           );
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DetailRandonne(
-                        randonne: widget.randonne,
-                      )));
+              context, MaterialPageRoute(
+                  builder: (context) => DetailRandonne(randonne: widget.randonne,)
+              )
+          );
         },
       ),
     );

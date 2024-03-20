@@ -53,6 +53,11 @@
   "shareHike": "Hé regarde! je viens de terminer : ",
   "onArsoude": " sur l'application Arsoude!",
   "warningDeviation": "Attention! Vous vous écartez du chemin.",
-  "hikeUpdate": "Mise à jour des randonnées"
+  "hikeUpdate": "Mise à jour des randonnées",
+  "rateHike": "Évaluer cette randonnée!",
+  "noRateHike": "Non",
+  "rateHikeContinue": "Continuer"
+
+
 
 }

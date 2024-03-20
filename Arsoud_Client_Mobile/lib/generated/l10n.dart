@@ -599,6 +599,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Rate this hike!`
+  String get rateHike {
+    return Intl.message(
+      'Rate this hike!',
+      name: 'rateHike',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get noRateHike {
+    return Intl.message(
+      'No',
+      name: 'noRateHike',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get rateHikeContinue {
+    return Intl.message(
+      'Continue',
+      name: 'rateHikeContinue',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

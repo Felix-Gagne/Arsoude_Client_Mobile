@@ -68,8 +68,7 @@ class PreviewPage extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(S.of(context).sendPhoto,
-                      style: const TextStyle(color: Colors.white)),
+                  Text(S.of(context).sendPhoto, style: const TextStyle(color: Colors.white)),
                   const SizedBox(width: 8.0),
                   const Icon(Icons.arrow_forward, color: Colors.white),
                 ],

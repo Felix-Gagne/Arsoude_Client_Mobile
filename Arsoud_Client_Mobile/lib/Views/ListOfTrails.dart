@@ -34,12 +34,9 @@ class ListOfTrails extends StatelessWidget {
           }
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DetailRandonne(
-                            randonne: randonne,
-                          )));
+              Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => DetailRandonne(randonne: randonne,))
+              );
             },
             child: Container(
               padding: const EdgeInsets.fromLTRB(5, 0, 5, 25),
@@ -54,20 +51,17 @@ class ListOfTrails extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.7),
                           spreadRadius: 0.5,
                           blurRadius: 10,
-                          offset: const Offset(
-                              7, 10), // changes the position of the shadow
+                          offset: const Offset(7, 10),
                         ),
                       ],
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
-                      child: (randonne.imageUrl != null &&
-                              randonne.imageUrl != "")
+                      child: (randonne.imageUrl != null && randonne.imageUrl != "")
                           ? CachedNetworkImage(
                               fit: BoxFit.fill,
                               imageUrl: randonne.imageUrl!,
-                              progressIndicatorBuilder:
-                                  (context, url, downloadProgress) => SizedBox(
+                              progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
                                 width: 50,
                                 height: 50,
                                 child: CircularProgressIndicator(
@@ -79,18 +73,13 @@ class ListOfTrails extends StatelessWidget {
                           : Image.asset(
                               "assets/Images/imagePlaceholder.jpg",
                               fit: BoxFit.cover,
-                              width: 160, // Ensure consistent width
-                              height: 100, // Ensure consistent height
+                              width: 160,
+                              height: 100,
                             ),
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.fromLTRB(
-                      20,
-                      0,
-                      0,
-                      0,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0,),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -127,12 +116,9 @@ class ListOfTrails extends StatelessWidget {
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
-                              const SizedBox(
-                                width: 5,
-                              ),
+                              const SizedBox(width: 5,),
                               Icon(icon),
-                              Text(
-                                "${S.of(context).distance}16km",
+                              Text("${S.of(context).distance}16km",
                                 style: GoogleFonts.plusJakartaSans(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
