@@ -25,18 +25,21 @@ class ListOfTrails extends StatelessWidget {
           Randonne randonne = listTrails[index];
           var typeTrail;
           var icon;
-          if(randonne.type == 1){
+          if (randonne.type == 1) {
             typeTrail = "Vélo";
-            icon = IconData(0xe1d2, fontFamily: 'MaterialIcons');
-
-          }
-          else{
+            icon = const IconData(0xe1d2, fontFamily: 'MaterialIcons');
+          } else {
             typeTrail = "Pieds";
-            icon = IconData(0xe1e1, fontFamily: 'MaterialIcons');
+            icon = const IconData(0xe1e1, fontFamily: 'MaterialIcons');
           }
           return GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRanonne(randonne: randonne,)));
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailRandonne(
+                            randonne: randonne,
+                          )));
             },
             child: Container(
               padding: const EdgeInsets.fromLTRB(5, 0, 5, 25),
@@ -51,74 +54,90 @@ class ListOfTrails extends StatelessWidget {
                           color: Colors.grey.withOpacity(0.7),
                           spreadRadius: 0.5,
                           blurRadius: 10,
-                          offset: Offset(7, 10), // changes the position of the shadow
+                          offset: const Offset(
+                              7, 10), // changes the position of the shadow
                         ),
                       ],
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(7),
-                      child: (randonne.imageUrl != null && randonne.imageUrl != "")
+                      child: (randonne.imageUrl != null &&
+                              randonne.imageUrl != "")
                           ? CachedNetworkImage(
-                        fit: BoxFit.fill,
-                        imageUrl: randonne.imageUrl!,
-                        progressIndicatorBuilder: (context, url, downloadProgress) =>
-                            Container( child: CircularProgressIndicator(value: downloadProgress.progress ), width: 50, height: 50, ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
-                      )
+                              fit: BoxFit.fill,
+                              imageUrl: randonne.imageUrl!,
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) => SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: CircularProgressIndicator(
+                                    value: downloadProgress.progress),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            )
                           : Image.asset(
-                        "assets/Images/imagePlaceholder.jpg",
-                        fit: BoxFit.cover,
-                        width: 160, // Ensure consistent width
-                        height: 100, // Ensure consistent height
-                      ),
+                              "assets/Images/imagePlaceholder.jpg",
+                              fit: BoxFit.cover,
+                              width: 160, // Ensure consistent width
+                              height: 100, // Ensure consistent height
+                            ),
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 0, 0,),
+                    padding: const EdgeInsets.fromLTRB(
+                      20,
+                      0,
+                      0,
+                      0,
+                    ),
                     child: Column(
-                      crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
                           width: 140,
                           child: Text(
                             randonne.name,
-                            style:
-                            GoogleFonts.plusJakartaSans(
+                            style: GoogleFonts.plusJakartaSans(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        SizedBox(height: 8),
-                        Container(
+                        const SizedBox(height: 8),
+                        SizedBox(
                           width: 160,
                           child: Text(
                             randonne.location,
-                            style:
-                            GoogleFonts.plusJakartaSans(
+                            style: GoogleFonts.plusJakartaSans(
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        SizedBox(height: 8),
-                        Container(
+                        const SizedBox(height: 8),
+                        SizedBox(
                           width: 180,
                           child: Row(
                             children: [
-                              Text(typeTrail, style:
-                              GoogleFonts.plusJakartaSans(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                              ),),
-                              SizedBox(width: 5,),
+                              Text(
+                                typeTrail,
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
                               Icon(icon),
-                              Text(S.of(context).distance+"16km", style:
-                              GoogleFonts.plusJakartaSans(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                              ),)
+                              Text(
+                                "${S.of(context).distance}16km",
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )
                             ],
                           ),
                         )

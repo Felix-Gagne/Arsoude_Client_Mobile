@@ -1,39 +1,33 @@
 import 'package:camera/camera.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/Views/Test.dart';
 import 'dart:io';
 import '../Http/Models.dart';
 import '../generated/l10n.dart';
 import 'package:untitled/Http/HttpService.dart';
 
 class PreviewPage extends StatelessWidget {
-  PreviewPage({Key? key, required this.picture, required this.randonne}) : super(key: key);
+  PreviewPage({Key? key, required this.picture, required this.randonne})
+      : super(key: key);
 
   final Randonne randonne;
   final XFile picture;
-  //File _imageFile = File("fff");
 
-  String _email = "";
   String imageUrl = "";
 
   @override
-  void initState() {
-    getEmail();
-  }
-
-  Future<String?> getEmail() async{
-    String? email = await storage.read(key: 'email');
-    _email = email!;
-  }
+  void initState() {}
 
   SendImage() async {
-    final _firebaseStorage = FirebaseStorage.instance;
+    final firebaseStorage = FirebaseStorage.instance;
 
-    var _imageFile = File(picture.path);
-    List<String> filename = _imageFile.path.split('/');
-    var snapshot = await _firebaseStorage.ref().child(filename[filename.length - 1]).putFile(_imageFile).whenComplete(() => print('upload image'));
+    var imageFile = File(picture.path);
+    List<String> filename = imageFile.path.split('/');
+    var snapshot = await firebaseStorage
+        .ref()
+        .child(filename[filename.length - 1])
+        .putFile(imageFile)
+        .whenComplete(() => print('upload image'));
 
     var url = await snapshot.ref.getDownloadURL();
     imageUrl = url;
@@ -62,6 +56,7 @@ class PreviewPage extends StatelessWidget {
               onPressed: () async {
                 await SendImage();
                 int count = 0;
+                if(!context.mounted) return;
                 Navigator.of(context).popUntil((_) => count++ >= 2);
               },
               style: ElevatedButton.styleFrom(
@@ -73,7 +68,8 @@ class PreviewPage extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(S.of(context).sendPhoto, style: const TextStyle(color: Colors.white)),
+                  Text(S.of(context).sendPhoto,
+                      style: const TextStyle(color: Colors.white)),
                   const SizedBox(width: 8.0),
                   const Icon(Icons.arrow_forward, color: Colors.white),
                 ],

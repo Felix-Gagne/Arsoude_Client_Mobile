@@ -80,6 +80,16 @@ class S {
     );
   }
 
+  /// `You haven't favorited any trails yet! Add a trail to your favorites to see it here.`
+  String get noFavoriteTrails {
+    return Intl.message(
+      'You haven\'t favorited any trails yet! Add a trail to your favorites to see it here.',
+      name: 'noFavoriteTrails',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Search for a hike`
   String get chercherUneRandonne {
     return Intl.message(
@@ -565,6 +575,26 @@ class S {
     return Intl.message(
       ' on the app Arsoude!',
       name: 'onArsoude',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Warning! You are deviating from the path.`
+  String get warningDeviation {
+    return Intl.message(
+      'Warning! You are deviating from the path.',
+      name: 'warningDeviation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hike Updates`
+  String get hikeUpdate {
+    return Intl.message(
+      'Hike Updates',
+      name: 'hikeUpdate',
       desc: '',
       args: [],
     );

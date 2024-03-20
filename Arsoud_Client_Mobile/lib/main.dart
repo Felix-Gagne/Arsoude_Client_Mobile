@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,12 +35,8 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       title: 'Flutter Demo',
-      home: const navBar(page: 1),
+      home: const NavBar(page: 1),
       debugShowCheckedModeBanner: false,
     );
   }
 }
-
-
-
-

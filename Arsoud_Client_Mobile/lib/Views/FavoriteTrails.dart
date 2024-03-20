@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/Http/HttpService.dart';
-
 import '../Http/Models.dart';
 import '../generated/l10n.dart';
-import 'Accueil.dart';
 import 'ListOfTrails.dart';
 import 'SearchBar.dart';
 
@@ -26,7 +24,7 @@ class _FavoritTerailsState extends State<FavoritTerails> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     searchController.dispose();
     super.dispose();
   }
@@ -40,7 +38,7 @@ class _FavoritTerailsState extends State<FavoritTerails> {
           SearchBarWidget(),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(20, 25, 0, 0),
+              padding: const EdgeInsets.fromLTRB(20, 25, 0, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -51,38 +49,34 @@ class _FavoritTerailsState extends State<FavoritTerails> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 25,),
+                  const SizedBox(
+                    height: 25,
+                  ),
                   FutureBuilder<List<Randonne>>(
                     future: refresh(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
                         return SizedBox(
                           width: 400,
-                          child: Text(
-                              S.of(context).noFavorites,
+                          child: Text(S.of(context).noFavorites,
                               style: GoogleFonts.plusJakartaSans(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 16
-                                  )
-                              )
-                          ),
+                                      fontSize: 16))),
                         );
-                      } else if(listTrails.length == 0){
+                      } else if (listTrails.isEmpty) {
                         return SizedBox(
                           width: 400,
-                          child: Text(S.of(context).vousNavezCreAucuneRandonne,
+                          child: Text(
+                            S.of(context).noFavoriteTrails,
                             style: GoogleFonts.plusJakartaSans(
-                                textStyle: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16
-                                )
-                            ),),
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 16)),
+                          ),
                         );
-                      }
-                      else {
+                      } else {
                         return ListOfTrails(listTrails: listTrails);
                       }
                     },
@@ -96,5 +90,3 @@ class _FavoritTerailsState extends State<FavoritTerails> {
     );
   }
 }
-
-

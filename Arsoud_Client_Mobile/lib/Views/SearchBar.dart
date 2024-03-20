@@ -40,7 +40,7 @@ class SearchBarWidget extends StatelessWidget {
                 ),
                 //Icon
                 prefixIcon: Container(
-                  margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                  margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                   child: Image.asset(
                     'assets/Images/logoSearch.png',
                     height: 20,
@@ -50,8 +50,8 @@ class SearchBarWidget extends StatelessWidget {
                 ),
                 suffixIcon: Container(
                   width: 55,
-                  margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  child: Row(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Icon(Icons.filter_alt_outlined),
@@ -63,7 +63,8 @@ class SearchBarWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               ),
             ),
           ),

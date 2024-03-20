@@ -1,34 +1,25 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/Design/MyClipperBackground.dart';
 import 'package:untitled/Http/HttpService.dart';
 import 'package:untitled/Views/Test.dart';
 import 'package:untitled/Views/navBar.dart';
-
 import '../generated/l10n.dart';
-import 'Accueil.dart';
-import 'CameraPage.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
-
-
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-
-
-
   String _email = "";
 
   @override
   void initState() {
     super.initState();
-    getEmail(); // Call the function inside initState
+    getEmail();
   }
 
   Future<String?> getEmail() async{
@@ -45,7 +36,7 @@ class _ProfileState extends State<Profile> {
     double height = size.height;
     double paddingUserInfo = height *0.1;
     return Scaffold(
-      backgroundColor: Color(0xFF10625F),
+      backgroundColor: const Color(0xFF10625F),
       body: Stack(
         children: [
           ClipPath(
@@ -64,7 +55,7 @@ class _ProfileState extends State<Profile> {
                   SizedBox(
                     width: width *0.85,
                     child: Text(_email, style: GoogleFonts.plusJakartaSans(
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
@@ -82,15 +73,16 @@ class _ProfileState extends State<Profile> {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => TestPage() ));
                           }),
                           options(width, Icons.collections, S.of(context).myListOfTrails, (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => navBar(page: 2)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const NavBar(page: 2)));
                           }),
                           options(width, Icons.bookmark, S.of(context).favorites, (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => navBar(page: 3)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const NavBar(page: 3)));
                           }),
                           options(width, Icons.logout, S.of(context).logout,() async{
                             await storage.delete(key: "email");
                             await storage.delete(key: "jwt");
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => navBar(page: 1)));
+                            if(!mounted) return;
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const NavBar(page: 1)));
                           }),
                         ],
                       )
@@ -108,17 +100,17 @@ class _ProfileState extends State<Profile> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     width: width * 0.9,
                     decoration: BoxDecoration(
-                        color: Color(0xC5051717),
+                        color: const Color(0xC5051717),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5), // Shadow color
                             spreadRadius: 4, // Spread radius
                             blurRadius: 7, // Blur radius
-                            offset: Offset(0, 3), // Offset for the shadow (vertical, horizontal)
+                            offset: const Offset(0, 3), // Offset for the shadow (vertical, horizontal)
                           ),
                         ],
                     ),
@@ -127,7 +119,7 @@ class _ProfileState extends State<Profile> {
                         Icon(icon, color: Colors.white, size: 32,),
                         SizedBox(width: width * 0.04,),
                         Text(optionName, style: GoogleFonts.plusJakartaSans(
-                            textStyle: TextStyle(
+                            textStyle: const TextStyle(
                               fontSize: 20,
                               color: Colors.white,
                               fontWeight: FontWeight.w500
@@ -154,7 +146,7 @@ class _ProfileState extends State<Profile> {
             color: Colors.grey.withOpacity(0.5), // Shadow color
             spreadRadius: 2, // Spread radius
             blurRadius: 7, // Blur radius
-            offset: Offset(0, 3), // Offset for the shadow (vertical, horizontal)
+            offset: const Offset(0, 3), // Offset for the shadow (vertical, horizontal)
           ),
         ],
       ),

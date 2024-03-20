@@ -8,7 +8,7 @@ class TestPage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Image Carousel Example'),
+          title: const Text('Image Carousel Example'),
         ),
         body: ImageCarousel(),
       ),
@@ -47,7 +47,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
         aspectRatio: 16 / 9,
         autoPlayCurve: Curves.fastOutSlowIn,
         enableInfiniteScroll: true,
-        autoPlayAnimationDuration: Duration(milliseconds: 800),
+        autoPlayAnimationDuration: const Duration(milliseconds: 800),
         viewportFraction: 0.8,
       ),
       items: listImage.map((imageUrl) {
@@ -55,7 +55,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
           builder: (BuildContext context) {
             return Container(
               width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: 5.0),
+              margin: const EdgeInsets.symmetric(horizontal: 5.0),
               decoration: BoxDecoration(
                 color: Colors.amber,
                 borderRadius: BorderRadius.circular(8.0),

@@ -48,6 +48,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mot de passe oublié ?"),
         "getDirections":
             MessageLookupByLibrary.simpleMessage("Obtenir des directions"),
+        "hikeUpdate":
+            MessageLookupByLibrary.simpleMessage("Mise à jour des randonnées"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "info": MessageLookupByLibrary.simpleMessage("Information"),
         "location": MessageLookupByLibrary.simpleMessage("Endroit :"),
@@ -64,6 +66,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "myListOfTrails":
             MessageLookupByLibrary.simpleMessage("Ma liste de randonnée"),
         "myTrails": MessageLookupByLibrary.simpleMessage("Mes randonnées"),
+        "noFavoriteTrails": MessageLookupByLibrary.simpleMessage(
+            "Vous n\'avez pas encore ajouter une randonnée dans votre liste. Ajouter-en un pour le voir ici!"),
         "noFavorites": MessageLookupByLibrary.simpleMessage(
             "Vous avez aucune randonnée dans vos favoris"),
         "noHikesExist": MessageLookupByLibrary.simpleMessage(
@@ -103,6 +107,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "vosRandonnes": MessageLookupByLibrary.simpleMessage("Vos randonnées"),
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
             "Vous n\'avez créé aucune randonnée jusqu\'à aujourd\'hui. Afin de continuer dans cette section veuillez créer une randonnée."),
+        "warningDeviation": MessageLookupByLibrary.simpleMessage(
+            "Attention! Vous vous écartez du chemin."),
         "welcomeBack":
             MessageLookupByLibrary.simpleMessage("Bienvenue de retour"),
         "youNeedToBeLoggedInToAccessThisPage":

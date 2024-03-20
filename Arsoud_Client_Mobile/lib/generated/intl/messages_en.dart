@@ -46,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot password?"),
         "getDirections": MessageLookupByLibrary.simpleMessage("Get Directions"),
+        "hikeUpdate": MessageLookupByLibrary.simpleMessage("Hike Updates"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "info": MessageLookupByLibrary.simpleMessage("Info"),
         "location": MessageLookupByLibrary.simpleMessage("Location:"),
@@ -62,6 +63,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "myListOfTrails":
             MessageLookupByLibrary.simpleMessage("My list of trails"),
         "myTrails": MessageLookupByLibrary.simpleMessage("My trails"),
+        "noFavoriteTrails": MessageLookupByLibrary.simpleMessage(
+            "You haven\'t favorited any trails yet! Add a trail to your favorites to see it here."),
         "noFavorites":
             MessageLookupByLibrary.simpleMessage("You have no favorite hikes"),
         "noHikesExist": MessageLookupByLibrary.simpleMessage(
@@ -100,6 +103,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "vosRandonnes": MessageLookupByLibrary.simpleMessage("Your hikes"),
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
             "You haven\'t created any hikes until today. To continue in this section, please create a hike."),
+        "warningDeviation": MessageLookupByLibrary.simpleMessage(
+            "Warning! You are deviating from the path."),
         "welcomeBack": MessageLookupByLibrary.simpleMessage("Welcome Back"),
         "youNeedToBeLoggedInToAccessThisPage":
             MessageLookupByLibrary.simpleMessage(

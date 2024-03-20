@@ -46,6 +46,8 @@ dependencies:
   firebase_auth: ^4.17.0
   firebase_storage: ^11.6.1
   location_distance_calculator: ^0.0.5
+  http: ^1.2.0
+  path_provider: ^2.1.2
   geolocator: ^10.1.0
   carousel_slider: ^4.0.0
   flutter_rating_bar: ^4.0.1

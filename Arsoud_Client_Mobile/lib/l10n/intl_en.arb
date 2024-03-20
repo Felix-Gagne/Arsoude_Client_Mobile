@@ -2,6 +2,7 @@
   "vosRandonnes": "Your hikes",
   "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir": "We are currently experiencing an issue with the server. Please try again later.",
   "vousNavezCreAucuneRandonne": "You haven't created any hikes until today. To continue in this section, please create a hike.",
+  "noFavoriteTrails": "You haven't favorited any trails yet! Add a trail to your favorites to see it here.",
   "chercherUneRandonne": "Search for a hike",
   "location": "Location:",
   "type": "Type:",
@@ -51,6 +52,8 @@
   "locationServicePermissionsPermanentlyDisabled" : "Location permissions are permanently denied, we cannot request permissions.",
   "sendPhoto" : "Send",
   "shareHike": "Hey look! I just completed : ",
-  "onArsoude": " on the app Arsoude!"
+  "onArsoude": " on the app Arsoude!",
+  "warningDeviation": "Warning! You are deviating from the path.",
+  "hikeUpdate": "Hike Updates"
 
 }
