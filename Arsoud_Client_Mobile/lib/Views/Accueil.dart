@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/Http/Models.dart';
-import 'package:location_distance_calculator/location_distance_calculator.dart';
-
 import '../Http/HttpService.dart';
 import '../generated/l10n.dart';
-import 'DetailRandonné.dart';
 import 'ListOfTrails.dart';
 import 'SearchBar.dart';
 
@@ -30,7 +26,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+  }
 
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -63,28 +64,26 @@ class _HomePageState extends State<HomePage> {
                         return SizedBox(
                           width: 400,
                           child: Text(
-                            S.of(context).nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir,
+                              S.of(context).nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir,
                               style: GoogleFonts.plusJakartaSans(
                                   textStyle: const TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 16
-                                  )
+                                      fontSize: 16)
                               )
                           ),
                         );
-                      } else if(listTrails.length == 0){
+                      } else if (listTrails.isEmpty) {
                         return SizedBox(
                           width: 400,
-                          child: Text(S.of(context).noHikesExist,
+                          child: Text(
+                            S.of(context).noHikesExist,
                             style: GoogleFonts.plusJakartaSans(
-                              textStyle: const TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16
-                              )
-                          ),),
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 16)
+                            ),
+                          ),
                         );
-                      }
-                      else {
+                      } else {
                         return ListOfTrails(listTrails: listTrails);
                       }
                     },
@@ -98,9 +97,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-
-
-
-

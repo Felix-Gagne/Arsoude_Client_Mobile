@@ -2,6 +2,7 @@
   "vosRandonnes": "Vos randonnées",
   "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir": "Nous rencontrons un problème avec le serveur actuellement. Veuillez revenir plus tard.",
   "vousNavezCreAucuneRandonne": "Vous n'avez créé aucune randonnée jusqu'à aujourd'hui. Afin de continuer dans cette section veuillez créer une randonnée.",
+  "noFavoriteTrails": "Vous n'avez pas encore ajouter une randonnée dans votre liste. Ajouter-en un pour le voir ici!",
   "chercherUneRandonne": "Chercher une randonnée",
   "location": "Endroit :",
   "type": "Type :",
@@ -48,5 +49,15 @@
   "locationServiceDisabled" : "Les services de location sont désactivés",
   "locationServicePermissionsDisabled" : "Les permission du services de location sont désactivés",
   "locationServicePermissionsPermanentlyDisabled" : "Les autorisations de localisation sont définitivement refusées, nous ne pouvons pas demander d'autorisations.",
-  "sendPhoto" : "Envoyer"
+  "sendPhoto" : "Envoyer",
+  "shareHike": "Hé regarde! je viens de terminer : ",
+  "onArsoude": " sur l'application Arsoude!",
+  "warningDeviation": "Attention! Vous vous écartez du chemin.",
+  "hikeUpdate": "Mise à jour des randonnées",
+  "rateHike": "Évaluer cette randonnée!",
+  "noRateHike": "Non",
+  "rateHikeContinue": "Continuer"
+
+
+
 }

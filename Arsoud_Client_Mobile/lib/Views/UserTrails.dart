@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:untitled/Http/HttpService.dart';
 import 'SearchBar.dart';
-
 import '../Http/Models.dart';
 import '../generated/l10n.dart';
-import 'Accueil.dart';
 import 'ListOfTrails.dart';
 
 class UserTrails extends StatefulWidget {
@@ -26,6 +24,12 @@ class _UserTrailsState extends State<UserTrails> {
   }
 
   @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -34,7 +38,7 @@ class _UserTrailsState extends State<UserTrails> {
           SearchBarWidget(),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(20, 25, 0, 0),
+              padding: const EdgeInsets.fromLTRB(20, 25, 0, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -45,38 +49,35 @@ class _UserTrailsState extends State<UserTrails> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 25,),
+                  const SizedBox(
+                    height: 25,
+                  ),
                   FutureBuilder<List<Randonne>>(
                     future: refresh(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
                         return SizedBox(
                           width: 400,
                           child: Text(
                               S.of(context).nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir,
                               style: GoogleFonts.plusJakartaSans(
-                                  textStyle: TextStyle(
+                                  textStyle: const TextStyle(
                                       fontWeight: FontWeight.w400,
-                                      fontSize: 16
-                                  )
-                              )
-                          ),
+                                      fontSize: 16))),
                         );
-                      } else if(listTrails.length == 0){
+                      } else if (listTrails.isEmpty) {
                         return SizedBox(
                           width: 400,
-                          child: Text(S.of(context).vousNavezCreAucuneRandonne,
+                          child: Text(
+                            S.of(context).vousNavezCreAucuneRandonne,
                             style: GoogleFonts.plusJakartaSans(
-                                textStyle: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16
-                                )
-                            ),),
+                                textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 16)),
+                          ),
                         );
-                      }
-                      else {
+                      } else {
                         return ListOfTrails(listTrails: listTrails);
                       }
                     },
@@ -90,4 +91,3 @@ class _UserTrailsState extends State<UserTrails> {
     );
   }
 }
-

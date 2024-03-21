@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
-
+import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
@@ -8,30 +8,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:untitled/Http/Models.dart';
 import 'package:untitled/Views/Hike.dart';
 import 'package:untitled/Views/Login.dart';
 import 'package:untitled/Views/Suivi.dart';
+import 'package:http/http.dart' as http;
 
 import '../Http/HttpService.dart';
 import '../generated/l10n.dart';
 import 'navBar.dart';
 
-class DetailRanonne extends StatefulWidget {
-  const DetailRanonne({Key? key, required this.randonne});
+class DetailRandonne extends StatefulWidget {
+  const DetailRandonne({Key? key, required this.randonne});
 
   final Randonne randonne;
 
   @override
-  State<DetailRanonne> createState() => _DetailRanonneState();
+  State<DetailRandonne> createState() => _DetailRandonneState();
 }
 
-class _DetailRanonneState extends State<DetailRanonne> {
+class _DetailRandonneState extends State<DetailRandonne> {
   late GoogleMapController _mapController;
   final Completer<GoogleMapController> completer = Completer();
-  Set<Marker> markers = Set();
-  Set<Marker> SEMark = Set();
+  Set<Marker> markers = {};
+  Set<Marker> seMark = {};
   List<Coordinates> coordonnees = [];
   PolylinePoints polylinePoints = PolylinePoints();
   List<LatLng> polylineCoordinates = [];
@@ -66,12 +68,12 @@ class _DetailRanonneState extends State<DetailRanonne> {
     super.initState();
 
     verifyIfTrailIsFavorite();
-    CheckisOwner();
+    checkIsOwner();
 
     getImages();
   }
 
-  CheckisOwner() async {
+  checkIsOwner() async {
     owner = await IsOwner(widget.randonne.id);
     setState(() {});
   }
@@ -123,6 +125,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
     try {
       coordonnees = await getCoordinates(widget.randonne.id);
     } on DioError catch (e) {
+      if(!mounted) return;
       if (e.response?.statusCode == 404) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -159,15 +162,23 @@ class _DetailRanonneState extends State<DetailRanonne> {
     cem = CameraPosition(
         target: LatLng(widget.randonne.startingCoordinates.latitude,
             widget.randonne.startingCoordinates.longitude),
-        zoom: 10)
-    ;
+        zoom: 10);
 
-    SEMark.add(start);
-    SEMark.add(end);
+    seMark.add(start);
+    seMark.add(end);
   }
 
-  void onShare(BuildContext context){
-    Share.share(widget.randonne.name);
+  void onShare(BuildContext context) async {
+    final url = Uri.parse(widget.randonne.imageUrl.toString());
+    final response = await http.get(url);
+    final bytes = response.bodyBytes;
+
+    final temp = await getTemporaryDirectory();
+    final path = '${temp.path}/image.jpg';
+    File(path).writeAsBytesSync(bytes);
+
+    if(!mounted) return;
+    Share.shareFiles([path], text: S.of(context).shareHike + widget.randonne.name + S.of(context).onArsoude, subject: S.of(context).hikeUpdate);
   }
 
   Future<void> _showMapOverlay() async {
@@ -184,6 +195,8 @@ class _DetailRanonneState extends State<DetailRanonne> {
       await addPolyLine(polylineCoordinates);
       markers.clear();
     }
+
+    if(!mounted) return;
     //On affiche le dialogue
     showDialog(
       context: context,
@@ -207,7 +220,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
                     myLocationEnabled: true,
                     mapType: MapType.terrain,
                     initialCameraPosition: cem,
-                    markers: SEMark,
+                    markers: seMark,
                     polylines: Set<Polyline>.of(polylines.values),
                   ),
                 ),
@@ -219,7 +232,11 @@ class _DetailRanonneState extends State<DetailRanonne> {
     );
   }
 
-
+  @override
+  void dispose() {
+    _mapController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -235,10 +252,10 @@ class _DetailRanonneState extends State<DetailRanonne> {
           Expanded(
             child: Stack(
               children: [
-                TopPage(width, height, context),
+                topPage(width, height, context),
                 randonneName(heightName, width),
-                TrailInfo(heightInfo, context, height),
-                Buttons(width, context)
+                trailInfo(heightInfo, context, height),
+                buttons(width, context)
               ],
             ),
           ),
@@ -278,7 +295,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
     );
   }
 
-  Stack TopPage(double width, double height, BuildContext context) {
+  Stack topPage(double width, double height, BuildContext context) {
     return Stack(
       children: [
         randonneImage(width, height),
@@ -312,7 +329,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
               onMapCreated: _onMapCreated,
               mapType: MapType.terrain,
               initialCameraPosition: cem,
-              markers: SEMark,
+              markers: seMark,
               polylines: Set<Polyline>.of(polylines.values),
               onTap: (LatLng lat) {
                 _showMapOverlay();
@@ -374,15 +391,13 @@ class _DetailRanonneState extends State<DetailRanonne> {
                       child: CachedNetworkImage(
                         imageUrl: imageUrl,
                         fit: BoxFit.fill,
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) => SizedBox(
+                        progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
                           width: 50,
                           height: 50,
                           child: CircularProgressIndicator(
                               value: downloadProgress.progress),
                         ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     );
                   },
@@ -392,12 +407,10 @@ class _DetailRanonneState extends State<DetailRanonne> {
           : CachedNetworkImage(
               imageUrl: widget.randonne.imageUrl!,
               fit: BoxFit.fill,
-              progressIndicatorBuilder: (context, url, downloadProgress) =>
-                  SizedBox(
+              progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
                 width: 50,
                 height: 50,
-                child:
-                    CircularProgressIndicator(value: downloadProgress.progress),
+                child: CircularProgressIndicator(value: downloadProgress.progress),
               ),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
@@ -421,10 +434,9 @@ class _DetailRanonneState extends State<DetailRanonne> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const navBar(page: 0)));
+                      builder: (context) => const NavBar(page: 2)));
             },
-            icon: const Icon(Icons.arrow_back,
-                color: Colors.black, size: 20), // Adjust icon size here
+            icon: const Icon(Icons.arrow_back, color: Colors.black, size: 20), // Adjust icon size here
           ),
         ),
       ),
@@ -447,15 +459,14 @@ class _DetailRanonneState extends State<DetailRanonne> {
             onPressed: () {
               onShare(context);
             },
-            icon: const Icon(Icons.share,
-                color: Colors.black, size: 20), // Adjust icon size here
+            icon: const Icon(Icons.share, color: Colors.black, size: 20), // Adjust icon size here
           ),
         ),
       ),
     );
   }
 
-  Positioned TrailInfo(double heightInfo, BuildContext context, double height) {
+  Positioned trailInfo(double heightInfo, BuildContext context, double height) {
     return Positioned(
       top: heightInfo,
       left: 10,
@@ -478,14 +489,11 @@ class _DetailRanonneState extends State<DetailRanonne> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Trail rating
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.randonne.rating != null
-                          ? widget.randonne.rating!.toStringAsFixed(1)
-                          : '-',
+                      widget.randonne.rating != null ? widget.randonne.rating!.toStringAsFixed(1) : '-',
                       style: GoogleFonts.plusJakartaSans(
                         textStyle: const TextStyle(
                           fontSize: 20,
@@ -494,27 +502,21 @@ class _DetailRanonneState extends State<DetailRanonne> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Icon(
-                      Icons.star,
-                      size: 30,
-                    ),
+                    const Icon(Icons.star, size: 30,),
                   ],
                 ),
                 Row(
                   children: [
                     Icon(
-                      widget.randonne.type == 1
-                          ? const IconData(0xe1d2, fontFamily: 'MaterialIcons')
+                      widget.randonne.type == 1 ? const IconData(0xe1d2, fontFamily: 'MaterialIcons')
                           : const IconData(0xe1e1, fontFamily: 'MaterialIcons'),
                       size: 30,
                     ),
                     const SizedBox(width: 16),
                     // Bookmark icon
                     (isConnected && favorite)
-                        ? const Icon(Icons.bookmark,
-                            color: Colors.black, size: 36)
-                        : const Icon(Icons.bookmark_outline,
-                            color: Colors.black, size: 36),
+                        ? const Icon(Icons.bookmark, color: Colors.black, size: 36)
+                        : const Icon(Icons.bookmark_outline, color: Colors.black, size: 36),
                   ],
                 ),
               ],
@@ -538,7 +540,7 @@ class _DetailRanonneState extends State<DetailRanonne> {
     );
   }
 
-  Padding Buttons(double width, BuildContext context) {
+  Padding buttons(double width, BuildContext context) {
     return Padding(
       padding: owner ? const EdgeInsets.all(3.0) : const EdgeInsets.all(10.0),
       child: Column(
@@ -555,7 +557,9 @@ class _DetailRanonneState extends State<DetailRanonne> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  HikePage(randonne: widget.randonne)));
+                                  HikePage(randonne: widget.randonne)
+                          )
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -566,12 +570,12 @@ class _DetailRanonneState extends State<DetailRanonne> {
                           textStyle: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
-                              fontSize: 16)),
+                              fontSize: 16)
+                      ),
                     ),
                   )),
               SizedBox(width: width * 0.03),
-              SizedBox(
-                width: width * 0.45,
+              SizedBox(width: width * 0.45,
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
@@ -593,13 +597,10 @@ class _DetailRanonneState extends State<DetailRanonne> {
           ),
           const SizedBox(height: 7),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            owner
-                ? Container(
+            owner ? Container(
                     width: width * 0.83,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                    child: !widget.randonne.isPublic
-                        ? ElevatedButton(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+                    child: !widget.randonne.isPublic ? ElevatedButton(
                             onPressed: () {
                               SetPublic(widget.randonne.id);
                             },
@@ -611,21 +612,27 @@ class _DetailRanonneState extends State<DetailRanonne> {
                                     textStyle: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16))),
+                                        fontSize: 16)
+                                )
+                            ),
                           )
-                        : MaterialButton(
+                        : ElevatedButton(
                             onPressed: () {
                               SetPrivate(widget.randonne.id);
                             },
-                            color: Colors.pinkAccent,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.pinkAccent,
+                            ),
                             child: Text(S.of(context).rendrePriv,
                                 style: GoogleFonts.plusJakartaSans(
                                     textStyle: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16))),
-                          ))
-                : const SizedBox()
+                                        fontSize: 16)
+                                )
+                            ),
+                          )
+            ) : const SizedBox()
           ]),
           const SizedBox(height: 7),
           Row(

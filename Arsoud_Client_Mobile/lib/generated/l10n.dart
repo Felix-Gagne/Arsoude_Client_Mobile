@@ -80,6 +80,16 @@ class S {
     );
   }
 
+  /// `You haven't favorited any trails yet! Add a trail to your favorites to see it here.`
+  String get noFavoriteTrails {
+    return Intl.message(
+      'You haven\'t favorited any trails yet! Add a trail to your favorites to see it here.',
+      name: 'noFavoriteTrails',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Search for a hike`
   String get chercherUneRandonne {
     return Intl.message(
@@ -545,6 +555,76 @@ class S {
     return Intl.message(
       'Send',
       name: 'sendPhoto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hey look! I just completed : `
+  String get shareHike {
+    return Intl.message(
+      'Hey look! I just completed : ',
+      name: 'shareHike',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` on the app Arsoude!`
+  String get onArsoude {
+    return Intl.message(
+      ' on the app Arsoude!',
+      name: 'onArsoude',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Warning! You are deviating from the path.`
+  String get warningDeviation {
+    return Intl.message(
+      'Warning! You are deviating from the path.',
+      name: 'warningDeviation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hike Updates`
+  String get hikeUpdate {
+    return Intl.message(
+      'Hike Updates',
+      name: 'hikeUpdate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rate this hike!`
+  String get rateHike {
+    return Intl.message(
+      'Rate this hike!',
+      name: 'rateHike',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get noRateHike {
+    return Intl.message(
+      'No',
+      name: 'noRateHike',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get rateHikeContinue {
+    return Intl.message(
+      'Continue',
+      name: 'rateHikeContinue',
       desc: '',
       args: [],
     );

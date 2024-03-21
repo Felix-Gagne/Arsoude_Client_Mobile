@@ -48,6 +48,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mot de passe oublié ?"),
         "getDirections":
             MessageLookupByLibrary.simpleMessage("Obtenir des directions"),
+        "hikeUpdate":
+            MessageLookupByLibrary.simpleMessage("Mise à jour des randonnées"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "info": MessageLookupByLibrary.simpleMessage("Information"),
         "location": MessageLookupByLibrary.simpleMessage("Endroit :"),
@@ -64,19 +66,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "myListOfTrails":
             MessageLookupByLibrary.simpleMessage("Ma liste de randonnée"),
         "myTrails": MessageLookupByLibrary.simpleMessage("Mes randonnées"),
+        "noFavoriteTrails": MessageLookupByLibrary.simpleMessage(
+            "Vous n\'avez pas encore ajouter une randonnée dans votre liste. Ajouter-en un pour le voir ici!"),
         "noFavorites": MessageLookupByLibrary.simpleMessage(
             "Vous avez aucune randonnée dans vos favoris"),
         "noHikesExist": MessageLookupByLibrary.simpleMessage(
             "Aucune randonnée ne peut etre trouver"),
+        "noRateHike": MessageLookupByLibrary.simpleMessage("Non"),
         "nousRencontronsUnProblemeAvecLeServeurActuellementVeuillezRevenir":
             MessageLookupByLibrary.simpleMessage(
                 "Nous rencontrons un problème avec le serveur actuellement. Veuillez revenir plus tard."),
+        "onArsoude": MessageLookupByLibrary.simpleMessage(
+            " sur l\'application Arsoude!"),
         "password": MessageLookupByLibrary.simpleMessage("Mot de passe"),
         "pleaseEnterAEmail": MessageLookupByLibrary.simpleMessage(
             "Veuillez entrer une adresse e-mail"),
         "pleaseEnterAPassword": MessageLookupByLibrary.simpleMessage(
             "Veuillez entrer un mot de passe"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+        "rateHike":
+            MessageLookupByLibrary.simpleMessage("Évaluer cette randonnée!"),
+        "rateHikeContinue": MessageLookupByLibrary.simpleMessage("Continuer"),
         "rendrePriv": MessageLookupByLibrary.simpleMessage("Rendre Privé"),
         "rendrePublique":
             MessageLookupByLibrary.simpleMessage("Rendre Publique"),
@@ -86,6 +96,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "La session a expirer. veuillez vous reconnecter"),
         "settings": MessageLookupByLibrary.simpleMessage("paramètre"),
+        "shareHike": MessageLookupByLibrary.simpleMessage(
+            "Hé regarde! je viens de terminer : "),
         "signInToYourAccount": MessageLookupByLibrary.simpleMessage(
             "Connectez-vous à votre compte"),
         "signUp": MessageLookupByLibrary.simpleMessage("S\'inscrire"),
@@ -99,6 +111,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "vosRandonnes": MessageLookupByLibrary.simpleMessage("Vos randonnées"),
         "vousNavezCreAucuneRandonne": MessageLookupByLibrary.simpleMessage(
             "Vous n\'avez créé aucune randonnée jusqu\'à aujourd\'hui. Afin de continuer dans cette section veuillez créer une randonnée."),
+        "warningDeviation": MessageLookupByLibrary.simpleMessage(
+            "Attention! Vous vous écartez du chemin."),
         "welcomeBack":
             MessageLookupByLibrary.simpleMessage("Bienvenue de retour"),
         "youNeedToBeLoggedInToAccessThisPage":
