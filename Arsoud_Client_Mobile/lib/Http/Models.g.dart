@@ -90,3 +90,18 @@ Map<String, dynamic> _$RatingRequestModelToJson(RatingRequestModel instance) =>
     <String, dynamic>{
       'Rating': instance.Rating,
     };
+
+FilterDTO _$FilterDTOFromJson(Map<String, dynamic> json) => FilterDTO()
+  ..keyWord = json['keyWord'] as String?
+  ..type = json['type'] as int?
+  ..distance = json['distance'] as int?
+  ..coordinates = json['coordinates'] == null
+      ? null
+      : Coordinates.fromJson(json['coordinates'] as Map<String, dynamic>);
+
+Map<String, dynamic> _$FilterDTOToJson(FilterDTO instance) => <String, dynamic>{
+      'keyWord': instance.keyWord,
+      'type': instance.type,
+      'distance': instance.distance,
+      'coordinates': instance.coordinates,
+    };

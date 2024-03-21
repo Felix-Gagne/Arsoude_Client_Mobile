@@ -105,3 +105,18 @@ class RatingRequestModel{
   Map<String, dynamic> toJson() => _$RatingRequestModelToJson(this);
 
 }
+
+@JsonSerializable()
+class FilterDTO{
+  FilterDTO();
+
+  String? keyWord;
+  int? type;
+  int? distance;
+  Coordinates? coordinates;
+
+  factory FilterDTO.fromJson(Map<String, dynamic> json) => _$FilterDTOFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FilterDTOToJson(this);
+
+}

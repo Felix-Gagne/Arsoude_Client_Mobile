@@ -434,7 +434,7 @@ class _DetailRandonneState extends State<DetailRandonne> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const NavBar(page: 2)));
+                      builder: (context) => const NavBar(page: 1)));
             },
             icon: const Icon(Icons.arrow_back, color: Colors.black, size: 20), // Adjust icon size here
           ),

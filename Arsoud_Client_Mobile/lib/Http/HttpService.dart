@@ -268,6 +268,23 @@ Future<String> rateHike(int trailId, double rating) async{
   }
 }
 
+Future<List<Randonne>> searchTrails(String keyWord) async{
+    try{
+      FilterDTO filter = FilterDTO();
+      filter.keyWord = keyWord;
+
+      var response = await dio.post('/Trail/GetFilteredTrails', data: filter.toJson(), options: await getOptions());
+      var listJson = response.data as List;
+      var listTrail = listJson.map((elementJson){
+        return Randonne.fromJson((elementJson));
+      }).toList();
+
+      return listTrail;
+    }catch(e){
+      rethrow;
+    }
+}
+
 
 
 

@@ -61,14 +61,12 @@ class ListOfTrails extends StatelessWidget {
                           ? CachedNetworkImage(
                               fit: BoxFit.fill,
                               imageUrl: randonne.imageUrl!,
-                              progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: CircularProgressIndicator(
-                                    value: downloadProgress.progress),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                              // progressIndicatorBuilder: (context, url, downloadProgress) => SizedBox(
+                              //   width: 30,
+                              //   height: 10,
+                              //   child: CircularProgressIndicator(value: downloadProgress.progress,),
+                              // ),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
                             )
                           : Image.asset(
                               "assets/Images/imagePlaceholder.jpg",
