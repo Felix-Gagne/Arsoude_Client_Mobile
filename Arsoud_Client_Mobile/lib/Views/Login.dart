@@ -44,7 +44,7 @@ class _LoginState extends State<Login> {
           loading = false;
         });
 
-        var errorMessage;
+        String errorMessage = "";
         if (e.response != null) {
           if (e.response!.data["message"] ==
               "Le mot de passe ou le nom d'utilisateur ne correspond pas.") {
@@ -70,6 +70,7 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
+    super.initState();
     setState(() {});
   }
 

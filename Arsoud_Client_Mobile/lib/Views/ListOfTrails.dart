@@ -35,7 +35,7 @@ class ListOfTrails extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => DetailRandonne(randonne: randonne,))
+                  builder: (context) => DetailRandonne(randonne: randonne,))
               );
             },
             child: Container(

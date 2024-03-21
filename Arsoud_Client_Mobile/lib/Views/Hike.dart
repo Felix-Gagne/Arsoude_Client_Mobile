@@ -141,9 +141,7 @@ class _HikePageState extends State<HikePage> {
   checkDeviation() {
     double distance = 0;
     double leastDistance = double.infinity;
-    double threshold = 30;
-    double lastLat = lastPosition!.latitude;
-    double lastLong = lastPosition!.longitude;
+    double threshold = 50;
 
     for (int i = 0; i <= coordonees.length - 1; i++) {
       distance = Geolocator.distanceBetween(
@@ -157,26 +155,24 @@ class _HikePageState extends State<HikePage> {
       }
     }
 
-    if (warningIndex <= 1) {
+    double distanceP1 =  Geolocator.distanceBetween(
+        lastPosition!.latitude,
+        lastPosition!.longitude,
+        coordonees[currentCoordIndex + 1].latitude,
+        coordonees[currentCoordIndex + 1].longitude);
+
+    if (warningIndex < 1) {
       if (currentCoordIndex == 0) {
-        if (Geolocator.distanceBetween(lastPosition!.latitude, lastPosition!.longitude,
-                coordonees[currentCoordIndex].latitude, coordonees[currentCoordIndex].longitude) >= threshold ||
-            Geolocator.distanceBetween(lastPosition!.latitude, lastPosition!.longitude,
-                coordonees[currentCoordIndex + 1].latitude, coordonees[currentCoordIndex + 1].longitude) >= threshold) {
+        if (leastDistance >= threshold) {
           warningIndex++;
-          checkDeviation();
+          //checkDeviation();
           return;
         }
       }
 
-      if (Geolocator.distanceBetween(lastLat, lastLong,
-              coordonees[currentCoordIndex].latitude, coordonees[currentCoordIndex].longitude) >= threshold ||
-          Geolocator.distanceBetween(lastLat, lastLong,
-              coordonees[currentCoordIndex + 1].latitude, coordonees[currentCoordIndex + 1].longitude) >= threshold ||
-          Geolocator.distanceBetween(lastLat, lastLong,
-              coordonees[currentCoordIndex - 1].latitude, coordonees[currentCoordIndex - 1].longitude) >= threshold) {
+      if (leastDistance >= threshold || distanceP1 >= threshold) {
         warningIndex++;
-        checkDeviation();
+        //checkDeviation();
         return;
       }
     } else {
