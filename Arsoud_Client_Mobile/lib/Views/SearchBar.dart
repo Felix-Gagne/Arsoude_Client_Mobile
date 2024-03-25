@@ -3,6 +3,19 @@ import 'package:flutter/material.dart';
 import '../generated/l10n.dart';
 
 class SearchBarWidget extends StatelessWidget {
+  SearchBarWidget({super.key});
+
+  final keyWord = TextEditingController();
+
+  searchTrails(String keyWord) async{
+    try{
+      await searchTrails(keyWord);
+    }catch(e){
+      rethrow;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,6 +37,7 @@ class SearchBarWidget extends StatelessWidget {
             ),
             margin: const EdgeInsets.fromLTRB(20, 30, 20, 0),
             child: TextField(
+              controller: keyWord,
               textAlign: TextAlign.left,
               decoration: InputDecoration(
                 filled: true,
