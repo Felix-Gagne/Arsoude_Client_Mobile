@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:untitled/Http/Models.dart';
@@ -15,10 +16,11 @@ import 'package:untitled/Views/Hike.dart';
 import 'package:untitled/Views/Login.dart';
 import 'package:untitled/Views/Suivi.dart';
 import 'package:http/http.dart' as http;
-
 import '../Http/HttpService.dart';
 import '../generated/l10n.dart';
 import 'navBar.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class DetailRandonne extends StatefulWidget {
   const DetailRandonne({Key? key, required this.randonne});
@@ -180,6 +182,17 @@ class _DetailRandonneState extends State<DetailRandonne> {
     if(!mounted) return;
     Share.shareFiles([path], text: S.of(context).shareHike + widget.randonne.name + S.of(context).onArsoude, subject: S.of(context).hikeUpdate);
   }
+
+  static void navigateTo(double lat, double lng) async {
+    var uri = Uri.parse("google.navigation:q=$lat,$lng&mode=d");
+    if (await canLaunch(uri.toString())) {
+      await launch(uri.toString());
+    } else {
+      throw 'Could not launch ${uri.toString()}';
+    }
+  }
+
+
 
   Future<void> _showMapOverlay() async {
     //On Ajoute les markers
@@ -577,7 +590,9 @@ class _DetailRandonneState extends State<DetailRandonne> {
               SizedBox(width: width * 0.03),
               SizedBox(width: width * 0.45,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    navigateTo(widget.randonne.startingCoordinates.latitude, widget.randonne.startingCoordinates.longitude);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey,
                   ),

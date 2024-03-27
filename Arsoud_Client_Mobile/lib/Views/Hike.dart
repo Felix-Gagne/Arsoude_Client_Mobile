@@ -13,6 +13,7 @@ import '../generated/l10n.dart';
 import 'CameraPage.dart';
 import 'DetailRandonné.dart';
 import 'Login.dart';
+import 'dart:math';
 
 class HikePage extends StatefulWidget {
   final FloatingActionButtonLocation fabLocation;
@@ -47,7 +48,7 @@ class _HikePageState extends State<HikePage> {
 
   late double hikeRating = 0;
   bool rated = false;
-  int currentCoordIndex = 0;
+  int currentCoordIndex = -1;
   int warningIndex = 0;
 
   @override
@@ -143,6 +144,26 @@ class _HikePageState extends State<HikePage> {
     double leastDistance = double.infinity;
     double threshold = 50;
 
+    // Je vérifie si je sais où je suis sur le chemin
+    if(currentCoordIndex >= 0){
+      // TODO: Vérifier seulement les points entre currentCoordIndex - 2 et currentCoordIndex + 2
+      int loopStartIndex = max(currentCoordIndex -2, 0);
+      int loopEndIndex = max(currentCoordIndex +2,  coordonees.length - 1);
+      for(int i = loopStartIndex; i <= loopEndIndex; i++){
+        distance = Geolocator.distanceBetween(lastPosition!.latitude, lastPosition!.longitude, coordonees[i].latitude, coordonees[i].longitude);
+        // Je vérifie si j'ai trouvé un leastDistance qui est plus petit que mon threshold
+        if (distance < leastDistance) {
+          // si oui, je peux retourner tout de suite
+          leastDistance = distance;
+          currentCoordIndex = i;
+          if(i == loopEndIndex){
+            return;
+          }
+        }
+      }
+    }
+
+    // Si non, je dois continuer la même logique pour trouver ou je suis
     for (int i = 0; i <= coordonees.length - 1; i++) {
       distance = Geolocator.distanceBetween(
           lastPosition!.latitude,
@@ -161,22 +182,7 @@ class _HikePageState extends State<HikePage> {
         coordonees[currentCoordIndex + 1].latitude,
         coordonees[currentCoordIndex + 1].longitude);
 
-    if (warningIndex < 1) {
-      if (currentCoordIndex == 0) {
-        if (leastDistance >= threshold) {
-          warningIndex++;
-          //checkDeviation();
-          return;
-        }
-      }
-
-      if (leastDistance >= threshold || distanceP1 >= threshold) {
-        warningIndex++;
-        //checkDeviation();
-        return;
-      }
-    } else {
-      warningIndex = 0;
+    if (leastDistance <= threshold || distanceP1 <= threshold) {
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.floating,
         elevation: 0,
