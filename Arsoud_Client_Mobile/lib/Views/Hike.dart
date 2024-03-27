@@ -149,7 +149,7 @@ class _HikePageState extends State<HikePage> {
       // TODO: Vérifier seulement les points entre currentCoordIndex - 2 et currentCoordIndex + 2
       int loopStartIndex = max(currentCoordIndex -2, 0);
       int loopEndIndex = max(currentCoordIndex +2,  coordonees.length - 1);
-      for(int i = loopStartIndex, i <= loopEndIndex, i++){
+      for(int i = loopStartIndex; i <= loopEndIndex; i++){
         distance = Geolocator.distanceBetween(lastPosition!.latitude, lastPosition!.longitude, coordonees[i].latitude, coordonees[i].longitude);
         // Je vérifie si j'ai trouvé un leastDistance qui est plus petit que mon threshold
         if (distance < leastDistance) {
