@@ -45,7 +45,8 @@ class _HikePageState extends State<HikePage> {
   Map<PolylineId, Polyline> polylines = {};
   DateTime? start;
   DateTime? end;
-
+  String percentage = "";
+  int distanceTravelled = 0;
   late double hikeRating = 0;
   bool rated = false;
   int currentCoordIndex = -1;
@@ -139,26 +140,39 @@ class _HikePageState extends State<HikePage> {
     }
   }
 
+  calculateCompletion(int index){
+    percentage = ((index/coordonees.length) * 100).toStringAsFixed(1);
+    print(percentage);
+    distanceTravelled = index * 10;
+    print(distanceTravelled);
+  }
+
   checkDeviation() {
     double distance = 0;
     double leastDistance = double.infinity;
-    double threshold = 50;
+    double threshold = 30;
 
     // Je vérifie si je sais où je suis sur le chemin
     if(currentCoordIndex >= 0){
       // TODO: Vérifier seulement les points entre currentCoordIndex - 2 et currentCoordIndex + 2
-      int loopStartIndex = max(currentCoordIndex -2, 0);
-      int loopEndIndex = max(currentCoordIndex +2,  coordonees.length - 1);
+      int loopStartIndex = max(currentCoordIndex -1, 0);
+      int loopEndIndex = min(currentCoordIndex +1,  coordonees.length - 1);
       for(int i = loopStartIndex; i <= loopEndIndex; i++){
         distance = Geolocator.distanceBetween(lastPosition!.latitude, lastPosition!.longitude, coordonees[i].latitude, coordonees[i].longitude);
         // Je vérifie si j'ai trouvé un leastDistance qui est plus petit que mon threshold
+        if(distance >= threshold)
+        {
+          break;
+        }
         if (distance < leastDistance) {
           // si oui, je peux retourner tout de suite
           leastDistance = distance;
           currentCoordIndex = i;
-          if(i == loopEndIndex){
-            return;
-          }
+          //Calcul pourcentage et distance
+          calculateCompletion(currentCoordIndex);
+        }
+        if(i == loopEndIndex){
+          return;
         }
       }
     }
@@ -173,6 +187,7 @@ class _HikePageState extends State<HikePage> {
       if (distance < leastDistance) {
         leastDistance = distance;
         currentCoordIndex = i;
+        calculateCompletion(currentCoordIndex);
       }
     }
 
@@ -182,7 +197,7 @@ class _HikePageState extends State<HikePage> {
         coordonees[currentCoordIndex + 1].latitude,
         coordonees[currentCoordIndex + 1].longitude);
 
-    if (leastDistance <= threshold || distanceP1 <= threshold) {
+    if (leastDistance >= threshold || distanceP1 >= threshold) {
       var snackBar = SnackBar(
         behavior: SnackBarBehavior.floating,
         elevation: 0,
@@ -330,45 +345,90 @@ class _HikePageState extends State<HikePage> {
     super.dispose();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Scaffold(
-        body: Column(
-          children: [
-            Expanded(
-              child: GoogleMap(
-                mapType: MapType.satellite,
-                initialCameraPosition: cem,
-                myLocationEnabled: true,
-                markers: markers,
-                zoomGesturesEnabled: true,
-                zoomControlsEnabled: true,
-                onMapCreated: _onMapCreated,
-                polylines: Set<Polyline>.of(polylines.values),
-              ),
-            ),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          shape: const CircleBorder(),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          backgroundColor: const Color(0xff09635f),
-          child: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
+    return Scaffold(
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Expanded(
+                  child: GoogleMap(
+                    mapType: MapType.satellite,
+                    initialCameraPosition: cem,
+                    myLocationEnabled: true,
+                    markers: markers,
+                    zoomGesturesEnabled: true,
+                    zoomControlsEnabled: true,
+                    onMapCreated: _onMapCreated,
+                    polylines: Set<Polyline>.of(polylines.values),
+                  ),
+              )
+            ],
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-        bottomNavigationBar: BottomAppBar(
-          color: const Color(0xff09635f),
-          elevation: 0,
-          child: _iconsList(context),
+          percentageNdistanceDone(),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        backgroundColor: const Color(0xff09635f),
+        child: const Icon(
+          Icons.arrow_back,
+          color: Colors.white,
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+      bottomNavigationBar: BottomAppBar(
+        color: const Color(0xff09635f),
+        elevation: 0,
+        child: _iconsList(context),
+      ),
     );
+  }
+
+  Positioned percentageNdistanceDone() {
+    return Positioned(
+          top: 47,
+          right: 20,
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "$percentage%",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  "${distanceTravelled}m", // replace with your distance
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
   }
 
   IconTheme _iconsList(BuildContext context) {
